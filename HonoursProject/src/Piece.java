@@ -1,100 +1,88 @@
 public class Piece
 {
-
-	int positionX;
-	int positionY;
-	int boardSize = 5;
-
+	Environment env;
+	Point pos;
 	boolean isPrey;
-
-
-	public Piece()
+	Behaviour behaviour;
+	
+	public Piece(int x, int y, boolean prey, Environment env, Behaviour behaviour)
 	{
-
-		positionX = 0;
-		positionY = 0;
-
-		isPrey = false;
-	}
-
-	public Piece(boolean prey)
-	{
-
-		positionX = 0;
-		positionY = 0;
-
+		pos = new Point(x,y);
 		isPrey = prey;
+		this.env = env;
+		this.behaviour = behaviour;
 	}
-
-	public Piece(int x, int y)
+	
+	public Piece(Point pos, boolean prey, Environment env, Behaviour behaviour)
 	{
-		positionX = x;
-		positionY = y;
-
-
-		isPrey = false;
-	}
-
-	public Piece(int x, int y,boolean prey)
-	{
-		positionX = x;
-		positionY = y;
-
-
+		this.pos = pos;
 		isPrey = prey;
+		this.env = env;
+		this.behaviour = behaviour;
+	}
+	
+	Point getPosition(){
+		return pos;
 	}
 
 	int getPositionX() 
 	{
-		return positionX;
+		return pos.x;
 	}
 
 	int getPositionY() 
 	{
-		return positionY;
+		return pos.y;
+	}
+	
+	Behaviour getBehaviour()
+	{
+		return behaviour;
 	}
 
 	void setPosition(int newX, int newY) 
 	{
-		positionX = newX;
-		positionY = newY;
+		pos.x = newX;
+		pos.y = newY;
 	}
 
-	void makeMove()
+	void makeMove() throws Exception
 	{
-		positionX += 1;
-		positionY += 1;
-
-		handleMovement();
-
+		//Move represents the direction to move in
+		//0: North  1: East  2: South  3: West
+		int move = behaviour.getMove(pos, env.predator, env.prey);
+		
+		switch(move){
+		case 0: pos.y--; break;
+		case 1: pos.x++; break;
+		case 2: pos.y++; break;
+		case 3: pos.x--; break;
+		default: throw new Exception("Behaviour returned an invalid direction (<0 or >3).");
+		}
+		
+		ensurePositionIsInBounds();
 	}
 
-	public void handleMovement ()
+	private void ensurePositionIsInBounds ()
 	{
+		//X coordinate
+		
+		//right hand side met, move to left
+		if(pos.x >= env.boardSize)
+			pos.x = 0;
 
-		// ******************************** Movement Handling ******************************************************
+		//left hand side met, move to the right
+		if(pos.x < 0)
+			pos.x = env.boardSize -1;
 
-		if(positionX >= boardSize)
-			positionX = 0;                            // right hand side met, move to left
+		//Y coordinate
+		
+		//bottom reached, move to top
+		if(pos.y >= env.boardSize)
+			pos.y = 0;
 
-
-
-		if(positionX < 0)
-			positionX = boardSize -1;				// left hand side met, move to the right
-
-
-		// *******************    Y coordinate change **************************************************************
-
-		if(positionY >= boardSize)
-			positionY = 0;                            // bottom reached, move to top
-
-
-		if(positionY < 0)
-			positionY = boardSize-1;                  // top reached, move to bottom
-
-
-
-		//***********************************************************************************************************
-
+		//top reached, move to bottom
+		if(pos.y < 0)
+			pos.y = env.boardSize-1;
 	}
 }

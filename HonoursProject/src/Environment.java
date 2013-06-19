@@ -30,33 +30,29 @@ public class Environment
 		board = new int[boardSize][boardSize];
 	}
 
-	public void handleMovement ()
+	public void handleMovement () throws Exception
 	{
-
 		// ******************************** Movement Handling ******************************************************
 
 		for(Piece p : pieces)
 		{
-			clearBoard(p);              	// removes current piece from the board until position is updated.
+			clearBoard(p);              // removes current piece from the board until position is updated.
 			p.makeMove();				// Gets a position update for a piece.
 			updateBoard(p);				// Updates the board to include the new position of the piece.
 		}
-
-		//***********************************************************************************************************
-
 	}
 
 	public void clearBoard(Piece p)
 	{
-		board[p.positionX][p.positionY] = 0;
+		board[p.pos.x][p.pos.y] = 0;
 	}
 
 	public void updateBoard(Piece p)
 	{
 		if(p.isPrey)
-			board[p.positionX][p.positionY] = 2;
+			board[p.pos.x][p.pos.y] = 2;
 		else
-			board[p.positionX][p.positionY] = 1;
+			board[p.pos.x][p.pos.y] = 1;
 
 		drawWorld();
 	}
@@ -118,16 +114,17 @@ public class Environment
 
 	public void run(int pred, int pry)
 	{
-
+		StochasticRunAway runAway = new StochasticRunAway();
+		
 		for(int i = 0 ; i < pred; i ++)
 		{
-			predator.add(new Piece(2,2));
+			predator.add(new Piece(2,2,false,this,runAway));
 			pieces.add(predator.elementAt(i));
 		}
 
 		for(int i = 0 ; i < pry; i ++)
 		{
-			prey.add(new Piece(0,0,true));
+			prey.add(new Piece(0,0,true,this,runAway));
 			pieces.add(prey.elementAt(i));
 		}
 
@@ -135,7 +132,13 @@ public class Environment
 
 		while (runs > 0)
 		{
-			handleMovement();
+			try{
+				handleMovement();
+			}
+			catch(Exception e){
+				System.out.println("An error occured: "+e.getMessage());
+				e.printStackTrace();
+			}
 			runs--;
 		}
 
