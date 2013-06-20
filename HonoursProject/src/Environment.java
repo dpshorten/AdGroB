@@ -123,21 +123,14 @@ public class Environment {
 		return !(prey.size() > 0);
 	}
 
-	public void run(int numPred, int numPrey) {
-		// Deleting contents of the log file.
-		PrintWriter out = null;
-		try {
-			out = new PrintWriter(new FileWriter(log, false));
-		} catch (Exception e) {
-			System.out.println("Error : " + e);
-		}
-		out.print("");
-		out.close();
 
-		StochasticRunAway runAway = new StochasticRunAway();
-
-		for (int i = 0; i < numPred; i++) {
-			predators.add(new Piece(2, i, false, this, runAway));
+	public void run(int numPred, int numPrey)
+	{
+		StochasticRunawayBehaviour runAway = new StochasticRunawayBehaviour(boardSize);
+		
+		for(int i = 0 ; i < numPred; i ++)
+		{
+			predators.add(new Piece(2,2,false,this,runAway));
 			pieces.add(predators.elementAt(i));
 		}
 
