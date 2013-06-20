@@ -33,4 +33,12 @@ public class Point {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public boolean equals(Point otherPoint) {
+		return (this.x == otherPoint.x()) & (this.y == otherPoint.y());
+	}
+	
+	public String toString() {
+		return x + "  " + y;
+	}
 }

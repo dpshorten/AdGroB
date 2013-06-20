@@ -11,10 +11,12 @@
 import sys
 import pygame
 
+
+
 # Pixel length of the square cells, this must always be even.
 CELLLENGTH = 20
 # Frames per second.
-FRAMERATE = 4
+FRAMERATE = 0.5
 BACKGROUND_COLOR = (255, 255, 255)
 LINE_COLOR = (0, 0, 255)
 PREY_COLOR = (0, 255, 0)
@@ -43,6 +45,8 @@ for line in inputFile:
 
 clock = pygame.time.Clock()
 
+quit = False
+
 for turn in turns:
 
     # Limits the number of loop iterations per second.
@@ -61,10 +65,18 @@ for turn in turns:
         col = 0
         for char in line:
             if char == '1':
-                pygame.draw.circle(screen, PREY_COLOR, [int((row + 0.5) * CELLLENGTH), int((col + 0.5) * CELLLENGTH)], int(CELLLENGTH / 2))
+                pygame.draw.circle(screen, PREDATOR_COLOR, [int((col + 0.5) * CELLLENGTH), int((row + 0.5) * CELLLENGTH)], int(CELLLENGTH / 2))
             elif char == '2':
-                pygame.draw.circle(screen, PREDATOR_COLOR, [int((row + 0.5) * CELLLENGTH), int((col + 0.5) * CELLLENGTH)], int(CELLLENGTH / 2))
+                pygame.draw.circle(screen, PREY_COLOR, [int((col + 0.5) * CELLLENGTH), int((row + 0.5) * CELLLENGTH)], int(CELLLENGTH / 2))
             col += 1
         row += 1    
+            
+    # Allow for quitting
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            quit = True
+    if quit:
+        break 
+
             
     pygame.display.flip()

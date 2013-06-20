@@ -50,7 +50,7 @@ public class Piece
 	{
 		//Move represents the direction to move in
 		//0: North  1: East  2: South  3: West
-		int move = behaviour.getMove(pos, env.predator, env.prey);
+		int move = behaviour.getMove(pos, env.predators, env.prey);
 		
 		switch(move){
 		case 0: pos.y--; break;
