@@ -99,7 +99,7 @@ public class Environment {
 		out.write("");
 		out.close();
 		
-		StochasticRunawayBehaviour runAway = new StochasticRunawayBehaviour(boardSize);
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize);
 		
 		for(int i = 0 ; i < numPred; i ++)
 		{
