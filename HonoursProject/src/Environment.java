@@ -114,7 +114,7 @@ public class Environment
 
 	public void run(int pred, int pry)
 	{
-		StochasticRunAway runAway = new StochasticRunAway();
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize);
 		
 		for(int i = 0 ; i < pred; i ++)
 		{
