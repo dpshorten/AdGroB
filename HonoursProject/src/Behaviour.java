@@ -36,6 +36,8 @@ public abstract class Behaviour {
 	Point getSmallestOffset(Point p1, Point p2){
 		int x_offset = 0;
 		if(p1.x != p2.x){
+			//Inside offset is the offset without wrapping around
+			//Outside offset is the offset with wrapping around
 			int x_inside = p2.x - p1.x;
 			int x_outside = (x_inside > 0 ? x_inside - boardSize : x_inside + boardSize);
 			x_offset = (Math.abs(x_inside) <= Math.abs(x_outside) ? x_inside : x_outside);
