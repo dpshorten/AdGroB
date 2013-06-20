@@ -126,6 +126,15 @@ public class Environment {
 
 	public void run(int numPred, int numPrey)
 	{
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(new FileWriter(log, false));
+		} catch (Exception e) {
+			System.out.println("Error : " + e);
+		}
+		out.write("");
+		out.close();
+		
 		StochasticRunawayBehaviour runAway = new StochasticRunawayBehaviour(boardSize);
 		
 		for(int i = 0 ; i < numPred; i ++)
