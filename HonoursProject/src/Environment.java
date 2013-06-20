@@ -6,6 +6,8 @@ public class Environment {
 	int boardSize;
 	// 2D grid to represent the board
 	int[][] board;
+	
+	private final int MAXMOVES = 100;
 
 	boolean Gameover = false;
 
@@ -25,44 +27,6 @@ public class Environment {
 	public Environment(int size) {
 		boardSize = size;
 		board = new int[boardSize][boardSize];
-	}
-
-	public void handleMovement(int movesPerTurn) throws Exception {
-		// ******************************** Movement Handling
-		// ******************************************************
-		for (int i = 0; i < movesPerTurn; i++) {
-			Piece poppedPiece = pieces.remove(0);
-			clearBoard(poppedPiece); // removes current piece from the board until
-							// position is updated.
-			poppedPiece.makeMove(); // Gets a position update for a piece.
-			pieces.add(poppedPiece);
-			// We have to update the position of all pieces to cover the case 
-			// where a piece moves off of a piece it was covering
-			for (Piece piece : pieces) {
-				updateBoard(piece); 
-			}
-			drawWorld();
-			// Add caught prey to a list of to-be-removed pieces.
-			Vector<Piece> removals = new Vector<Piece>();
-			for (Piece pred : predators) {
-				for (Piece aPrey : prey) {
-					if (pred.getPosition().equals(aPrey.getPosition())) {
-						removals.add(aPrey);
-						clearBoard(aPrey);
-						// In case the prey was on top of the predator
-						// the predator must be reprinted.
-						updateBoard(pred);
-					}
-				}
-			}
-			for(Piece piece : removals) {
-				prey.remove(piece);
-				pieces.remove(piece);
-			}
-			if(isGameOver()) {
-				break;
-			}
-		}
 	}
 
 	public void clearBoard(Piece p) {
@@ -124,7 +88,7 @@ public class Environment {
 	}
 
 
-	public void run(int numPred, int numPrey)
+	public SimulationResult run(int numPred, int numPrey)
 	{
 		PrintWriter out = null;
 		try {
@@ -139,7 +103,7 @@ public class Environment {
 		
 		for(int i = 0 ; i < numPred; i ++)
 		{
-			predators.add(new Piece(2,2,false,this,runAway));
+			predators.add(new Piece(2,i,false,this,runAway));
 			pieces.add(predators.elementAt(i));
 		}
 
@@ -152,19 +116,48 @@ public class Environment {
 		}
 		drawWorld();
 
-		int runs = 300;
-
-		while (runs > 0) {
+		int preyCaught = 0;
+		int i = 0;
+		for (i = 0; i < MAXMOVES; i++) {
+			Piece poppedPiece = pieces.remove(0);
+			// Removes current piece from the board until position is updated.			
+			clearBoard(poppedPiece); 
+			// Gets a position update for a piece.
 			try {
-				handleMovement(numPred + numPrey);
+				poppedPiece.makeMove();
 			} catch (Exception e) {
-				System.out.println("An error occured: " + e.getMessage());
-				e.printStackTrace();
+				System.out.println("Error : " + e);
+			}
+			pieces.add(poppedPiece);
+			// We have to update the position of all pieces to cover the case 
+			// where a piece moves off of a piece it was covering
+			for (Piece piece : pieces) {
+				updateBoard(piece); 
+			}
+			drawWorld();
+			// Add caught prey to a list of to-be-removed pieces.
+			Vector<Piece> removals = new Vector<Piece>();
+			for (Piece pred : predators) {
+				for (Piece aPrey : prey) {
+					if (pred.getPosition().equals(aPrey.getPosition())) {
+						preyCaught++;
+						removals.add(aPrey);
+						clearBoard(aPrey);
+						// In case the prey was on top of the predator
+						// the predator must be reprinted.
+						updateBoard(pred);
+						drawWorld();
+					}
+				}
+			}
+			for(Piece piece : removals) {
+				prey.remove(piece);
+				pieces.remove(piece);
 			}
 			if(isGameOver()) {
 				break;
 			}
-			runs--;
 		}
+		return new SimulationResult(i + 1, preyCaught);
 	}
 }

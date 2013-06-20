@@ -5,7 +5,7 @@ public class Main
 
 		Environment env = new Environment(3);
 		
-		env.run(2, 2);
-		
+		SimulationResult result = env.run(2, 2);
+		System.out.println(result);
 	}
 }
