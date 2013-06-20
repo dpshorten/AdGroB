@@ -41,4 +41,24 @@ public class Point {
 	public String toString() {
 		return x + "  " + y;
 	}
+	
+	@Override
+	public boolean equals(Object arg0) {
+		if(arg0==null)
+			return false;
+		else if(!(arg0 instanceof Point))
+			return false;
+		else{
+			Point other = (Point) arg0;
+			if(other.x == x && other.y == y)
+				return true;
+			else
+				return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return x*x+y*y;
+	}
 }
