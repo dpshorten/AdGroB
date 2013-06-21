@@ -8,7 +8,7 @@ public class Environment {
 	int[][] board;
 	
 	private final int MAXMOVES = 100;
-
+	
 	boolean Gameover = false;
 
 	Vector<Piece> predators = new Vector<Piece>();
@@ -20,7 +20,7 @@ public class Environment {
 	PrintWriter out;
 
 	public Environment() {
-		boardSize = 2;
+		boardSize = 100;
 		board = new int[boardSize][boardSize];
 	}
 
@@ -51,14 +51,7 @@ public class Environment {
 
 		for (int j = 0; j < boardSize; j++) {
 			for (int k = 0; k < boardSize; k++) {
-				if (board[j][k] == 1)
-					out.print("1");
-
-				else if (board[j][k] == 2)
-					out.print("2");
-
-				else
-					out.print("0");
+				out.print(board[j][k]);
 			}
 			out.println();
 
@@ -90,7 +83,7 @@ public class Environment {
 
 	public SimulationResult run(int numPred, int numPrey)
 	{
-		PrintWriter out = null;
+		// Clear the log file.
 		try {
 			out = new PrintWriter(new FileWriter(log, false));
 		} catch (Exception e) {
@@ -106,11 +99,11 @@ public class Environment {
 			predators.add(new Piece(2,i,false,this,runAway));
 			pieces.add(predators.elementAt(i));
 		}
-
 		for (int i = 0; i < numPrey; i++) {
 			prey.add(new Piece(0, i, true, this, runAway));
 			pieces.add(prey.elementAt(i));
 		}
+		// Draw the first turn.
 		for(Piece piece : pieces) {
 			updateBoard(piece);
 		}
