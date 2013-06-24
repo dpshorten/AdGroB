@@ -7,6 +7,7 @@ public abstract class Behaviour {
 		this.boardSize = boardSize;
 	}
 	
+	//0: North  1: East  2: South  3: West
 	public abstract int getMove(Point myPos, Vector<Piece> predator, Vector<Piece> prey);
 	
 	//Returns the distance between two points on a toroidal board
@@ -31,8 +32,8 @@ public abstract class Behaviour {
 		return Math.sqrt( x_dist*x_dist + y_dist*y_dist );
 	}
 	
-	//Returns the smallest point p_r such that p1 + p_r = p2
-	//Returned points can have negative values
+	//Returns a point representing the shortest x and y distances between two points
+	//The returned point can have negative values
 	Point getSmallestOffset(Point p1, Point p2){
 		int x_offset = 0;
 		if(p1.x != p2.x){
