@@ -27,14 +27,14 @@ public class StochasticRunAwayBehaviour extends Behaviour {
 		
 		//Find closest other piece
 		for(Piece p : allOtherPieces){
-			double dist = getDistance(myPos, p.pos);
+			double dist = Point.getDistance(myPos, p.pos, boardSize);
 			if(minDist==-1 || dist < minDist){
 				minDist = dist;
 				closestOther = p.pos;
 			}
 		}
 		
-		Point offset = getSmallestOffset(myPos, closestOther);
+		Point offset = Point.getSmallestOffset(myPos, closestOther, boardSize);
 		
 		if(offset.x == 0){
 			double rand = Math.random();
