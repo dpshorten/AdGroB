@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Vector;
 
 public class Genotype 
@@ -10,11 +11,6 @@ public class Genotype
 		outputWeights = new Vector<Double>();
 	}
 	
-	public static Genotype makeRandomGenotype() {
-		//stub
-		return new Genotype();
-	}
-	
 	public void mutate() {
 		//stub
 	}
@@ -22,5 +18,13 @@ public class Genotype
 	public static Genotype crossover(Genotype geno1, Genotype geno2) {
 		//stub
 		return new Genotype();
+	}
+	
+	public Vector<Double> getInputWeights() {
+		return (Vector<Double>) inputWeights.clone();
+	}
+	
+	public Vector<Double> getOutputWeights() {
+		return (Vector<Double>) outputWeights.clone();
 	}
 }
