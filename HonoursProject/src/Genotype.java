@@ -21,14 +21,14 @@ public class Genotype
 	
 	// Makes a random Genotype with weights between -0.5 and 0.5.
 	public Genotype() {
-		inputWeights = new Vector<Double>(2);
-		outputWeights = new Vector<Double>(5);
+		inputWeights = new Vector<Double>();
+		outputWeights = new Vector<Double>();
 		Random random = new Random();
-		for(Double weight : inputWeights) {
-			weight = new Double(random.nextDouble() - 0.5);
+		for(int i = 0; i < 2; i++) {
+			inputWeights.add(new Double(random.nextDouble() - 0.5));
 		}
-		for(Double weight : outputWeights) {
-			weight = new Double(random.nextDouble() - 0.5);
+		for(int i = 0; i < 5; i++) {
+			outputWeights.add(new Double(random.nextDouble() - 0.5));
 		}
 		activation = new Double(random.nextDouble() - 0.5);
 	}
