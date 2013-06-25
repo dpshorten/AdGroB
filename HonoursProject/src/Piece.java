@@ -57,7 +57,8 @@ public class Piece
 		case 1: pos.x++; break;
 		case 2: pos.y++; break;
 		case 3: pos.x--; break;
-		default: throw new Exception("Behaviour returned an invalid direction (<0 or >3).");
+		case 4: break;
+		default: throw new Exception("Behaviour returned an invalid direction (<0 or >4).");
 		}
 		
 		ensurePositionIsInBounds();
