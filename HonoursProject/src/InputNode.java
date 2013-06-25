@@ -2,14 +2,21 @@ import java.util.Vector;
 
 
 public class InputNode extends Node {
-	public InputNode(int number, Vector<Node> children, Vector<Double> inputs) {
-		super(number, children, inputs);
+	private double exteriorInput;
+	
+	public InputNode(int number, Vector<Node> children) {
+		super(number, children);
+		exteriorInput = 0;
 	}
 	
 	public double calculateAndPassOnActivation() {
 		for(Node child : children) {
-			child.receiveInput(inputs.get(0).doubleValue(), number);
+			child.receiveInput(exteriorInput, number);
 		}
 		return inputs.get(0).doubleValue();
+	}
+	
+	public void setExteriorInput(double input) {
+		exteriorInput = input;
 	}
 }

@@ -2,8 +2,8 @@ import java.util.Vector;
 
 
 public class OutputNode extends Node {
-	public OutputNode(int number, Vector<Node> children, Vector<Double> inputs) {
-		super(number, children, inputs);
+	public OutputNode(int number, Vector<Node> children) {
+		super(number, children);
 	}
 	
 	public double calculateAndPassOnActivation() {

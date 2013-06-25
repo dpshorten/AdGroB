@@ -7,10 +7,13 @@ public abstract class Node {
 	protected Vector<Node> children;
 	protected Vector<Double> inputs;
 	
-	public Node(int number, Vector<Node> children, Vector<Double> inputs) {
+	public Node(int number, Vector<Node> children) {
 		this.number = number;
 		this.children = children;
-		this.inputs = new Vector<Double>(10);
+		this.inputs = new Vector<Double>();
+		for(int i = 0; i < 10; i++) {
+			inputs.add(new Double(0));
+		}
 	}
 	
 	protected double sigmoid(double t) {

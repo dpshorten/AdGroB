@@ -5,14 +5,14 @@ public class HiddenNode extends Node{
 	private Vector<Double> inputWeights;
 	private Vector<Double> outputWeights;
 	
-	public HiddenNode(int number, Vector<Node> children, Vector<Double> inputs) {
-		super(number, children, inputs);
+	public HiddenNode(int number, Vector<Node> children) {
+		super(number, children);
 		inputWeights = new Vector<Double>();
 		outputWeights = new Vector<Double>();
 	}
 	
-	public HiddenNode(int number, Vector<Node> children, Vector<Double> inputs, Genotype genotype) {
-		super(number, children, inputs);
+	public HiddenNode(int number, Vector<Node> children, Genotype genotype) {
+		super(number, children);
 		inputWeights = genotype.getInputWeights();
 		outputWeights = genotype.getOutputWeights();
 	}

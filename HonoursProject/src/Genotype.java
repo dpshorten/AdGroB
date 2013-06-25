@@ -17,7 +17,6 @@ public class Genotype
 	
 	private Vector<Double> inputWeights;
 	private Vector<Double> outputWeights;
-	private Double activationThreshold;
 	
 	// Makes a random Genotype with weights between -0.5 and 0.5.
 	public Genotype() {
@@ -30,7 +29,6 @@ public class Genotype
 		for(int i = 0; i < 5; i++) {
 			outputWeights.add(new Double(random.nextDouble() - 0.5));
 		}
-		activationThreshold = new Double(random.nextDouble() - 0.5);
 	}
 	
 	public void mutate() {
@@ -56,9 +54,5 @@ public class Genotype
 			copy.add(new Double(element));
 		}
 		return copy;
-	}
-	
-	public Double getActivation() {
-		return new Double(activationThreshold);
 	}
 }
