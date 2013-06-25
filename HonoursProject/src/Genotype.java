@@ -4,14 +4,14 @@ import java.util.Vector;
 public class Genotype 
 {
 	/*
-	 * Input weights are:
+	 * Inputs are:
 	 * 0 - x prey offset
 	 * 1 - y prey offset
-	 * Output weights are:
+	 * Outputs are:
 	 * 0 - North
-	 * 1 - West
-	 * 2 - East
-	 * 3 - South
+	 * 1 - East
+	 * 2 - South
+	 * 3 - West
 	 * 4 - Stay
 	 */
 	

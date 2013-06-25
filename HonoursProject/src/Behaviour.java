@@ -7,6 +7,6 @@ public abstract class Behaviour {
 		this.boardSize = boardSize;
 	}
 	
-	//0: North  1: East  2: South  3: West
+	//0: North  1: East  2: South  3: West 4: Stay
 	public abstract int getMove(Point myPos, Vector<Piece> predator, Vector<Piece> prey);
 }
