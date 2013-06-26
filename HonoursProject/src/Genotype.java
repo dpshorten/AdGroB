@@ -32,6 +32,13 @@ public class Genotype
 		}
 	}
 	
+	// Int flag makes the the new genotype not have its weights set.
+	// Saves a little computation in crossover.
+	public Genotype(int a) {
+		inputWeights = new Vector<Double>();
+		outputWeights = new Vector<Double>();
+	}
+	
 	public void mutate() {
 		for(int i = 0; i < WEIGHT_MUTATIONS_PER_GENOTYPE_MUTATION; i++) {
 			Random random = new Random();
@@ -47,9 +54,30 @@ public class Genotype
 		}
 	}
 	
-	public static Genotype crossover(Genotype geno1, Genotype geno2) {
-		//stub
-		return new Genotype();
+	public static Genotype crossover(Genotype father, Genotype mother) {
+		Random random = new Random();
+		Genotype child = new Genotype(1);
+		Vector<Double> childInputWeights = new Vector<Double>();
+		Vector<Double> childOutputWeights = new Vector<Double>();
+		for(int i = 0; i < mother.getInputWeights().size(); i++) {
+			boolean useMother = random.nextBoolean();
+			if(useMother) {
+				childInputWeights.add(mother.getInputWeights().get(i));
+			} else {
+				childInputWeights.add(father.getInputWeights().get(i));
+			}
+		}
+		for(int i = 0; i < mother.getOutputWeights().size(); i++) {
+			boolean useMother = random.nextBoolean();
+			if(useMother) {
+				childOutputWeights.add(mother.getOutputWeights().get(i));
+			} else {
+				childOutputWeights.add(father.getOutputWeights().get(i));
+			}
+		}
+		child.setInputWeights(childInputWeights);
+		child.setOutputWeights(childOutputWeights);
+		return child;
 	}
 	
 	public Vector<Double> getInputWeights() {
@@ -66,5 +94,19 @@ public class Genotype
 			copy.add(new Double(element));
 		}
 		return copy;
+	}
+	
+	public void setInputWeights(Vector<Double> newInputWeights) {
+		inputWeights.removeAllElements();
+		for(Double element : newInputWeights) {
+			inputWeights.add(new Double(element));
+		}
+	}
+	
+	public void setOutputWeights(Vector<Double> newOutputWeights) {
+		outputWeights.removeAllElements();
+		for(Double element : newOutputWeights) {
+			outputWeights.add(new Double(element));
+		}
 	}
 }
