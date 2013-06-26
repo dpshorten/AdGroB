@@ -10,7 +10,7 @@ public class ESPEvolution {
 	static final int generations = 100;
 	static final int boardSize = 5;
 	
-	static Vector<ESPPopulation> agentPopulations;
+	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 	
 	public static void main(String[] args){
 		
@@ -21,12 +21,17 @@ public class ESPEvolution {
 		Random random = new Random();
 		Environment env = new Environment(boardSize);
 		
+		Vector<Piece> preyPieces = new Vector<Piece>();
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize);
+		preyPieces.add(new Piece(random.nextInt(boardSize),random.nextInt(boardSize),true,env,runAway));
+		
 		for(int gen=0; gen<generations; gen++){
 			
-			//For each generation, a number of trials are run
+			//For each generation, a number of trials are run to get fitness values for the genotypes
 			for(int trial=0; trial<trialsPerGeneration; trial++){
 				
 				Vector<Piece> predatorPieces = new Vector<Piece>();
+				Vector<Genotype> usedGenotypes = new Vector<Genotype>();
 				
 				//Build an ANN for each predator using a randomly choosen node from each subpopulation
 				for(int pred=0; pred<numPredators; pred++){
@@ -40,10 +45,26 @@ public class ESPEvolution {
 					ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
 					ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
 					predatorPieces.add(new Piece(0, 0, false, env, annBehaviour));
+					usedGenotypes.addAll(hiddenNodes);
 				}
 				
 				//Run a set of evaluations on the predators to get fitness values for the genotypes
-			}
-		}
+				double avgEvalFitness = 0;
+				for(int eval=0; eval<evaluationsPerTrial; eval++){
+					env.setPieces(predatorPieces, preyPieces);
+					SimulationResult result = env.run();
+					//TODO: Calculate fitness properly
+					avgEvalFitness += random.nextDouble();
+				}
+				avgEvalFitness = avgEvalFitness / evaluationsPerTrial;
+				
+				for(Genotype genotype : usedGenotypes)
+					genotype.updateFitness(avgEvalFitness);
+				
+			}//trials
+			
+			//Create offspring by applying crossover and mutation to the genotype populations
+			
+		}//generations
 	}
 }

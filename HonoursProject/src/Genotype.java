@@ -18,6 +18,8 @@ public class Genotype
 	private final double MUTATION_AMOUNT_STDEV = 0.1;
 	private Vector<Double> inputWeights;
 	private Vector<Double> outputWeights;
+	private double fitness = 0;
+	private int fitnessSourceCount = 0;
 	
 	// Makes a random Genotype with weights between -0.5 and 0.5.
 	public Genotype() {
@@ -107,6 +109,18 @@ public class Genotype
 		outputWeights.removeAllElements();
 		for(Double element : newOutputWeights) {
 			outputWeights.add(new Double(element));
+		}
+	}
+	
+	//Include a new fitness value in the average fitness of the genotype
+	public void updateFitness(double newFitness){
+		if(fitnessSourceCount == 0){
+			fitness = newFitness;
+			fitnessSourceCount++;
+		}
+		else{
+			fitness = (fitness * fitnessSourceCount + newFitness) / (double) (fitnessSourceCount + 1);
+			fitnessSourceCount++;
 		}
 	}
 }

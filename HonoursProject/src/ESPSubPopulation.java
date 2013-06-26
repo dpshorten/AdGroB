@@ -14,4 +14,8 @@ public class ESPSubPopulation {
 	public Genotype getGenotype(int index){
 		return nodeGenotypes.elementAt(index);
 	}
+	
+	public Vector<Genotype> getAllGenotypes(){
+		return nodeGenotypes;
+	}
 }

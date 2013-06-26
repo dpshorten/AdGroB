@@ -40,7 +40,7 @@ public class Piece
 		return behaviour;
 	}
 
-	void setPosition(int newX, int newY) 
+	public void setPosition(int newX, int newY) 
 	{
 		pos.x = newX;
 		pos.y = newY;

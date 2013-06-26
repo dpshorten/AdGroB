@@ -80,8 +80,17 @@ public class Environment {
 		return !(prey.size() > 0);
 	}
 
+	public void setPieces(Vector<Piece> predatorPieces, Vector<Piece> preyPieces){
+		pieces.clear();
+		predators.clear();
+		prey.clear();
+		predators.addAll(predatorPieces);
+		prey.addAll(preyPieces);
+		pieces.addAll(predatorPieces);
+		pieces.addAll(preyPieces);
+	}
 
-	public SimulationResult run(int numPred, int numPrey)
+	public SimulationResult run()
 	{
 		// Clear the log file.
 		try {
@@ -92,36 +101,6 @@ public class Environment {
 		out.write("");
 		out.close();
 		
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize);
-		Vector<Genotype> genotypes1 = new Vector<Genotype>();
-		for(int i = 0; i < 10; i++) {
-			genotypes1.add(new Genotype());
-		}
-		Vector<Genotype> genotypes2 = new Vector<Genotype>();
-		for(int i = 0; i < 10; i++) {
-			genotypes2.add(new Genotype());
-		}
-		Vector<Genotype> genotypes3 = new Vector<Genotype>();
-		for(int i = 0; i < 10; i++) {
-			genotypes3.add(new Genotype());
-		}
-		ESPArtificialNeuralNetwork ESPTestNetwork1 = new ESPArtificialNeuralNetwork(genotypes1);  
-		ESPArtificialNeuralNetwork ESPTestNetwork2 = new ESPArtificialNeuralNetwork(genotypes2);  
-		ESPArtificialNeuralNetwork ESPTestNetwork3 = new ESPArtificialNeuralNetwork(genotypes3);  
-		ESPArtificialNeuralNetworkBehaviour ESPTestBehaviour1 = new ESPArtificialNeuralNetworkBehaviour(boardSize, ESPTestNetwork1);  
-		ESPArtificialNeuralNetworkBehaviour ESPTestBehaviour2 = new ESPArtificialNeuralNetworkBehaviour(boardSize, ESPTestNetwork2);  
-		ESPArtificialNeuralNetworkBehaviour ESPTestBehaviour3 = new ESPArtificialNeuralNetworkBehaviour(boardSize, ESPTestNetwork3);  
-		
-		predators.add(new Piece(2,3,false,this,ESPTestBehaviour1));
-		predators.add(new Piece(2,7,false,this,ESPTestBehaviour2));
-		predators.add(new Piece(2,9,false,this,ESPTestBehaviour3));
-		pieces.add(predators.elementAt(0));
-		pieces.add(predators.elementAt(1));
-		pieces.add(predators.elementAt(2));
-		for (int i = 0; i < numPrey; i++) {
-			prey.add(new Piece(0, i, true, this, runAway));
-			pieces.add(prey.elementAt(i));
-		}
 		// Draw the first turn.
 		for(Piece piece : pieces) {
 			updateBoard(piece);
