@@ -41,6 +41,7 @@ public class Main
 		env.setPieces(predatorPieces, preyPieces);
 		
 		SimulationResult result = env.run();
+		System.out.println("Board size: " + boardSize);
 		System.out.println(result);
 	}
 }

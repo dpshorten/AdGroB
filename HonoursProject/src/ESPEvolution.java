@@ -92,9 +92,10 @@ public class ESPEvolution {
 						replacementIndex--;
 					}
 				}
-			}
+			}//replacement
 			
 			System.out.println("Generation: "+gen+" done.");
 		}//generations
-	}
+		
+	}//main
 }

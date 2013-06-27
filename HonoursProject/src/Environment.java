@@ -149,6 +149,19 @@ public class Environment {
 				break;
 			}
 		}
-		return new SimulationResult(i + 1, preyCaught);
+		
+		//Get average distance from prey
+		Vector<Double> distancesFromPrey = new Vector<Double>();
+		for(Piece predator : predators){
+			double minDist = Double.MAX_VALUE;
+			for(Piece prey : this.prey){
+				double dist = Point.getDistance(predator.getPosition(), prey.getPosition(), boardSize);
+				if(dist < minDist)
+					minDist = dist;
+			}
+			distancesFromPrey.add(minDist);
+		}
+		
+		return new SimulationResult(i + 1, preyCaught, distancesFromPrey);
 	}
 }
