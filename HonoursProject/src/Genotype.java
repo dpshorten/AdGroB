@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Vector;
 
-public class Genotype 
+public class Genotype implements Comparable<Genotype>
 {
 	/*
 	 * Inputs are:
@@ -122,5 +122,10 @@ public class Genotype
 			fitness = (fitness * fitnessSourceCount + newFitness) / (double) (fitnessSourceCount + 1);
 			fitnessSourceCount++;
 		}
+	}
+	
+	@Override
+	public int compareTo(Genotype other) {
+		return (int) (fitness-other.fitness);
 	}
 }
