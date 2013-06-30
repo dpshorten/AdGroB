@@ -6,8 +6,8 @@ public class ESPEvolution {
 	static final int numHiddenNodes = 10;
 	static final int numPredators = 3;
 	static final int subPopulationSize = 100;
-	static final int trialsPerGeneration = 1000;
-	static final int evaluationsPerTrial = 6;
+	static final int trialsPerGeneration = 100; //1000
+	static final int evaluationsPerTrial = 1; //6
 	static final int generations = 100;
 	static final int boardSize = 5;
 	static final double mutationProbability = 0.4;
@@ -30,11 +30,13 @@ public class ESPEvolution {
 		for(int gen=0; gen<generations; gen++){
 			
 			System.out.println("Generation: "+gen+" beginning trials");
+			int captureCount = 0;
 			//For each generation, a number of trials are run to get fitness values for the genotypes
 			for(int trial=0; trial<trialsPerGeneration; trial++){
 				
 				Vector<Piece> predatorPieces = new Vector<Piece>();
-				Vector<Genotype> usedGenotypes = new Vector<Genotype>();
+				//usedGenotypes will contain a vector of active genotypes for each predator
+				Vector<Vector<Genotype>> usedGenotypes = new Vector<Vector<Genotype>>();
 				
 				//Build an ANN for each predator using a randomly choosen node from each subpopulation
 				for(int pred=0; pred<numPredators; pred++){
@@ -48,21 +50,26 @@ public class ESPEvolution {
 					ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
 					ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
 					predatorPieces.add(new Piece(0, 0, false, env, annBehaviour));
-					usedGenotypes.addAll(hiddenNodes);
+					usedGenotypes.add(hiddenNodes);
 				}
 				
 				//Run a set of evaluations on the predators to get fitness values for the genotypes
-				double avgEvalFitness = 0;
+				double[] avgEvalFitnesses = new double[numPredators];
 				for(int eval=0; eval<evaluationsPerTrial; eval++){
 					env.setPieces(predatorPieces, preyPieces);
 					SimulationResult result = env.run();
-					//TODO: Calculate fitness properly
-					avgEvalFitness += random.nextDouble();
+					captureCount += result.preyCaught;
+					for(int i = 0; i<numPredators; i++){
+						double fitness = boardSize - result.distancesFromPrey.elementAt(i);
+						avgEvalFitnesses[i] += fitness;
+					}
 				}
-				avgEvalFitness = avgEvalFitness / evaluationsPerTrial;
-				
-				for(Genotype genotype : usedGenotypes)
-					genotype.updateFitness(avgEvalFitness);
+				//Update the genotypes fitnesses with the average fitness over the evaluations
+				for(int i = 0; i<numPredators; i++){
+					avgEvalFitnesses[i] = avgEvalFitnesses[i] / evaluationsPerTrial;
+					for(Genotype genotype : usedGenotypes.elementAt(i))
+						genotype.updateFitness(avgEvalFitnesses[i]);
+				}
 				
 			}//trials
 			
@@ -94,7 +101,7 @@ public class ESPEvolution {
 				}
 			}//replacement
 			
-			System.out.println("Generation: "+gen+" done.");
+			System.out.println("Generation: "+gen+" done: "+captureCount + " captures.");
 		}//generations
 		
 	}//main

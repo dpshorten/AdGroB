@@ -150,7 +150,7 @@ public class Environment {
 			}
 		}
 		
-		//Get average distance from prey
+		//Make a vector containing the predators distances from the prey
 		Vector<Double> distancesFromPrey = new Vector<Double>();
 		for(Piece predator : predators){
 			double minDist = Double.MAX_VALUE;

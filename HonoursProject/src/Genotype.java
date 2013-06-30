@@ -126,6 +126,15 @@ public class Genotype implements Comparable<Genotype>
 	
 	@Override
 	public int compareTo(Genotype other) {
-		return (int) (fitness-other.fitness);
+		if(fitness > other.fitness)
+			return 1;
+		else if (fitness < other.fitness)
+			return -1;
+		else if (fitness == other.fitness)
+			return 0;
+		else{
+			System.out.println("Something went wrong with the genotype comparisons! (Probably NaN related)");
+			return 0;
+		}
 	}
 }
