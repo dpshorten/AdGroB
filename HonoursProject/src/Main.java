@@ -32,12 +32,17 @@ public class Main
 		ESPArtificialNeuralNetworkBehaviour ESPTestBehaviour2 = new ESPArtificialNeuralNetworkBehaviour(boardSize, ESPTestNetwork2);  
 		ESPArtificialNeuralNetworkBehaviour ESPTestBehaviour3 = new ESPArtificialNeuralNetworkBehaviour(boardSize, ESPTestNetwork3);  
 		
-		predatorPieces.add(new Piece(2,3,false,env,ESPTestBehaviour1));
-		predatorPieces.add(new Piece(2,7,false,env,ESPTestBehaviour2));
-		predatorPieces.add(new Piece(2,9,false,env,ESPTestBehaviour3));
-		for (int i = 0; i < numPrey; i++) {
-			preyPieces.add(new Piece(0, i, true, env, runAway));
-		}
+		RuleBasedBehaviour RBB1 = new RuleBasedBehaviour(boardSize);
+		
+		predatorPieces.add(new Piece(2,3,false,env,RBB1));
+		predatorPieces.add(new Piece(2,7,false,env,RBB1));
+		predatorPieces.add(new Piece(2,9,false,env,RBB1));
+		
+		preyPieces.add(new Piece(0, 1, true, env, runAway));
+		
+		//for (int i = 0; i < numPrey; i++) {
+		//	preyPieces.add(new Piece(0, i, true, env, runAway));
+		//}
 		env.setPieces(predatorPieces, preyPieces);
 		
 		SimulationResult result = env.run();
