@@ -14,4 +14,12 @@ public class ESPPopulation {
 	public ESPSubPopulation getSubPopulationForNode(int index){
 		return subPopulations.elementAt(index);
 	}
+	
+	public Vector<Genotype> getFittestGenotypeInEachSubPopulation() {
+		Vector<Genotype> fittestGenotypes = new Vector<Genotype>();
+		for(ESPSubPopulation subPopulation : subPopulations) {
+			fittestGenotypes.add(subPopulation.getFittestGenotype());
+		}
+		return fittestGenotypes;
+	}
 }

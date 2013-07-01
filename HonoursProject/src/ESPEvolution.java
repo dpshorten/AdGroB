@@ -1,6 +1,7 @@
 import java.util.Collections;
 import java.util.Vector;
 import java.util.Random;
+import org.python.util.PythonInterpreter;
 
 public class ESPEvolution {
 	static final int numHiddenNodes = 10;
@@ -103,6 +104,19 @@ public class ESPEvolution {
 			
 			System.out.println("Generation: "+gen+" done: "+captureCount + " captures, ");
 		}//generations
+				
+		// Create the fittest predators.
+		Vector<Piece>fittestPredatorPieces = new Vector<Piece>();
+		for(ESPPopulation agentPopulation : agentPopulations){
+			Vector<Genotype> hiddenNodes = agentPopulation.getFittestGenotypeInEachSubPopulation();
+			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
+			ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
+			fittestPredatorPieces.add(new Piece(0, 0, false, env, annBehaviour));
+		}
+		// Run the simulation with them.
+		env.setPieces(fittestPredatorPieces, preyPieces);
+		env.run();
+		// Run the visualisation
 		
 	}//main
 }

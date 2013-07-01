@@ -18,4 +18,14 @@ public class ESPSubPopulation {
 	public Vector<Genotype> getAllGenotypes(){
 		return nodeGenotypes;
 	}
+	
+	public Genotype getFittestGenotype() {
+		Genotype fittest = nodeGenotypes.elementAt(0);
+		for (Genotype genotype : nodeGenotypes) {
+			if(fittest.compareTo(genotype) < 1) {
+				fittest = genotype;
+			}
+		}
+		return fittest;
+	}
 }
