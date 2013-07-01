@@ -31,6 +31,10 @@ public class Environment {
 		board = new int[boardSize][boardSize];
 	}
 
+	private void clearBoard() {
+		board = new int[boardSize][boardSize];
+	}
+	
 	public void clearBoard(Piece p) {
 		board[p.pos.x][p.pos.y] = 0;
 	}
@@ -94,6 +98,7 @@ public class Environment {
 
 	public SimulationResult run()
 	{
+		clearBoard();
 		// Clear the log file.
 		try {
 			out = new PrintWriter(new FileWriter(log, false));

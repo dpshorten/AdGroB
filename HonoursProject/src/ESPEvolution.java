@@ -26,7 +26,9 @@ public class ESPEvolution {
 		
 		Vector<Piece> preyPieces = new Vector<Piece>();
 		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize);
-		preyPieces.add(new Piece(random.nextInt(boardSize),random.nextInt(boardSize),true,env,runAway));
+		int preyX = random.nextInt(boardSize);
+		int preyY = random.nextInt(boardSize);
+		preyPieces.add(new Piece(preyX,preyY,true,env,runAway));
 		
 		for(int gen=0; gen<generations; gen++){
 			
@@ -50,13 +52,17 @@ public class ESPEvolution {
 					
 					ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
 					ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
-					predatorPieces.add(new Piece(0, 0, false, env, annBehaviour));
+					predatorPieces.add(new Piece(10, 10, false, env, annBehaviour));
 					usedGenotypes.add(hiddenNodes);
 				}
 				
 				//Run a set of evaluations on the predators to get fitness values for the genotypes
 				double[] avgEvalFitnesses = new double[numPredators];
 				for(int eval=0; eval<evaluationsPerTrial; eval++){
+					// Reset the prey position so that it is not the same as the previous evaluation.
+					for (Piece prey : preyPieces) {
+						prey.setPosition(preyX, preyY);
+					}
 					env.setPieces(predatorPieces, preyPieces);
 					SimulationResult result = env.run();
 					captureCount += result.preyCaught;
@@ -111,11 +117,12 @@ public class ESPEvolution {
 			Vector<Genotype> hiddenNodes = agentPopulation.getFittestGenotypeInEachSubPopulation();
 			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
 			ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
-			fittestPredatorPieces.add(new Piece(0, 0, false, env, annBehaviour));
+			fittestPredatorPieces.add(new Piece(5, 5, false, env, annBehaviour));
 		}
 		// Run the simulation with them.
+		System.out.println(fittestPredatorPieces.size());
 		env.setPieces(fittestPredatorPieces, preyPieces);
-		env.run();
+		//env.run();
 		// Run the visualisation
 		
 	}//main
