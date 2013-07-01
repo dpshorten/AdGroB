@@ -9,7 +9,7 @@ public class ESPEvolution {
 	static final int trialsPerGeneration = 100; //1000
 	static final int evaluationsPerTrial = 1; //6
 	static final int generations = 100;
-	static final int boardSize = 5;
+	static final int boardSize = 20;
 	static final double mutationProbability = 0.4;
 	
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
@@ -101,7 +101,7 @@ public class ESPEvolution {
 				}
 			}//replacement
 			
-			System.out.println("Generation: "+gen+" done: "+captureCount + " captures.");
+			System.out.println("Generation: "+gen+" done: "+captureCount + " captures, ");
 		}//generations
 		
 	}//main

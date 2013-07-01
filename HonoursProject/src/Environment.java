@@ -7,7 +7,7 @@ public class Environment {
 	// 2D grid to represent the board
 	int[][] board;
 	
-	private final int MAXMOVES = 100;
+	private int maxMoves;
 	
 	boolean Gameover = false;
 
@@ -21,11 +21,13 @@ public class Environment {
 
 	public Environment() {
 		boardSize = 100;
+		maxMoves = 6 * boardSize;
 		board = new int[boardSize][boardSize];
 	}
 
 	public Environment(int size) {
 		boardSize = size;
+		maxMoves = 6 * boardSize;
 		board = new int[boardSize][boardSize];
 	}
 
@@ -109,7 +111,7 @@ public class Environment {
 
 		int preyCaught = 0;
 		int i = 0;
-		for (i = 0; i < MAXMOVES; i++) {
+		for (i = 0; i < maxMoves; i++) {
 			Piece poppedPiece = pieces.remove(0);
 			// Removes current piece from the board until position is updated.			
 			clearBoard(poppedPiece); 
@@ -128,9 +130,14 @@ public class Environment {
 			drawWorld();
 			// Add caught prey to a list of to-be-removed pieces.
 			Vector<Piece> removals = new Vector<Piece>();
+			int j = 0;
 			for (Piece pred : predators) {
 				for (Piece aPrey : prey) {
-					if (pred.getPosition().equals(aPrey.getPosition())) {
+					if (pred.getPosition().equals(aPrey.getPosition()) & !removals.contains(aPrey)) {
+						j += 1;
+						if(j > 1) {
+							System.out.println("foo");
+						}
 						preyCaught++;
 						removals.add(aPrey);
 						clearBoard(aPrey);
@@ -161,7 +168,6 @@ public class Environment {
 			}
 			distancesFromPrey.add(minDist);
 		}
-		
 		return new SimulationResult(i + 1, preyCaught, distancesFromPrey);
 	}
 }
