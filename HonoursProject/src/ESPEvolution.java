@@ -25,7 +25,7 @@ public class ESPEvolution {
 		Environment env = new Environment(boardSize);
 		
 		Vector<Piece> preyPieces = new Vector<Piece>();
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize);
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 10000);
 		int preyX = random.nextInt(boardSize);
 		int preyY = random.nextInt(boardSize);
 		preyPieces.add(new Piece(preyX,preyY,true,env,runAway));
@@ -64,7 +64,7 @@ public class ESPEvolution {
 						prey.setPosition(preyX, preyY);
 					}
 					env.setPieces(predatorPieces, preyPieces);
-					SimulationResult result = env.run();
+					SimulationResult result = env.run(false);
 					captureCount += result.preyCaught;
 					for(int i = 0; i<numPredators; i++){
 						double fitness = boardSize - result.distancesFromPrey.elementAt(i);
@@ -122,7 +122,7 @@ public class ESPEvolution {
 		// Run the simulation with them.
 		System.out.println(fittestPredatorPieces.size());
 		env.setPieces(fittestPredatorPieces, preyPieces);
-		//env.run();
+		env.run(true);
 		// Run the visualisation
 		
 	}//main

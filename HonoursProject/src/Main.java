@@ -11,7 +11,7 @@ public class Main
 		
 		Vector<Piece> predatorPieces = new Vector<Piece>();
 		Vector<Piece> preyPieces = new Vector<Piece>();
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize);
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 100);
 		
 		Vector<Genotype> genotypes1 = new Vector<Genotype>();
 		for(int i = 0; i < 10; i++) {
@@ -45,7 +45,7 @@ public class Main
 		//}
 		env.setPieces(predatorPieces, preyPieces);
 		
-		SimulationResult result = env.run();
+		SimulationResult result = env.run(true);
 		System.out.println("Board size: " + boardSize);
 		System.out.println(result.preyCaught);
 	}

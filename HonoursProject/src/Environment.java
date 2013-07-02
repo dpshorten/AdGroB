@@ -96,23 +96,26 @@ public class Environment {
 		pieces.addAll(preyPieces);
 	}
 
-	public SimulationResult run()
+	public SimulationResult run(boolean shouldWriteToFile)
 	{
 		clearBoard();
 		// Clear the log file.
-		try {
-			out = new PrintWriter(new FileWriter(log, false));
-		} catch (Exception e) {
-			System.out.println("Error : " + e);
-		}
-		out.write("");
-		out.close();
-		
+		if (shouldWriteToFile) {
+			try {
+				out = new PrintWriter(new FileWriter(log, false));
+			} catch (Exception e) {
+				System.out.println("Error : " + e);
+			}
+			out.write("");
+			out.close();
+		}		
 		// Draw the first turn.
 		for(Piece piece : pieces) {
 			updateBoard(piece);
 		}
-		drawWorld();
+		if (shouldWriteToFile) {
+			drawWorld();
+		}
 
 		int preyCaught = 0;
 		int i = 0;
@@ -132,7 +135,9 @@ public class Environment {
 			for (Piece piece : pieces) {
 				updateBoard(piece); 
 			}
-			drawWorld();
+			if (shouldWriteToFile) {
+				drawWorld();
+			}
 			// Add caught prey to a list of to-be-removed pieces.
 			Vector<Piece> removals = new Vector<Piece>();
 			int j = 0;
@@ -149,7 +154,9 @@ public class Environment {
 						// In case the prey was on top of the predator
 						// the predator must be reprinted.
 						updateBoard(pred);
-						drawWorld();
+						if (shouldWriteToFile) {
+							drawWorld();
+						}
 					}
 				}
 			}
