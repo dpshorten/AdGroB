@@ -137,4 +137,11 @@ public class Genotype implements Comparable<Genotype>
 			return 0;
 		}
 	}
+	
+	public Genotype clone() {
+		Genotype clone = new Genotype();
+		clone.setInputWeights(this.getInputWeights());
+		clone.setOutputWeights(this.getOutputWeights());
+		return clone;
+	}
 }

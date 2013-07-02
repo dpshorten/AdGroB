@@ -9,8 +9,8 @@ public class ESPEvolution {
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 100; //1000
 	static final int evaluationsPerTrial = 1; //6
-	static final int generations = 100;
-	static final int boardSize = 20;
+	static final int generations = 1000;
+	static final int boardSize = 10;
 	static final double mutationProbability = 0.4;
 	
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
@@ -52,7 +52,7 @@ public class ESPEvolution {
 					
 					ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
 					ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
-					predatorPieces.add(new Piece(10, 10, false, env, annBehaviour));
+					predatorPieces.add(new Piece(5, 5, false, env, annBehaviour));
 					usedGenotypes.add(hiddenNodes);
 				}
 				
@@ -67,8 +67,12 @@ public class ESPEvolution {
 					SimulationResult result = env.run(false);
 					captureCount += result.preyCaught;
 					for(int i = 0; i<numPredators; i++){
-						double fitness = boardSize - result.distancesFromPrey.elementAt(i);
-						avgEvalFitnesses[i] += fitness;
+						if (result.preyCaught == 0) {
+							double fitness = boardSize - result.distancesFromPrey.elementAt(i);
+							avgEvalFitnesses[i] += fitness;
+						} else {
+							avgEvalFitnesses[i] += 1.5 * boardSize;
+						}
 					}
 				}
 				//Update the genotypes fitnesses with the average fitness over the evaluations
@@ -91,6 +95,7 @@ public class ESPEvolution {
 					
 					//Replace the bottom ~50% of genotypes with offspring from the top ~25%
 					//Also mutate offspring with probability = mutationProbability
+					/*
 					int numberOfOffspring = subPopulationSize / 2;
 					int maxParentIndex = subPopulationSize / 4;
 					int replacementIndex = genotypes.size() - 1;
@@ -103,6 +108,18 @@ public class ESPEvolution {
 						}
 						genotypes.remove(replacementIndex);
 						genotypes.add(replacementIndex, child);
+						replacementIndex--;
+					}*/
+					// Cloning for now
+					int endOfElites = 10;
+					int replacementIndex = genotypes.size() - 1;
+					for(int i = 0; i < endOfElites; i++) {
+						Genotype clone = genotypes.get(i).clone();
+						if(random.nextDouble() < mutationProbability){
+							clone.mutate();
+						}
+						genotypes.remove(replacementIndex);
+						genotypes.add(replacementIndex, clone);
 						replacementIndex--;
 					}
 				}
