@@ -1,7 +1,6 @@
 import java.util.Collections;
 import java.util.Vector;
 import java.util.Random;
-import org.python.util.PythonInterpreter;
 
 public class ESPEvolution {
 	static final int numHiddenNodes = 10;
@@ -10,7 +9,7 @@ public class ESPEvolution {
 	static final int trialsPerGeneration = 100; //1000
 	static final int evaluationsPerTrial = 1; //6
 	static final int generations = 1000;
-	static final int boardSize = 10;
+	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
@@ -25,7 +24,7 @@ public class ESPEvolution {
 		Environment env = new Environment(boardSize);
 		
 		Vector<Piece> preyPieces = new Vector<Piece>();
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 10000);
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
 		int preyX = random.nextInt(boardSize);
 		int preyY = random.nextInt(boardSize);
 		preyPieces.add(new Piece(preyX,preyY,true,env,runAway));
@@ -61,7 +60,7 @@ public class ESPEvolution {
 				for(int eval=0; eval<evaluationsPerTrial; eval++){
 					// Reset the prey position so that it is not the same as the previous evaluation.
 					for (Piece prey : preyPieces) {
-						prey.setPosition(preyX, preyY);
+						prey.setPosition(random.nextInt(boardSize), random.nextInt(boardSize));
 					}
 					env.setPieces(predatorPieces, preyPieces);
 					SimulationResult result = env.run(false);
@@ -95,7 +94,7 @@ public class ESPEvolution {
 					
 					//Replace the bottom ~50% of genotypes with offspring from the top ~25%
 					//Also mutate offspring with probability = mutationProbability
-					/*
+					
 					int numberOfOffspring = subPopulationSize / 2;
 					int maxParentIndex = subPopulationSize / 4;
 					int replacementIndex = genotypes.size() - 1;
@@ -109,8 +108,9 @@ public class ESPEvolution {
 						genotypes.remove(replacementIndex);
 						genotypes.add(replacementIndex, child);
 						replacementIndex--;
-					}*/
+					}
 					// Cloning for now
+					/*
 					int endOfElites = 10;
 					int replacementIndex = genotypes.size() - 1;
 					for(int i = 0; i < endOfElites; i++) {
@@ -122,10 +122,11 @@ public class ESPEvolution {
 						genotypes.add(replacementIndex, clone);
 						replacementIndex--;
 					}
+					*/
 				}
 			}//replacement
 			
-			System.out.println("Generation: "+gen+" done: "+captureCount + " captures, ");
+			System.out.println("Generation: "+gen+" done: "+captureCount + " captures");
 		}//generations
 				
 		// Create the fittest predators.
@@ -137,7 +138,6 @@ public class ESPEvolution {
 			fittestPredatorPieces.add(new Piece(5, 5, false, env, annBehaviour));
 		}
 		// Run the simulation with them.
-		System.out.println(fittestPredatorPieces.size());
 		env.setPieces(fittestPredatorPieces, preyPieces);
 		env.run(true);
 		// Run the visualisation

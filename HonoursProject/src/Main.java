@@ -11,7 +11,7 @@ public class Main
 		
 		Vector<Piece> predatorPieces = new Vector<Piece>();
 		Vector<Piece> preyPieces = new Vector<Piece>();
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 100);
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
 		
 		Vector<Genotype> genotypes1 = new Vector<Genotype>();
 		for(int i = 0; i < 10; i++) {
