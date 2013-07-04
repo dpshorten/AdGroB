@@ -126,6 +126,10 @@ public class ESPEvolution {
 			System.out.println("Predator "+i+" average fitness:"+result.avgEvalFitnesses[i]);
 		
 		// Run the simulation with them to create a log file
+		for (Piece prey : preyPieces)
+			prey.setPosition(random.nextInt(boardSize), random.nextInt(boardSize));
+		for(Piece predator : fittestPredatorPieces)
+			predator.setPosition(5, 5);
 		env.setPieces(fittestPredatorPieces, preyPieces);
 		env.run(true);
 		
@@ -138,9 +142,11 @@ public class ESPEvolution {
 		Random random = new Random();
 		for(int eval=0; eval<evaluations; eval++){
 			// Randomize the prey position so that it is not the same as the previous evaluation.
-			for (Piece prey : preyPieces) {
+			for (Piece prey : preyPieces)
 				prey.setPosition(random.nextInt(boardSize), random.nextInt(boardSize));
-			}
+			for(Piece predator : predatorPieces)
+				predator.setPosition(5, 5);
+			
 			env.setPieces(predatorPieces, preyPieces);
 			SimulationResult result = env.run(false);
 			captureCount += result.preyCaught;
