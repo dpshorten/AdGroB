@@ -7,9 +7,9 @@ public class ESPEvolution {
 	static final int numHiddenNodes = 10;
 	static final int numPredators = 3;
 	static final int subPopulationSize = 100;
-	static final int trialsPerGeneration = 100; //1000
+	static final int trialsPerGeneration = 1000; //1000
 	static final int evaluationsPerTrial = 1; //6
-	static final int generations = 1000;
+	static final int generations = 100;
 	static final int boardSize = 10;
 	static final double mutationProbability = 0.4;
 	
@@ -25,9 +25,9 @@ public class ESPEvolution {
 		Environment env = new Environment(boardSize);
 		
 		Vector<Piece> preyPieces = new Vector<Piece>();
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 10000);
-		int preyX = random.nextInt(boardSize);
-		int preyY = random.nextInt(boardSize);
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
+		int preyX = 0;
+		int preyY = 0;
 		preyPieces.add(new Piece(preyX,preyY,true,env,runAway));
 		
 		for(int gen=0; gen<generations; gen++){
@@ -138,6 +138,7 @@ public class ESPEvolution {
 		}
 		// Run the simulation with them.
 		System.out.println(fittestPredatorPieces.size());
+		preyPieces.get(0).setPosition(preyX, preyY);
 		env.setPieces(fittestPredatorPieces, preyPieces);
 		env.run(true);
 		// Run the visualisation
