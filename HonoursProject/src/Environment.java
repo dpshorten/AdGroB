@@ -21,13 +21,13 @@ public class Environment {
 
 	public Environment() {
 		boardSize = 100;
-		maxMoves = 6 * boardSize;
+		maxMoves = 8 * boardSize;
 		board = new int[boardSize][boardSize];
 	}
 
 	public Environment(int size) {
 		boardSize = size;
-		maxMoves = 6 * boardSize;
+		maxMoves = 8 * boardSize;
 		board = new int[boardSize][boardSize];
 	}
 

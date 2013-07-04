@@ -14,7 +14,7 @@ import pygame
 
 
 # Pixel length of the square cells, this must always be even.
-CELLLENGTH = 20
+CELLLENGTH = 10
 # Frames per second.
 FRAMERATE = 5
 BACKGROUND_COLOR = (255, 255, 255)
@@ -54,9 +54,9 @@ for turn in turns:
 
     # Make the background and grid.    
     screen.fill(BACKGROUND_COLOR)
-    for row in xrange(length - 1):
+    for row in range(length - 1):
         pygame.draw.line(screen, LINE_COLOR, [0, (row + 1) * CELLLENGTH], [length * CELLLENGTH, (row + 1) * CELLLENGTH])
-    for col in xrange(length - 1):
+    for col in range(length - 1):
         pygame.draw.line(screen, LINE_COLOR, [(col + 1) * CELLLENGTH, 0], [(col + 1) * CELLLENGTH, length * CELLLENGTH])
     
     # Print the pieces.    
