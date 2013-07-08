@@ -6,10 +6,10 @@ public class ESPEvolution {
 	static final int numHiddenNodes = 10;
 	static final int numPredators = 3;
 	static final int subPopulationSize = 100;
-	static final int trialsPerGeneration = 1000; //1000
+	static final int trialsPerGeneration = 10000; //1000
 	static final int evaluationsPerTrial = 1; //6
 	static final int generations = 100;
-	static final int boardSize = 40;
+	static final int boardSize = 10;
 	static final double mutationProbability = 0.4;
 	
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
@@ -108,6 +108,14 @@ public class ESPEvolution {
 			System.out.println("Generation: "+gen+" done: "+captureCount + " captures");
 		}//generations
 				
+		// Compute the genotypal euclidean distances between the predators. 
+		double[] distances1 = agentPopulations.get(0).maxAndMinEuclideanDistance(agentPopulations.get(1));
+		System.out.println("Distances 0 - 1: min - " + distances1[0] + " max - " + distances1[1]);
+		double[] distances2 = agentPopulations.get(0).maxAndMinEuclideanDistance(agentPopulations.get(2));
+		System.out.println("Distances 0 - 2: min - " + distances2[0] + " max - " + distances2[1]);
+		double[] distances3 = agentPopulations.get(1).maxAndMinEuclideanDistance(agentPopulations.get(2));
+		System.out.println("Distances 1 - 2: min - " + distances3[0] + " max - " + distances3[1]);
+		
 		// Create the fittest predators.
 		Vector<Piece>fittestPredatorPieces = new Vector<Piece>();
 		for(ESPPopulation agentPopulation : agentPopulations){

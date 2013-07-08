@@ -144,4 +144,17 @@ public class Genotype implements Comparable<Genotype>
 		clone.setOutputWeights(this.getOutputWeights());
 		return clone;
 	}
+	
+	public double euclideanDistanceSquared(Genotype otherGenotype) {
+		double distanceSquared = 0;
+		Vector<Double> otherInputWeights = otherGenotype.getInputWeights();
+		Vector<Double> otherOutputWeights = otherGenotype.getOutputWeights();
+		for(int i = 0; i < inputWeights.size(); i++) {
+			distanceSquared += Math.pow(inputWeights.elementAt(i).doubleValue() - otherInputWeights.elementAt(i).doubleValue(), 2);
+		}
+		for(int i = 0; i < outputWeights.size(); i++) {
+			distanceSquared += Math.pow(outputWeights.elementAt(i).doubleValue() - otherOutputWeights.elementAt(i).doubleValue(), 2);
+		}
+		return distanceSquared;
+	}
 }
