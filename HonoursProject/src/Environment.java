@@ -14,6 +14,7 @@ public class Environment {
 	Vector<Piece> predators = new Vector<Piece>();
 	Vector<Piece> prey = new Vector<Piece>();
 	Vector<Piece> pieces = new Vector<Piece>();
+	Vector<Piece> caughtPieces = new Vector<Piece>();
 
 	File log = new File("log.txt");
 
@@ -163,6 +164,8 @@ public class Environment {
 			for(Piece piece : removals) {
 				prey.remove(piece);
 				pieces.remove(piece);
+				caughtPieces.add(piece);
+				
 			}
 			if(isGameOver()) {
 				break;
@@ -173,7 +176,7 @@ public class Environment {
 		Vector<Double> distancesFromPrey = new Vector<Double>();
 		for(Piece predator : predators){
 			double minDist = Double.MAX_VALUE;
-			for(Piece prey : this.prey){
+			for(Piece prey : this.caughtPieces){
 				double dist = Point.getDistance(predator.getPosition(), prey.getPosition(), boardSize);
 				if(dist < minDist)
 					minDist = dist;
