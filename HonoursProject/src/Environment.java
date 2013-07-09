@@ -97,11 +97,11 @@ public class Environment {
 		pieces.addAll(preyPieces);
 	}
 
-	public SimulationResult run(boolean shouldWriteToFile)
+	public SimulationResult run(boolean shouldWriteToFile, boolean shouldAppendFile)
 	{
 		clearBoard();
 		// Clear the log file.
-		if (shouldWriteToFile) {
+		if (shouldWriteToFile & (!shouldAppendFile)) {
 			try {
 				out = new PrintWriter(new FileWriter(log, false));
 			} catch (Exception e) {

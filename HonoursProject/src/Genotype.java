@@ -33,6 +33,13 @@ public class Genotype implements Comparable<Genotype>
 		}
 	}
 	
+	public Genotype(Vector<Double> inputWeights, Vector<Double> outputWeights) {
+		this.inputWeights = new Vector<Double>();
+		this.outputWeights = new Vector<Double>();
+		setInputWeights(inputWeights);
+		setOutputWeights(outputWeights);
+	}
+	
 	// Int flag makes the the new genotype not have its weights set.
 	// Saves a little computation in crossover.
 	public Genotype(int a) {

@@ -99,7 +99,7 @@ public class ESPEvolution {
 							if(gen < (int) Math.floor(0.7 * generations)) {
 								mutationStdDev = 0.1; 
 							} else {
-								mutationStdDev = 0.01; 
+								mutationStdDev = 0.02; 
 							}
 							clone.mutate(mutationStdDev);
 						}
@@ -114,21 +114,26 @@ public class ESPEvolution {
 			System.out.println("Generation: "+gen+" done: "+captureCount + " captures");
 		}//generations
 				
-		// Compute the genotypal euclidean distances between the predators. 
+		// Compute the genotypal euclidean distances between the predators.
+		/*
 		double[] distances1 = agentPopulations.get(0).maxAndMinEuclideanDistance(agentPopulations.get(1));
 		System.out.println("Distances 0 - 1: min - " + distances1[0] + " max - " + distances1[1]);
 		double[] distances2 = agentPopulations.get(0).maxAndMinEuclideanDistance(agentPopulations.get(2));
 		System.out.println("Distances 0 - 2: min - " + distances2[0] + " max - " + distances2[1]);
 		double[] distances3 = agentPopulations.get(1).maxAndMinEuclideanDistance(agentPopulations.get(2));
 		System.out.println("Distances 1 - 2: min - " + distances3[0] + " max - " + distances3[1]);
+		*/
 		
 		// Create the fittest predators.
+		int j = 0;
 		Vector<Piece>fittestPredatorPieces = new Vector<Piece>();
 		for(ESPPopulation agentPopulation : agentPopulations){
 			Vector<Genotype> hiddenNodes = agentPopulation.getFittestGenotypeInEachSubPopulation();
 			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
+			ann.saveNetwork("PredatorBehaviour" + j);
 			ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
 			fittestPredatorPieces.add(new Piece(5, 5, false, env, annBehaviour));
+			j += 1;
 		}
 		
 		// Run some evaluations on them
@@ -146,7 +151,7 @@ public class ESPEvolution {
 			predator.setPosition(5, 5);
 		preyPieces.get(0).setPosition(preyX, preyY);
 		env.setPieces(fittestPredatorPieces, preyPieces);
-		env.run(true);
+		env.run(true, false);
 		
 	}//main
 	
@@ -163,7 +168,7 @@ public class ESPEvolution {
 				predator.setPosition(5, 5);
 			
 			env.setPieces(predatorPieces, preyPieces);
-			SimulationResult result = env.run(false);
+			SimulationResult result = env.run(false, false);
 			captureCount += result.preyCaught;
 			for(int i = 0; i<numPredators; i++){
 				if (result.preyCaught == 0) {
