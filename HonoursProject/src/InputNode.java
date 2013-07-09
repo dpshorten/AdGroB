@@ -3,9 +3,11 @@ import java.util.Vector;
 
 public class InputNode extends Node {
 	private double exteriorInput;
+	private Vector<HiddenNode> children;
 	
-	public InputNode(int number, Vector<Node> children) {
-		super(number, children);
+	public InputNode(int number, Vector<HiddenNode> children) {
+		super(number);
+		this.children = children;
 		exteriorInput = 0;
 	}
 	

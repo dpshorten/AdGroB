@@ -4,12 +4,10 @@ import java.util.Vector;
 public abstract class Node {
 	protected final double BETA = 1.0;
 	protected int number;
-	protected Vector<Node> children;
 	protected Vector<Double> inputs;
 	
-	public Node(int number, Vector<Node> children) {
+	public Node(int number) {
 		this.number = number;
-		this.children = children;
 		this.inputs = new Vector<Double>();
 		for(int i = 0; i < 10; i++) {
 			inputs.add(new Double(0));

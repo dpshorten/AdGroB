@@ -5,7 +5,7 @@ import java.util.Random;
 public class ESPEvolution {
 	static final int numHiddenNodes = 10;
 	static final int numPredators = 3;
-	static final int subPopulationSize = 100;
+	static final int subPopulationSize = 50;
 	static final int trialsPerGeneration = 1000; //1000
 	static final int evaluationsPerTrial = 1; //6
 	static final int generations = 100;
@@ -95,7 +95,13 @@ public class ESPEvolution {
 					for(int i = 0; i < endOfElites; i++) {
 						Genotype clone = genotypes.get(i).clone();
 						if(random.nextDouble() < mutationProbability){
-							clone.mutate();
+							double mutationStdDev = 0; 
+							if(gen < (int) Math.floor(0.7 * generations)) {
+								mutationStdDev = 0.1; 
+							} else {
+								mutationStdDev = 0.01; 
+							}
+							clone.mutate(mutationStdDev);
 						}
 						genotypes.remove(replacementIndex);
 						genotypes.add(replacementIndex, clone);

@@ -3,7 +3,7 @@ import java.util.Vector;
 
 public class OutputNode extends Node {
 	public OutputNode(int number, Vector<Node> children) {
-		super(number, children);
+		super(number);
 	}
 	
 	public double calculateAndPassOnActivation() {

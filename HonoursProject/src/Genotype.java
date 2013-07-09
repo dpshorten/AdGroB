@@ -15,7 +15,6 @@ public class Genotype implements Comparable<Genotype>
 	 * 4 - Stay
 	 */
 	private final int WEIGHT_MUTATIONS_PER_GENOTYPE_MUTATION = 1;
-	private final double MUTATION_AMOUNT_STDEV = 0.1;
 	private Vector<Double> inputWeights;
 	private Vector<Double> outputWeights;
 	private double fitness = 0;
@@ -41,11 +40,11 @@ public class Genotype implements Comparable<Genotype>
 		outputWeights = new Vector<Double>();
 	}
 	
-	public void mutate() {
+	public void mutate(double mutationAmountStdDev) {
 		for(int i = 0; i < WEIGHT_MUTATIONS_PER_GENOTYPE_MUTATION; i++) {
 			Random random = new Random();
 			int indexToMutate = random.nextInt(inputWeights.size() + outputWeights.size());
-			double mutationAmount = random.nextGaussian() * MUTATION_AMOUNT_STDEV; 
+			double mutationAmount = random.nextGaussian() * mutationAmountStdDev; 
 			if(indexToMutate < outputWeights.size()) {
 				indexToMutate %= outputWeights.size();
 				outputWeights.set(indexToMutate, outputWeights.get(indexToMutate).doubleValue() + mutationAmount);

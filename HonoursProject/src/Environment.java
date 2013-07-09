@@ -48,7 +48,7 @@ public class Environment {
 	}
 
 	public void drawWorld() {
-		// ********************* Loop throught board and draw elements in the
+		// ********************* Loop through board and draw elements in the
 		// grid *************************
 		try {
 			out = new PrintWriter(new FileWriter(log, true));
