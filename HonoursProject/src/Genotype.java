@@ -47,6 +47,22 @@ public class Genotype implements Comparable<Genotype>
 		outputWeights = new Vector<Double>();
 	}
 	
+	public Genotype burstMutate(double mutationAmountStdDev) {
+		Random random = new Random(); 
+		Genotype newGenotype = new Genotype(0);
+		Vector<Double> newInputWeights = this.getInputWeights();
+		Vector<Double> newOutputWeights = this.getOutputWeights();
+		for(int i = 0; i < newInputWeights.size(); i++) {
+			newInputWeights.set(i, newInputWeights.get(i).doubleValue() + random.nextGaussian() * mutationAmountStdDev);
+		}
+		for(int i = 0; i < newOutputWeights.size(); i++) {
+			newOutputWeights.set(i, newOutputWeights.get(i).doubleValue() + random.nextGaussian() * mutationAmountStdDev);
+		}
+		newGenotype.setInputWeights(newInputWeights);
+		newGenotype.setOutputWeights(newOutputWeights);
+		return newGenotype;
+	}
+	
 	public void mutate(double mutationAmountStdDev) {
 		for(int i = 0; i < WEIGHT_MUTATIONS_PER_GENOTYPE_MUTATION; i++) {
 			Random random = new Random();
@@ -91,7 +107,7 @@ public class Genotype implements Comparable<Genotype>
 	public Vector<Double> getInputWeights() {
 		Vector<Double> copy = new Vector<Double>(inputWeights.size());
 		for (Double element : inputWeights) {
-			copy.add(new Double(element));
+			copy.add(new Double(element.doubleValue()));
 		}
 		return copy;
 	}
@@ -99,7 +115,7 @@ public class Genotype implements Comparable<Genotype>
 	public Vector<Double> getOutputWeights() {
 		Vector<Double> copy = new Vector<Double>(outputWeights.size());
 		for (Double element : outputWeights) {
-			copy.add(new Double(element));
+			copy.add(new Double(element.doubleValue()));
 		}
 		return copy;
 	}
@@ -107,14 +123,14 @@ public class Genotype implements Comparable<Genotype>
 	public void setInputWeights(Vector<Double> newInputWeights) {
 		inputWeights.removeAllElements();
 		for(Double element : newInputWeights) {
-			inputWeights.add(new Double(element));
+			inputWeights.add(new Double(element.doubleValue()));
 		}
 	}
 	
 	public void setOutputWeights(Vector<Double> newOutputWeights) {
 		outputWeights.removeAllElements();
 		for(Double element : newOutputWeights) {
-			outputWeights.add(new Double(element));
+			outputWeights.add(new Double(element.doubleValue()));
 		}
 	}
 	

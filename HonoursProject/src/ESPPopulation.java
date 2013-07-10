@@ -54,4 +54,10 @@ public class ESPPopulation {
 		double [] toReturn = {Math.sqrt(minDistance), Math.sqrt(maxDistance)};
 		return toReturn;
 	}
+	
+	public void runBurstMutation(double mutationAmountStdDev) {
+		for(ESPSubPopulation subPop : subPopulations) {
+			subPop.runBurstMutation(mutationAmountStdDev);
+		}
+	}
 }

@@ -16,7 +16,7 @@ import pygame
 # Pixel length of the square cells, this must always be even.
 CELLLENGTH = 30
 # Frames per second.
-FRAMERATE = 15
+FRAMERATE = 2
 BACKGROUND_COLOR = (255, 255, 255)
 LINE_COLOR = (0, 0, 255)
 PREY_COLOR = (0, 255, 0)
