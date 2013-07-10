@@ -6,7 +6,7 @@ public class ESPEvolution {
 	static final int numHiddenNodes = 10;
 	static final int numPredators = 3;
 	static final int subPopulationSize = 50;
-	static final int trialsPerGeneration = 1000; //1000
+	static final int trialsPerGeneration = 100; //1000
 	static final int evaluationsPerTrial = 1; //6
 	static final int generations = 100;
 	static final int boardSize = 10;
@@ -172,10 +172,12 @@ public class ESPEvolution {
 			captureCount += result.preyCaught;
 			for(int i = 0; i<numPredators; i++){
 				if (result.preyCaught == 0) {
-					double fitness = boardSize - result.distancesFromPrey.elementAt(i);
+					//double fitness = boardSize - result.finalDistancesFromPrey.elementAt(i);
+					double fitness = result.initialDistancesFromPrey.elementAt(i) - result.finalDistancesFromPrey.elementAt(i);
 					avgEvalFitnesses[i] += fitness;
 				} else {
-					avgEvalFitnesses[i] += 2 * boardSize;
+					//avgEvalFitnesses[i] += 2 * boardSize;
+					avgEvalFitnesses[i] += 2 * boardSize - result.finalDistancesFromPrey.elementAt(i);
 				}
 			}
 		}

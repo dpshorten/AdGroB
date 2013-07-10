@@ -98,7 +98,7 @@ public class Environment {
 	}
 
 	public SimulationResult run(boolean shouldWriteToFile, boolean shouldAppendFile)
-	{
+	{	
 		clearBoard();
 		// Clear the log file.
 		if (shouldWriteToFile & (!shouldAppendFile)) {
@@ -118,6 +118,19 @@ public class Environment {
 			drawWorld();
 		}
 
+		//Record the distances from each predator to the prey
+		//For now only looks at closest prey
+		Vector<Double> initialDistancesFromPrey = new Vector<Double>();
+		for(Piece predator : predators){
+			double minDist = Double.MAX_VALUE;
+			for(Piece prey : this.caughtPieces){
+				double dist = Point.getDistance(predator.getPosition(), prey.getPosition(), boardSize);
+				if(dist < minDist)
+					minDist = dist;
+			}
+			initialDistancesFromPrey.add(minDist);
+		}
+		
 		int preyCaught = 0;
 		int i = 0;
 		for (i = 0; i < maxMoves; i++) {
@@ -173,7 +186,7 @@ public class Environment {
 		}
 		
 		//Make a vector containing the predators distances from the prey
-		Vector<Double> distancesFromPrey = new Vector<Double>();
+		Vector<Double> finalDistancesFromPrey = new Vector<Double>();
 		for(Piece predator : predators){
 			double minDist = Double.MAX_VALUE;
 			for(Piece prey : this.caughtPieces){
@@ -181,8 +194,8 @@ public class Environment {
 				if(dist < minDist)
 					minDist = dist;
 			}
-			distancesFromPrey.add(minDist);
+			finalDistancesFromPrey.add(minDist);
 		}
-		return new SimulationResult(i + 1, preyCaught, distancesFromPrey);
+		return new SimulationResult(i + 1, preyCaught, finalDistancesFromPrey, initialDistancesFromPrey);
 	}
 }

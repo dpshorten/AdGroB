@@ -45,7 +45,7 @@ public class Main
 		//}
 		env.setPieces(predatorPieces, preyPieces);
 		
-		SimulationResult result = env.run(true);
+		SimulationResult result = env.run(true, false);
 		System.out.println("Board size: " + boardSize);
 		System.out.println(result.preyCaught);
 	}
