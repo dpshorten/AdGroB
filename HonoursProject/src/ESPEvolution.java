@@ -5,15 +5,16 @@ import java.util.Random;
 public class ESPEvolution {
 	static final int numHiddenNodes = 10;
 	static final int numPredators = 3;
-	static final int subPopulationSize = 50;
+	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; //1000
 	static final int evaluationsPerTrial = 1; //6
 	static final int generations = 200;
-	static final int boardSize = 10;
+	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
 	static final double lateMutationStdDev = 0.01;
-	static final double burstMutationAmountStdDev = 0.02;
+	static final double earlyBurstMutationAmountStdDev = 0.3;
+	static final double lateBurstMutationAmountStdDev = 0.05;
 	static final int burstMutationWaitBeforeRepeat = 10;
 	static final int burstMutationTestLookBackDistance = 5;
 	static final double burstMutationTestRatioOfPopDifference = 0.001;
@@ -30,7 +31,7 @@ public class ESPEvolution {
 		Environment env = new Environment(boardSize);
 		
 		Vector<Piece> preyPieces = new Vector<Piece>();
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 5);
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
 		int preyX = random.nextInt(boardSize);
 		int preyY = random.nextInt(boardSize);
 		preyPieces.add(new Piece(preyX,preyY,true,env,runAway));
@@ -121,7 +122,40 @@ public class ESPEvolution {
 				}
 			}//replacement
 			
-			System.out.println("Generation: "+gen+" done: "+captureCount + " captures");
+			// Construct the 3 fittest predators for the 9 instance test.
+			Vector<Piece> testPredatorPieces = new Vector<Piece>();
+			for (int pred = 0; pred < numPredators; pred++) {
+				Vector<Genotype> hiddenNodes = new Vector<Genotype>();
+				for (int node = 0; node < numHiddenNodes; node++) {
+					hiddenNodes
+							.add(agentPopulations.elementAt(pred)
+									.getSubPopulationForNode(node)
+									.getFittestGenotype());
+				}
+			
+				ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(
+						hiddenNodes);
+				ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
+						boardSize, ann);
+				testPredatorPieces
+						.add(new Piece(5, 5, false, env, annBehaviour));
+			}
+			// Run the 9 instance test.
+			int testCaptureCount = 0;
+			int preyPlacementIncrememnt = (int)Math.floor(boardSize/((double)3));
+			for (int preyRow = 0; preyRow < 3; preyRow++) {
+				for (int preyCol = 0; preyCol < 3; preyCol++) {
+					Vector<Piece> testPreyPieces = new Vector<Piece>();
+					testPreyPieces.add(new Piece(preyRow * preyPlacementIncrememnt, 
+							preyCol * preyPlacementIncrememnt, true, env, runAway));
+					TrialResult result = trial(testPredatorPieces, preyPieces,
+							env, evaluationsPerTrial);
+							testCaptureCount += result.captureCount;	
+				}
+				
+			}
+						
+			System.out.println("Generation "+gen+" done: "+captureCount + " captures, " + testCaptureCount + "/9 test score.");
 			// If the improvement is stagnating, burst mutation is run.
 			capturesForEachGeneration.add(captureCount);
 			if (gen >= burstMutationTestLookBackDistance) {
@@ -130,7 +164,11 @@ public class ESPEvolution {
 								+ (int)(Math.ceil(burstMutationTestRatioOfPopDifference * trialsPerGeneration * evaluationsPerTrial))))) {
 					System.out.println("Burst Mutation!!");
 					for(ESPPopulation pop : agentPopulations) {
-						pop.runBurstMutation(burstMutationAmountStdDev);
+						if(captureCount/((double)((trialsPerGeneration * evaluationsPerTrial))) < 0.9) {
+							pop.runBurstMutation(earlyBurstMutationAmountStdDev);
+						} else {
+							pop.runBurstMutation(lateBurstMutationAmountStdDev);
+						}
 					}
 					burstMutationTicker = burstMutationWaitBeforeRepeat;
 				} else {
