@@ -148,9 +148,9 @@ public class ESPEvolution {
 					Vector<Piece> testPreyPieces = new Vector<Piece>();
 					testPreyPieces.add(new Piece(preyRow * preyPlacementIncrememnt, 
 							preyCol * preyPlacementIncrememnt, true, env, runAway));
-					TrialResult result = trial(testPredatorPieces, preyPieces,
-							env, evaluationsPerTrial);
-							testCaptureCount += result.captureCount;	
+					env.setPieces(testPredatorPieces, testPreyPieces);
+					SimulationResult result = env.run(false, false);
+					testCaptureCount += result.preyCaught;	
 				}
 				
 			}

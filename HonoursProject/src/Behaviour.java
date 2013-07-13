@@ -9,7 +9,7 @@ public abstract class Behaviour {
 		this.boardSize = boardSize;
 		offsetHistory = new Vector<Vector<Integer>>();
 		for(int i = 0; i < boardSize; i++) {
-			offsetHistory.set(i, new Vector<Integer>(boardSize));
+			offsetHistory.add(new Vector<Integer>(boardSize));
 		}
 		totalNumberOfDecisions = 0;
 	}
