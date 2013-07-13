@@ -12,6 +12,9 @@ public class ESPArtificialNeuralNetworkBehaviour extends Behaviour{
 	// For now it will go for the first prey in the prey vector
 	public int getMove(Point myPos, Vector<Piece> predator, Vector<Piece> prey) {
 		Point offset = Point.getSmallestOffset(myPos, prey.get(0).getPosition(), boardSize);
+		offsetHistory.elementAt(offset.x).set(offset.y, 
+				offsetHistory.elementAt(offset.x).elementAt(offset.y) + 1);
+		totalNumberOfDecisions++;
 		double[] activations = ANN.run((double)offset.x(), (double)offset.y());
 		int indexOfMaximumActivation = 0;
 		double currentMax = 0;

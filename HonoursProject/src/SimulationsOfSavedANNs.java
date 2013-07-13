@@ -4,7 +4,7 @@ import java.util.Vector;
 
 public class SimulationsOfSavedANNs {
 	public static void main(String[] args) {
-		int boardSize = 10;
+		int boardSize = 100;
 		Random random = new Random();
 		Environment env = new Environment(boardSize);
 		
