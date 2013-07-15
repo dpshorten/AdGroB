@@ -15,7 +15,11 @@ public class ESPArtificialNeuralNetworkBehaviour extends Behaviour{
 		offsetHistory.elementAt(offset.x + halfBoardSize).set(offset.y + halfBoardSize, 
 				offsetHistory.elementAt(offset.x + halfBoardSize).elementAt(offset.y + halfBoardSize) + 1);
 		totalNumberOfDecisions++;
-		double[] activations = ANN.run((double)offset.x(), (double)offset.y());
+		return getIndexOfMaximumActivation(offset.x, offset.y);
+	}
+	
+	public int getIndexOfMaximumActivation(int xOffset, int yOffset) {
+		double[] activations = ANN.run((double)xOffset, (double)yOffset);
 		int indexOfMaximumActivation = 0;
 		double currentMax = 0;
 		for(int i = 0; i < activations.length; i++) {

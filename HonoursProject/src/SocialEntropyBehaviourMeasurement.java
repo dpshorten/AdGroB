@@ -8,11 +8,12 @@ public class SocialEntropyBehaviourMeasurement {
 	// In the returned double[][]: [x][y] is the similarity of predators x and y.
 	public static double[][] measureSimularity(Vector<Piece> predators, int boardSize, Environment env) {
 
-		// Run tests in order to get the probabilities of the inputs.
+		int halfBoardSize = (int)Math.floor(boardSize/((double)2));
 		for (Piece predator : predators) {
 			predator.getBehaviour().resetHistory();
 		}
-
+		
+		// Run tests in order to get the probabilities of the inputs.
 		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(
 						boardSize, 1);
 		Random random = new Random();
@@ -43,24 +44,56 @@ public class SocialEntropyBehaviourMeasurement {
 			}
 			predatorInputProbabilities.add(thisPredatorsProbabilities);
 		}
-		/*
-		for(Vector<Double> row : predatorInputProbabilities.get(0)) {
-			for(Double elem : row) {
-				System.out.print(elem + " ");
-			}
-			System.out.println();
-		}*/
+		
 
 		// Calculate all the predators' ANNs outputs.
 		Vector<Vector<Vector<Integer>>> predatorOutputs = new Vector<Vector<Vector<Integer>>>();
 		for(Piece predator : predators) {
 			Vector<Vector<Integer>> thisPredatorsOutputs = new Vector<Vector<Integer>>(); 
 			for(int i = 0; i < boardSize; i++) {
+				Vector<Integer> rowOfOutputs = new Vector<Integer>();
 				for(int j = 0; j < boardSize; j++) {
-					
+					rowOfOutputs.add(((ESPArtificialNeuralNetworkBehaviour)predator.behaviour)
+							.getIndexOfMaximumActivation(i - halfBoardSize,j - halfBoardSize));
 				}
+				thisPredatorsOutputs.add(rowOfOutputs);
 			}
+			predatorOutputs.add(thisPredatorsOutputs);
 		}
-		return new double[10][10];
+		
+		/*
+		for(Vector<Integer> row : predatorOutputs.get(0)) {
+			for(Integer elem : row) {
+				System.out.print(elem + " ");
+			}
+			System.out.println();
+		}
+		*/
+		
+		double[][] returnedSimilarities = new double[predators.size()][predators.size()];
+		Vector<Vector<Vector<Double>>> predatorInputProbabilitiesClone = 
+				(Vector<Vector<Vector<Double>>>)predatorInputProbabilities.clone();
+		Vector<Vector<Vector<Integer>>> predatorOutputsClone = 
+				(Vector<Vector<Vector<Integer>>>)predatorOutputs.clone();
+		for(int i = 0; i < predatorInputProbabilities.size(); i++){
+			for(int j = 1; j < predatorInputProbabilitiesClone.size(); j++){
+				double similarityMeasure = 0;
+				for(int row = 0; row < boardSize; row++) {
+					for(int col = 0; col < boardSize; col++) {
+						if(predatorOutputs.get(i).get(row).get(col) != 
+								predatorOutputsClone.get(j).get(row).get(col)) {
+							similarityMeasure += (predatorInputProbabilities.get(i).get(row).get(col) + 
+									predatorInputProbabilitiesClone.get(j).get(row).get(col))/2;
+						}
+					}
+				}
+				
+				returnedSimilarities[i][j + i] += similarityMeasure;
+				returnedSimilarities[j + i][i] += similarityMeasure;
+			}
+			predatorInputProbabilitiesClone.remove(0);
+			predatorOutputsClone.remove(0);
+		}
+		return returnedSimilarities;
 	}
 }
