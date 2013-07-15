@@ -8,8 +8,8 @@ public class ESPEvolution {
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; //1000
 	static final int evaluationsPerTrial = 1; //6
-	static final int generations = 50;
-	static final int boardSize = 100;
+	static final int generations =30;
+	static final int boardSize = 40;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
 	static final double lateMutationStdDev = 0.01;
@@ -187,9 +187,11 @@ public class ESPEvolution {
 		System.out.println("Distances 1 - 2: min - " + distances3[0] + " max - " + distances3[1]);
 		*/
 		
+		
+		
 		// Create the fittest predators.
 		int j = 0;
-		Vector<Piece>fittestPredatorPieces = new Vector<Piece>();
+		Vector<Piece> fittestPredatorPieces = new Vector<Piece>();
 		for(ESPPopulation agentPopulation : agentPopulations){
 			Vector<Genotype> hiddenNodes = agentPopulation.getFittestGenotypeInEachSubPopulation();
 			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
@@ -198,6 +200,8 @@ public class ESPEvolution {
 			fittestPredatorPieces.add(new Piece(5, 5, false, env, annBehaviour));
 			j += 1;
 		}
+		
+		SocialEntropyBehaviourMeasurement.measureSimularity(fittestPredatorPieces, boardSize, env);
 		
 		// Run some evaluations on them
 		int evaluationsToRun = 100;
