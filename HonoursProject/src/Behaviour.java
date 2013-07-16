@@ -11,9 +11,9 @@ public abstract class Behaviour {
 		this.halfBoardSize = (int)Math.floor(boardSize/((double)2));
 		offsetHistory = new Vector<Vector<Integer>>();
 		// Negative offset values mean that the offsetHistory dimensions need to be 2 * boardSize.
-		for(int i = 0; i < boardSize; i++) {
+		for(int i = 0; i <= boardSize; i++) {
 			Vector<Integer> offsetHistoryRow = new Vector<Integer>(boardSize);
-			for(int j = 0; j < boardSize; j++) {
+			for(int j = 0; j <= boardSize; j++) {
 				offsetHistoryRow.add(new Integer(0));
 			}
 			offsetHistory.add(offsetHistoryRow);
@@ -24,7 +24,7 @@ public abstract class Behaviour {
 	public void resetHistory() {
 		for(Vector<Integer> xVector : offsetHistory) {
 			xVector.clear();
-			for(int i = 0; i < boardSize; i++) {
+			for(int i = 0; i <= boardSize; i++) {
 				xVector.add(new Integer(0));
 			}
 		}
