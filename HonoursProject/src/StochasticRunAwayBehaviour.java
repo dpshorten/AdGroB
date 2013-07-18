@@ -46,8 +46,8 @@ public class StochasticRunAwayBehaviour extends Behaviour {
 
 			Point offset = Point.getSmallestOffset(myPos, closestOther,
 					boardSize);
-
-			/*if (offset.x == 0) {
+			/*
+			if (offset.x == 0) {
 				double rand = Math.random();
 				if (offset.y > 0) {
 					// Return North or East or West
@@ -115,21 +115,22 @@ public class StochasticRunAwayBehaviour extends Behaviour {
 			// 0: North 1: East 2: South 3: West 4: stay
 			if (offset.x < 0) {
 				if(offsetRatio < -1) {
-					return 2;
+					return 0;
 				} else if(offsetRatio < 1) {
 					return 1;
 				} else {
-					return 0;
+					return 2;
 				}
 			} else {
 				if(offsetRatio < -1) {
-					return 0;
+					return 2;
 				} else if(offsetRatio < 1) {
 					return 3;
 				} else {
-					return 2;
+					return 0;
 				} 
 			}
+			//return -1;
 		}
 	}
 }

@@ -7,8 +7,8 @@ public class ESPEvolution {
 	static final int numPredators = 3;
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; //1000
-	static final int evaluationsPerTrial = 3; //6
-	static final int generations = 100;
+	static final int evaluationsPerTrial = 1; //6
+	static final int generations = 20;
 	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
@@ -28,7 +28,7 @@ public class ESPEvolution {
 			agentPopulations.add(new ESPPopulation(numHiddenNodes, subPopulationSize));
 		
 		Random random = new Random();
-		Environment env = new Environment(boardSize, 2);
+		Environment env = new Environment(boardSize, 1);
 		
 		Vector<Piece> preyPieces = new Vector<Piece>();
 		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
