@@ -4,7 +4,7 @@ public class Main
 {
 	public static void main (String [] args)
 	{
-		final int boardSize = 4;
+		final int boardSize = 20;
 		final int numPrey = 1;
 		
 		Environment env = new Environment(boardSize);
@@ -34,18 +34,18 @@ public class Main
 		
 		RuleBasedBehaviour RBB1 = new RuleBasedBehaviour(boardSize);
 		
-		predatorPieces.add(new Piece(2,1,false,env,ESPTestBehaviour1));
-		predatorPieces.add(new Piece(2,2,false,env,ESPTestBehaviour1));
-		predatorPieces.add(new Piece(2,3,false,env,ESPTestBehaviour1));
-		
-		preyPieces.add(new Piece(0, 1, true, env, runAway));
+		predatorPieces.add(new Piece(2,1,false,env,RBB1));
+		predatorPieces.add(new Piece(11,11,false,env,RBB1));
+		predatorPieces.add(new Piece(3,3,false,env,RBB1));
+				
+		preyPieces.add(new Piece(15, 15, true, env, runAway));
 		
 		//for (int i = 0; i < numPrey; i++) {
 		//	preyPieces.add(new Piece(0, i, true, env, runAway));
 		//}
 		env.setPieces(predatorPieces, preyPieces);
 		
-		SimulationResult result = env.run(true);
+		SimulationResult result = env.run(true, true);
 		System.out.println("Board size: " + boardSize);
 		System.out.println(result.preyCaught);
 	}

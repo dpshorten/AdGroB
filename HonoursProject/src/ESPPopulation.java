@@ -55,6 +55,19 @@ public class ESPPopulation {
 		return toReturn;
 	}
 	
+	// Exploratory method for printing out how similar subpops are to one another.
+	public void printDistances(ESPPopulation otherPopulation) {
+		int i = 0;
+		for(ESPSubPopulation thisSubPop : subPopulations) {
+			System.out.println("This subpop " + i);
+			for(ESPSubPopulation otherSubPop : otherPopulation.subPopulations) {
+				System.out.println(thisSubPop.getFittestGenotype().
+							euclideanDistanceSquared(otherSubPop.getFittestGenotype()));
+			}
+			i++;
+		}
+	}
+	
 	public void runBurstMutation(double mutationAmountStdDev) {
 		for(ESPSubPopulation subPop : subPopulations) {
 			subPop.runBurstMutation(mutationAmountStdDev);

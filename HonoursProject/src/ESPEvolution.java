@@ -7,8 +7,8 @@ public class ESPEvolution {
 	static final int numPredators = 3;
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; //1000
-	static final int evaluationsPerTrial = 1; //6
-	static final int generations = 30;
+	static final int evaluationsPerTrial = 3; //6
+	static final int generations = 100;
 	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
@@ -28,7 +28,7 @@ public class ESPEvolution {
 			agentPopulations.add(new ESPPopulation(numHiddenNodes, subPopulationSize));
 		
 		Random random = new Random();
-		Environment env = new Environment(boardSize);
+		Environment env = new Environment(boardSize, 2);
 		
 		Vector<Piece> preyPieces = new Vector<Piece>();
 		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
@@ -187,7 +187,7 @@ public class ESPEvolution {
 		System.out.println("Distances 1 - 2: min - " + distances3[0] + " max - " + distances3[1]);
 		*/
 		
-		
+		agentPopulations.get(0).printDistances(agentPopulations.get(1));
 		
 		// Create the fittest predators.
 		int j = 0;
@@ -218,6 +218,7 @@ public class ESPEvolution {
 			System.out.println("Predator "+i+" average fitness:"+result.avgEvalFitnesses[i]);
 		
 		// Run the simulation with them to create a log file
+		/*
 		for (Piece prey : preyPieces)
 			prey.setPosition(random.nextInt(boardSize), random.nextInt(boardSize));
 		for(Piece predator : fittestPredatorPieces)
@@ -225,7 +226,7 @@ public class ESPEvolution {
 		preyPieces.get(0).setPosition(preyX, preyY);
 		env.setPieces(fittestPredatorPieces, preyPieces);
 		env.run(true, false);
-		
+		*/
 	}//main
 	
 	//Run a set of evaluations on the predators to get fitness values for the genotypes
