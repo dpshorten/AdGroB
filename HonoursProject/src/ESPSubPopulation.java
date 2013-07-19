@@ -28,4 +28,16 @@ public class ESPSubPopulation {
 		}
 		return fittest;
 	}
+	
+	public void runBurstMutation(double mutationAmountStdDev) {
+		int populationSize = nodeGenotypes.size();
+		Genotype fittest = this.getFittestGenotype();
+		nodeGenotypes.clear();
+		nodeGenotypes.add(fittest);
+		for(int i = 0; i < populationSize - 1; i++) {
+			nodeGenotypes.add(fittest.burstMutate(mutationAmountStdDev));
+		}
+		//System.out.println(nodeGenotypes.elementAt(0).getInputWeights().elementAt(0) 
+			//	+ "   " + nodeGenotypes.elementAt(1).getInputWeights().elementAt(0));
+	}
 }

@@ -14,15 +14,15 @@ import pygame
 
 
 # Pixel length of the square cells, this must always be even.
-CELLLENGTH = 30
+CELLLENGTH = 8
 # Frames per second.
-FRAMERATE = 15
+FRAMERATE = 20
 BACKGROUND_COLOR = (255, 255, 255)
 LINE_COLOR = (0, 0, 255)
 PREY_COLOR = (0, 255, 0)
 PREDATOR_COLOR = (255, 0, 0)
 
-inputFile = open(sys.argv[1])
+inputFile = open("../log.txt")
 
 # Find out the length of the square grid.
 length = 0;

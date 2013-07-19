@@ -10,6 +10,8 @@ public class Environment {
 	private int maxMoves;
 	
 	boolean Gameover = false;
+	
+	private int preyMovesMultiplier;
 
 	Vector<Piece> predators = new Vector<Piece>();
 	Vector<Piece> prey = new Vector<Piece>();
@@ -26,8 +28,9 @@ public class Environment {
 		board = new int[boardSize][boardSize];
 	}
 
-	public Environment(int size) {
+	public Environment(int size, int aPreyMovesMultiplier) {
 		boardSize = size;
+		preyMovesMultiplier = aPreyMovesMultiplier;
 		maxMoves = 8 * boardSize;
 		board = new int[boardSize][boardSize];
 	}
@@ -139,7 +142,13 @@ public class Environment {
 			clearBoard(poppedPiece); 
 			// Gets a position update for a piece.
 			try {
-				poppedPiece.makeMove();
+				if(poppedPiece.isPrey) {
+					for(int j = 0; j < preyMovesMultiplier; j++) {
+						poppedPiece.makeMove();
+					}
+				} else {
+					poppedPiece.makeMove();
+				}
 			} catch (Exception e) {
 				System.out.println("Error : " + e);
 			}
