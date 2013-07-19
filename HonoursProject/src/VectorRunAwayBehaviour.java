@@ -14,10 +14,12 @@ public class VectorRunAwayBehaviour extends Behaviour {
 		//Calculate vector representing optimal direction to run
 		Point directionToRun = new Point(0,0);
 		for(Piece pred : predator){
-			int x = myPos.x - pred.getPositionX();
-			int y = myPos.y - pred.getPositionY();
-			directionToRun.x += x;
-			directionToRun.y += y;
+			Point currentOffset = Point.getSmallestOffset(pred.getPosition(), myPos, boardSize);
+			long xdir = (currentOffset.x == 0 ? boardSize : Math.round(boardSize/(double)currentOffset.x));
+			long ydir = (currentOffset.y == 0 ? boardSize : Math.round(boardSize/(double)currentOffset.y));
+			directionToRun.x += xdir;
+			directionToRun.y += ydir;
+			//System.out.println("predator: " + pred.getPosition() + " prey: " +myPos + " offset: " + currentOffset + " xdir: "+xdir+" ydir: "+ydir + " distance: "+Point.getDistance(myPos, pred.getPosition(), boardSize));
 		}
 		
 		//Calculate which tile is closest fit to vector

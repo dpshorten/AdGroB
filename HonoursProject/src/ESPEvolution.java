@@ -9,7 +9,7 @@ public class ESPEvolution {
 	static final int trialsPerGeneration = 100; //1000
 	static final int evaluationsPerTrial = 1; //6
 	static final int generations = 100;
-	static final int boardSize = 50;
+	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
 	static final double lateMutationStdDev = 0.01;
@@ -31,8 +31,8 @@ public class ESPEvolution {
 		Environment env = new Environment(boardSize, 1);
 		
 		Vector<Piece> preyPieces = new Vector<Piece>();
-		//VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
+		VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
+		//StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
 		int preyX = random.nextInt(boardSize);
 		int preyY = random.nextInt(boardSize);
 		preyPieces.add(new Piece(preyX,preyY,true,env,runAway));
