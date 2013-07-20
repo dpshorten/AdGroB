@@ -12,38 +12,57 @@ public class VectorRunAwayBehaviour extends Behaviour {
 	public int getMove(Point myPos, Vector<Piece> predator, Vector<Piece> prey) {
 
 		//Calculate vector representing optimal direction to run
-		Point directionToRun = new Point(0,0);
+		double maxDist = (double) boardSize * 0.7071;
+		double xdir = 0;
+		double ydir = 0;
 		for(Piece pred : predator){
 			Point currentOffset = Point.getSmallestOffset(pred.getPosition(), myPos, boardSize);
-			long xdir = (currentOffset.x == 0 ? boardSize : Math.round(boardSize/(double)currentOffset.x));
-			long ydir = (currentOffset.y == 0 ? boardSize : Math.round(boardSize/(double)currentOffset.y));
-			directionToRun.x += xdir;
-			directionToRun.y += ydir;
-			//System.out.println("predator: " + pred.getPosition() + " prey: " +myPos + " offset: " + currentOffset + " xdir: "+xdir+" ydir: "+ydir + " distance: "+Point.getDistance(myPos, pred.getPosition(), boardSize));
+			double scalingFactor = maxDist / Math.pow(Point.getDistance(pred.getPosition(), myPos, boardSize), 2);
+			double inverseXOffset = (currentOffset.x > 0 ? boardSize/2 - currentOffset.x : -boardSize/2 + currentOffset.x);
+			double inverseYOffset = (currentOffset.y > 0 ? boardSize/2 - currentOffset.y : -boardSize/2 + currentOffset.y);
+			xdir += (inverseXOffset * scalingFactor);
+			ydir += (inverseYOffset * scalingFactor);
+			
+			System.out.println("offset: " + currentOffset + " inverseX " + inverseXOffset + " inverseY " + inverseYOffset + " scaling " + scalingFactor + " xcont: "+(inverseXOffset * scalingFactor)+" ycont: "+(inverseYOffset * scalingFactor));
 		}
+		System.out.println("Final vector: "+ xdir + ", "+ydir);
 		
 		//Calculate which tile is closest fit to vector
-		if(directionToRun.x == 0 && directionToRun.y == 0)
+		if(xdir == 0 && ydir == 0){
+			System.out.println("Decision: stay");
 			return 4;
+		}
 		else{
-			int absx = Math.abs(directionToRun.x);
-			int absy = Math.abs(directionToRun.y);
+			double absx = Math.abs(xdir);
+			double absy = Math.abs(ydir);
 			
 			if(absx == absy){
-				if(directionToRun.x > 0 && directionToRun.y > 0)
-					return (Math.random() > 0.5 ? 0 : 1);
-				else if(directionToRun.x > 0 && directionToRun.y < 0)
+				if(xdir > 0 && ydir > 0){
+//					System.out.println("Decision: South or East");
 					return (Math.random() > 0.5 ? 1 : 2);
-				else if(directionToRun.x < 0 && directionToRun.y > 0)
-					return (Math.random() > 0.5 ? 0 : 3);
-				else if(directionToRun.x < 0 && directionToRun.y < 0)
+				}
+				else if(xdir > 0 && ydir < 0){
+//					System.out.println("Decision: North or East");
+					return (Math.random() > 0.5 ? 0 : 1);
+				}
+				else if(xdir < 0 && ydir > 0){
+//					System.out.println("Decision: South or West");
 					return (Math.random() > 0.5 ? 2 : 3);
+				}
+				else if(xdir < 0 && ydir < 0){
+//					System.out.println("Decision: North or West");
+					return (Math.random() > 0.5 ? 0 : 3);
+				}
 			}
 			else{
-				if(absx > absy)
-					return (directionToRun.x > 0 ? 1 : 3);
-				else
-					return (directionToRun.y > 0 ? 0 : 2);
+				if(absx > absy){
+					System.out.println("Decision: "+(xdir > 0 ? "East" : "West"));
+					return (xdir > 0 ? 1 : 3);
+				}
+				else{
+					System.out.println("Decision: "+(ydir > 0 ? "South" : "North"));
+					return (ydir > 0 ? 2 : 0);
+				}
 			}
 		}
 		

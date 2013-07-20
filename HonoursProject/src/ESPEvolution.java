@@ -6,7 +6,7 @@ public class ESPEvolution {
 	static final int numHiddenNodes = 10;
 	static final int numPredators = 3;
 	static final int subPopulationSize = 100;
-	static final int trialsPerGeneration = 100; //1000
+	static final int trialsPerGeneration = 1000; //1000
 	static final int evaluationsPerTrial = 1; //6
 	static final int generations = 100;
 	static final int boardSize = 100;
