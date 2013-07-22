@@ -14,8 +14,8 @@ public class SocialEntropyBehaviourMeasurement {
 		}
 		
 		// Run tests in order to get the probabilities of the inputs.
-		//VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
+		VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
+		//StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
 		Random random = new Random();
 		for (int i = 0; i < numberOfSimulations; i++) {
 			Vector<Piece> testPreyPieces = new Vector<Piece>();

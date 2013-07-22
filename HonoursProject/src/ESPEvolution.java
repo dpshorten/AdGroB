@@ -32,8 +32,8 @@ public class ESPEvolution {
 		Environment env = new Environment(boardSize, 1);
 		
 		Vector<Piece> preyPieces = new Vector<Piece>();
-		//VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
-		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
+		VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
+		//StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
 		int preyX = random.nextInt(boardSize);
 		int preyY = random.nextInt(boardSize);
 		preyPieces.add(new Piece(preyX,preyY,true,env,runAway));

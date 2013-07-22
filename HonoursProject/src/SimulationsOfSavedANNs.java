@@ -8,7 +8,9 @@ public class SimulationsOfSavedANNs {
 		Random random = new Random();
 		Environment env = new Environment(boardSize, 1);
 		
-		for (int i = 0; i < 10; i++) {
+		final int simulations = 10;
+		for (int i = 0; i < simulations; i++) {
+			System.out.println("Running simulation "+(i+1)+"/"+simulations);
 			Vector<Piece> predatorPieces = new Vector<Piece>();
 			Vector<Piece> preyPieces = new Vector<Piece>();
 			
@@ -27,5 +29,6 @@ public class SimulationsOfSavedANNs {
 			env.setPieces(predatorPieces, preyPieces);
 			env.run(true, i == 0 ? false : true);
 		}
+		System.out.println("Done.");
 	}
 }
