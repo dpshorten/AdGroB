@@ -6,7 +6,7 @@ public class SimulationsOfSavedANNs {
 	public static void main(String[] args) {
 		int boardSize = 100;
 		Random random = new Random();
-		Environment env = new Environment(boardSize, 1);
+		Environment env = new Environment(boardSize, 10.0);
 		
 		final int simulations = 10;
 		for (int i = 0; i < simulations; i++) {
@@ -14,8 +14,8 @@ public class SimulationsOfSavedANNs {
 			Vector<Piece> predatorPieces = new Vector<Piece>();
 			Vector<Piece> preyPieces = new Vector<Piece>();
 			
-			VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
-			//StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
+			//VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
+			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
 			int preyX = random.nextInt(boardSize);
 			int preyY = random.nextInt(boardSize);
 			preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
