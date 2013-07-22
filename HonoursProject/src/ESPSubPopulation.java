@@ -1,9 +1,14 @@
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Vector;
 
 
 public class ESPSubPopulation {
 	
+	public static final double migrationSimilarityCutOff = 0.5;
+	
 	Vector<Genotype> nodeGenotypes;
+	
 	
 	public ESPSubPopulation(int subPopulationSize){
 		nodeGenotypes = new Vector<Genotype>();
@@ -39,5 +44,29 @@ public class ESPSubPopulation {
 		}
 		//System.out.println(nodeGenotypes.elementAt(0).getInputWeights().elementAt(0) 
 			//	+ "   " + nodeGenotypes.elementAt(1).getInputWeights().elementAt(0));
+	}
+	
+	public void sendMigrants(ESPSubPopulation otherSubPop, int numMigrants) {
+		Collections.sort(this.nodeGenotypes);
+		Collections.reverse(this.nodeGenotypes);
+		Collections.sort(otherSubPop.nodeGenotypes);
+		Collections.reverse(otherSubPop.nodeGenotypes);
+		double distanceSum = 0;
+		for(int i = 0; i < 5; i++) {
+			distanceSum += this.nodeGenotypes.get(i).euclideanDistanceSquared(
+					otherSubPop.nodeGenotypes.get(i));
+		}
+		distanceSum /= 5;
+		if(distanceSum < migrationSimilarityCutOff) {
+			for(int i = 0; i < numMigrants; i++) {
+				otherSubPop.acceptMigrant(this.nodeGenotypes.get(i));
+			}
+		}
+	}
+	
+	// NB: assumes that nodeGenotypes is sorted in ascending order.
+	public void acceptMigrant(Genotype Migrant) {
+		this.nodeGenotypes.remove(this.nodeGenotypes.size() - 1);
+		this.nodeGenotypes.add(0, Migrant);
 	}
 }

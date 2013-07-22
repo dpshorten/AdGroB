@@ -73,4 +73,12 @@ public class ESPPopulation {
 			subPop.runBurstMutation(mutationAmountStdDev);
 		}
 	}
+	
+	public void sendMigrants(ESPPopulation otherPopulation, int numMigrantsPerSubPop) {
+		for(ESPSubPopulation subPop : this.subPopulations) {
+			for(ESPSubPopulation otherSubPop : otherPopulation.subPopulations) {
+				subPop.sendMigrants(otherSubPop, numMigrantsPerSubPop);
+			}
+		}
+	}
 }

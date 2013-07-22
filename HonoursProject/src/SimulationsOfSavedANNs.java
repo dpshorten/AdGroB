@@ -12,8 +12,8 @@ public class SimulationsOfSavedANNs {
 			Vector<Piece> predatorPieces = new Vector<Piece>();
 			Vector<Piece> preyPieces = new Vector<Piece>();
 			
-			//VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
-			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
+			VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
+			//StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
 			int preyX = random.nextInt(boardSize);
 			int preyY = random.nextInt(boardSize);
 			preyPieces.add(new Piece(preyX, preyY, true, env, runAway));

@@ -6,16 +6,17 @@ public class ESPEvolution {
 	static final int numHiddenNodes = 10;
 	static final int numPredators = 3;
 	static final int subPopulationSize = 100;
-	static final int trialsPerGeneration = 100; //1000
-	static final int evaluationsPerTrial = 1; //6
-	static final int generations = 100;
-	static final int boardSize = 50;
+	static final int trialsPerGeneration = 1000; //1000
+	static final int evaluationsPerTrial = 6; //6
+	static final int generations = 50;
+	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
 	static final double lateMutationStdDev = 0.01;
 	static final double earlyBurstMutationAmountStdDev = 0.3;
 	static final double lateBurstMutationAmountStdDev = 0.05;
 	static final int burstMutationWaitBeforeRepeat = 30;
+	static final int burstMutationWaitBeforeFirst = 20;
 	static final int burstMutationTestLookBackDistance = 5;
 	static final double burstMutationTestRatioOfPopDifference = 0.001;
 	
@@ -37,7 +38,7 @@ public class ESPEvolution {
 		int preyY = random.nextInt(boardSize);
 		preyPieces.add(new Piece(preyX,preyY,true,env,runAway));
 				
-		int burstMutationTicker = 100;
+		int burstMutationTicker = burstMutationWaitBeforeFirst;
 		Vector<Integer> capturesForEachGeneration = new Vector<Integer>(generations); 
 		for(int gen=0; gen<generations; gen++){
 			//For each generation, a number of trials are run to get fitness values for the genotypes
@@ -157,6 +158,21 @@ public class ESPEvolution {
 			}
 						
 			System.out.println("Generation "+gen+" done: "+captureCount + " captures, " + testCaptureCount + "/9 test score.");
+			
+			// Migration	
+			if (gen % 3 == 0) {
+				double[][] similarities = SocialEntropyBehaviourMeasurement
+						.measureSimularity(testPredatorPieces, boardSize, env);
+				for (int i = 0; i < similarities.length; i++) {
+					for (int j = 0; j < similarities[0].length; j++) {
+						if (similarities[i][j] > 0.8 & gen > 15) {
+							System.out.println("Migrating " + i + " to " + j);
+							agentPopulations.get(i).sendMigrants(
+									agentPopulations.get(j), 5);
+						}
+					}
+				}
+			}
 			// If the improvement is stagnating, burst mutation is run.
 			capturesForEachGeneration.add(captureCount);
 			if (gen >= burstMutationTestLookBackDistance) {
@@ -188,8 +204,6 @@ public class ESPEvolution {
 		System.out.println("Distances 1 - 2: min - " + distances3[0] + " max - " + distances3[1]);
 		*/
 		
-		agentPopulations.get(0).printDistances(agentPopulations.get(1));
-		
 		// Create the fittest predators.
 		int j = 0;
 		Vector<Piece> fittestPredatorPieces = new Vector<Piece>();
@@ -202,14 +216,7 @@ public class ESPEvolution {
 			j += 1;
 		}
 		
-		double[][] similarities = SocialEntropyBehaviourMeasurement.measureSimularity(fittestPredatorPieces, boardSize, env);
-		for(int i = 0; i < similarities.length; i++) {
-			for(int k = 0; k < similarities[0].length; k++) {
-				System.out.print(similarities[i][k] + " ");
-			}
-			System.out.println();
-		}
-		
+				
 		// Run some evaluations on them
 		int evaluationsToRun = 100;
 		TrialResult result = trial(fittestPredatorPieces, preyPieces, env, evaluationsToRun);
