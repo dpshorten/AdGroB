@@ -23,13 +23,13 @@ public class VectorRunAwayBehaviour extends Behaviour {
 			xdir += (inverseXOffset * scalingFactor);
 			ydir += (inverseYOffset * scalingFactor);
 			
-			System.out.println("offset: " + currentOffset + " inverseX " + inverseXOffset + " inverseY " + inverseYOffset + " scaling " + scalingFactor + " xcont: "+(inverseXOffset * scalingFactor)+" ycont: "+(inverseYOffset * scalingFactor));
+			//System.out.println("offset: " + currentOffset + " inverseX " + inverseXOffset + " inverseY " + inverseYOffset + " scaling " + scalingFactor + " xcont: "+(inverseXOffset * scalingFactor)+" ycont: "+(inverseYOffset * scalingFactor));
 		}
-		System.out.println("Final vector: "+ xdir + ", "+ydir);
+		//System.out.println("Final vector: "+ xdir + ", "+ydir);
 		
 		//Calculate which tile is closest fit to vector
 		if(xdir == 0 && ydir == 0){
-			System.out.println("Decision: stay");
+			//System.out.println("Decision: stay");
 			return 4;
 		}
 		else{
@@ -56,11 +56,11 @@ public class VectorRunAwayBehaviour extends Behaviour {
 			}
 			else{
 				if(absx > absy){
-					System.out.println("Decision: "+(xdir > 0 ? "East" : "West"));
+				//	System.out.println("Decision: "+(xdir > 0 ? "East" : "West"));
 					return (xdir > 0 ? 1 : 3);
 				}
 				else{
-					System.out.println("Decision: "+(ydir > 0 ? "South" : "North"));
+					//System.out.println("Decision: "+(ydir > 0 ? "South" : "North"));
 					return (ydir > 0 ? 2 : 0);
 				}
 			}

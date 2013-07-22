@@ -7,7 +7,7 @@ public class ESPEvolution {
 	static final int numPredators = 3;
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; // 1000
-	static final int evaluationsPerTrial = 1; // 6
+	static final int evaluationsPerTrial = 3; // 6
 	static final int generations = 50;
 	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
@@ -20,6 +20,10 @@ public class ESPEvolution {
 	static final int burstMutationTestLookBackDistance = 5;
 	static final double burstMutationTestRatioOfPopDifference = 0.001;
 	static final int rootOfNumTests = 10;
+	static final double ratioCapturesForNextEpoch = 0.9; 
+	static final int ratioHitsBeforeNextEpoch = 3;
+	static final int numEpochs = 3;
+	static final double[] preySpeeds = {0.5, 0.8, 1};
 
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
@@ -29,26 +33,35 @@ public class ESPEvolution {
 
 	private static int run() {
 
+		int epochNumber = 0;
+		int epochRatioHits = 0;
+		
 		// Initialise a population of genotypes for each predator
 		for (int i = 0; i < numPredators; i++)
 			agentPopulations.add(new ESPPopulation(numHiddenNodes,
 					subPopulationSize));
 
 		Random random = new Random();
-		Environment env = new Environment(boardSize, 10.0);
-
-		Vector<Piece> preyPieces = new Vector<Piece>();
-		//VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
-		StochasticRunAwayBehaviour runAway = new
-				 StochasticRunAwayBehaviour(boardSize, 1);
-		int preyX = random.nextInt(boardSize);
-		int preyY = random.nextInt(boardSize);
-		preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
-
-		int burstMutationTicker = burstMutationWaitBeforeFirst;
+		Environment env = null;
+		
 		Vector<Integer> capturesForEachGeneration = new Vector<Integer>(
 				generations);
+
 		for (int gen = 0; gen < generations; gen++) {
+			
+			env = new Environment(boardSize, preySpeeds[epochNumber]);
+			
+			Vector<Piece> preyPieces = new Vector<Piece>();
+			//VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
+			StochasticRunAwayBehaviour runAway = new
+					 StochasticRunAwayBehaviour(boardSize, 1);
+			int preyX = random.nextInt(boardSize);
+			int preyY = random.nextInt(boardSize);
+			preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
+
+			int burstMutationTicker = burstMutationWaitBeforeFirst;
+			
+			
 			// For each generation, a number of trials are run to get fitness
 			// values for the genotypes
 			int captureCount = 0;
@@ -168,9 +181,9 @@ public class ESPEvolution {
 			// Run the n instance test.
 			int testCaptureCount = 0;
 			int preyPlacementIncrememnt = (int) Math.floor(boardSize
-					/ ((double) 3));
-			for (int preyRow = 0; preyRow < 3; preyRow++) {
-				for (int preyCol = 0; preyCol < 3; preyCol++) {
+					/ ((double) rootOfNumTests));
+			for (int preyRow = 0; preyRow < rootOfNumTests; preyRow++) {
+				for (int preyCol = 0; preyCol < rootOfNumTests; preyCol++) {
 					Vector<Piece> testPreyPieces = new Vector<Piece>();
 					testPreyPieces.add(new Piece(preyRow
 							* preyPlacementIncrememnt, preyCol
@@ -183,7 +196,8 @@ public class ESPEvolution {
 			}
 
 			System.out.println("Generation " + gen + " done: " + captureCount
-					+ " captures, " + testCaptureCount + "/9 test score.");
+					+ " captures, " + testCaptureCount + "/" + rootOfNumTests * rootOfNumTests 
+					+  " test score.");
 
 			// Migration
 			if (gen % 3 == 0) {
@@ -222,6 +236,23 @@ public class ESPEvolution {
 					burstMutationTicker -= 1;
 				}
 			}
+			
+			// Check if we can move onto the next epoch
+			if(testCaptureCount/((double)rootOfNumTests * rootOfNumTests) > ratioCapturesForNextEpoch) {
+				epochRatioHits++;
+				if(epochRatioHits == ratioHitsBeforeNextEpoch) {
+					epochRatioHits = 0;
+					System.out.println("Epoch Change");
+					epochNumber++;
+					for(ESPPopulation pop : agentPopulations) {
+						pop.runBurstMutation(earlyBurstMutationAmountStdDev);
+					}
+					if(epochNumber >= numEpochs) {
+						return gen;
+					}	
+				}
+			}
+			
 		}// generations
 
 		// Compute the genotypal euclidean distances between the predators.
@@ -258,6 +289,7 @@ public class ESPEvolution {
 		}
 
 		// Run some evaluations on them
+		/*
 		int evaluationsToRun = 100;
 		TrialResult result = trial(fittestPredatorPieces, preyPieces, env,
 				evaluationsToRun);
@@ -267,7 +299,7 @@ public class ESPEvolution {
 		for (int i = 0; i < numPredators; i++)
 			System.out.println("Predator " + i + " average fitness:"
 					+ result.avgEvalFitnesses[i]);
-
+	*/
 		// Run the simulation with them to create a log file
 		/*
 		 * for (Piece prey : preyPieces)
@@ -305,9 +337,10 @@ public class ESPEvolution {
 				if (result.preyCaught == 0) {
 					// double fitness = boardSize -
 					// result.finalDistancesFromPrey.elementAt(i);
-					double fitness = result.initialDistancesFromPrey
+					/*double fitness = result.initialDistancesFromPrey
 							.elementAt(i)
-							- result.finalDistancesFromPrey.elementAt(i);
+							- result.finalDistancesFromPrey.elementAt(i);*/
+					double fitness = boardSize - result.finalDistancesFromPrey.elementAt(i);
 					avgEvalFitnesses[i] += fitness;
 				} else {
 					// avgEvalFitnesses[i] += 2 * boardSize;
