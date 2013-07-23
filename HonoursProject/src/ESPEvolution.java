@@ -23,7 +23,7 @@ public class ESPEvolution {
 	static final double ratioCapturesForNextEpoch = 0.9; 
 	static final int ratioHitsBeforeNextEpoch = 3;
 	static final int numEpochs = 3;
-	static final double[] preySpeeds = {0.5, 0.8, 1};
+	static final double[] preySpeeds = {0.1, 0.8, 1};
 
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
