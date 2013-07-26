@@ -1,11 +1,11 @@
-import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.Vector;
 
 
 public class ESPSubPopulation {
 	
-	public static final double migrationSimilarityCutOff = 0.5;
+	public static final double migrationSimilarityCutOff = 0.8;
 	
 	Vector<Genotype> nodeGenotypes;
 	
@@ -46,7 +46,7 @@ public class ESPSubPopulation {
 			//	+ "   " + nodeGenotypes.elementAt(1).getInputWeights().elementAt(0));
 	}
 	
-	public void sendMigrants(ESPSubPopulation otherSubPop, int numMigrants) {
+	public boolean sendMigrants(ESPSubPopulation otherSubPop, int numMigrants) {
 		Collections.sort(this.nodeGenotypes);
 		Collections.reverse(this.nodeGenotypes);
 		Collections.sort(otherSubPop.nodeGenotypes);
@@ -61,6 +61,9 @@ public class ESPSubPopulation {
 			for(int i = 0; i < numMigrants; i++) {
 				otherSubPop.acceptMigrant(this.nodeGenotypes.get(i));
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
