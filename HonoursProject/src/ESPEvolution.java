@@ -13,7 +13,7 @@ public class ESPEvolution {
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
 	static final double lateMutationStdDev = 0.01;
-	static final double earlyBurstMutationAmountStdDev = 0.2;
+	static final double earlyBurstMutationAmountStdDev = 0.3;
 	static final double lateBurstMutationAmountStdDev = 0.05;
 	static final int burstMutationWaitBeforeRepeat = 30;
 	static final int burstMutationWaitBeforeFirst = 5;
@@ -220,7 +220,7 @@ public class ESPEvolution {
 								System.out.println("Migrating " + i + " to "
 										+ j);
 								agentPopulations.get(i).sendMigrants(
-										agentPopulations.get(j), 5);
+										agentPopulations.get(j), 2);
 							}
 						}
 					}
