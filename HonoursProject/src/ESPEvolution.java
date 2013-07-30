@@ -15,6 +15,7 @@ public class ESPEvolution {
 	static final double lateMutationStdDev = 0.01;
 	static final double earlyBurstMutationAmountStdDev = 0.3;
 	static final double lateBurstMutationAmountStdDev = 0.05;
+	static final double newEpochBurstMutationAmountStdDev = 0.2;
 	static final int burstMutationWaitBeforeRepeat = 30;
 	static final int burstMutationWaitBeforeFirst = 5;
 	static final int burstMutationTestLookBackDistance = 5;
@@ -169,7 +170,7 @@ public class ESPEvolution {
 				}
 			}// replacement
 
-			// Construct the 3 fittest predators for the 9 instance test.
+			// Construct the 3 fittest predators for the n instance test.
 			Vector<Piece> testPredatorPieces = new Vector<Piece>();
 			for (int pred = 0; pred < numPredators; pred++) {
 				Vector<Genotype> hiddenNodes = new Vector<Genotype>();
@@ -251,21 +252,21 @@ public class ESPEvolution {
 			}
 
 			// Check if we can move onto the next epoch
-			if (captureCount
-					/ ((double) trialsPerGeneration * evaluationsPerTrial) > ratioCapturesForNextEpoch) {
-				epochRatioHits++;
-				if (epochRatioHits == ratioHitsBeforeNextEpoch) {
+			if (testCaptureCount
+					/ ((double) rootOfNumTests * rootOfNumTests) > ratioCapturesForNextEpoch) {
+				//epochRatioHits++;
+				//if (epochRatioHits == ratioHitsBeforeNextEpoch) {
 					epochRatioHits = 0;
 					epochNumber++;
 					System.out.println("Epoch Change to number " + (epochNumber + 1));
 					burstMutationTicker = burstMutationWaitBeforeFirst;
 					for (ESPPopulation pop : agentPopulations) {
-						// pop.runBurstMutation(earlyBurstMutationAmountStdDev);
+						pop.runBurstMutation(newEpochBurstMutationAmountStdDev);
 					}
 					if (epochNumber >= preySpeeds.length) {
 						return gen;
 					}
-				}
+				//}
 			}
 
 		}// generations

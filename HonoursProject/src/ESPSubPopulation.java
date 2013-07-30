@@ -1,7 +1,5 @@
-
-import java.util.Collections;
 import java.util.Vector;
-
+import java.util.Collections;
 
 public class ESPSubPopulation {
 	
