@@ -11,7 +11,7 @@ public class ESPArtificialNeuralNetworkBehaviour extends Behaviour{
 	
 	// For now it will go for the first prey in the prey vector
 	public int getMove(Point myPos, Vector<Piece> predator, Vector<Piece> prey) {
-		Point offset = Point.getSmallestOffset(myPos, prey.get(0).getPosition(), halfBoardSize);
+		Point offset = Point.getSmallestOffset(myPos, prey.get(0).getPosition(), boardSize);
 		offsetHistory.elementAt(offset.x + halfBoardSize).set(offset.y + halfBoardSize, 
 				offsetHistory.elementAt(offset.x + halfBoardSize).elementAt(offset.y + halfBoardSize) + 1);
 		totalNumberOfDecisions++;
@@ -27,7 +27,7 @@ public class ESPArtificialNeuralNetworkBehaviour extends Behaviour{
 				currentMax = activations[i];
 				indexOfMaximumActivation = i;
 			}
-		}
+		}		
 		return indexOfMaximumActivation;
 	}
 }

@@ -11,15 +11,17 @@ import java.util.Vector;
 public class SimulationResult {
 	public int turns;
 	public int preyCaught;
-	public Vector<Double> distancesFromPrey;
+	public Vector<Double> finalDistancesFromPrey;
+	public Vector<Double> initialDistancesFromPrey;
 	
-	public SimulationResult(int turns, int preyCaught, Vector<Double> distancesFromPrey) {
+	public SimulationResult(int turns, int preyCaught, Vector<Double> finalDistancesFromPrey, Vector<Double> initialDistancesFromPrey) {
 		this.turns = turns;
 		this.preyCaught = preyCaught;
-		this.distancesFromPrey = distancesFromPrey;
+		this.finalDistancesFromPrey = finalDistancesFromPrey;
+		this.initialDistancesFromPrey = initialDistancesFromPrey;
 	}
 	
 	public String toString() {
-		return "turns: " + turns + " prey caught: " + preyCaught + " distances from prey: " + distancesFromPrey;
+		return "turns: " + turns + " prey caught: " + preyCaught + " final distances from prey: " + finalDistancesFromPrey;
 	}
 }

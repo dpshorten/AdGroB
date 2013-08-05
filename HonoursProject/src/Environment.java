@@ -10,6 +10,9 @@ public class Environment {
 	private int maxMoves;
 	
 	boolean Gameover = false;
+	
+	private double preyMovesMultiplier;
+	private double preyTurnIncrement;
 
 	Vector<Piece> predators = new Vector<Piece>();
 	Vector<Piece> prey = new Vector<Piece>();
@@ -26,8 +29,10 @@ public class Environment {
 		board = new int[boardSize][boardSize];
 	}
 
-	public Environment(int size) {
+	public Environment(int size, double aPreyMovesMultiplier) {
 		boardSize = size;
+		preyMovesMultiplier = aPreyMovesMultiplier;
+		preyTurnIncrement = 1/preyMovesMultiplier;
 		maxMoves = 8 * boardSize;
 		board = new int[boardSize][boardSize];
 	}
@@ -98,7 +103,7 @@ public class Environment {
 	}
 
 	public SimulationResult run(boolean shouldWriteToFile, boolean shouldAppendFile)
-	{
+	{	
 		clearBoard();
 		// Clear the log file.
 		if (shouldWriteToFile & (!shouldAppendFile)) {
@@ -118,6 +123,20 @@ public class Environment {
 			drawWorld();
 		}
 
+		//Record the distances from each predator to the prey
+		//For now only looks at closest prey
+		Vector<Double> initialDistancesFromPrey = new Vector<Double>();
+		for(Piece predator : predators){
+			double minDist = Double.MAX_VALUE;
+			for(Piece prey : this.caughtPieces){
+				double dist = Point.getDistance(predator.getPosition(), prey.getPosition(), boardSize);
+				if(dist < minDist)
+					minDist = dist;
+			}
+			initialDistancesFromPrey.add(minDist);
+		}
+		
+		double preyTurnCounter = 0;
 		int preyCaught = 0;
 		int i = 0;
 		for (i = 0; i < maxMoves; i++) {
@@ -126,7 +145,14 @@ public class Environment {
 			clearBoard(poppedPiece); 
 			// Gets a position update for a piece.
 			try {
-				poppedPiece.makeMove();
+				if(poppedPiece.isPrey) {
+					while(preyTurnCounter < i) {
+						poppedPiece.makeMove();
+						preyTurnCounter += preyTurnIncrement;
+					}
+				} else {
+					poppedPiece.makeMove();
+				}
 			} catch (Exception e) {
 				System.out.println("Error : " + e);
 			}
@@ -173,7 +199,7 @@ public class Environment {
 		}
 		
 		//Make a vector containing the predators distances from the prey
-		Vector<Double> distancesFromPrey = new Vector<Double>();
+		Vector<Double> finalDistancesFromPrey = new Vector<Double>();
 		for(Piece predator : predators){
 			double minDist = Double.MAX_VALUE;
 			for(Piece prey : this.caughtPieces){
@@ -181,8 +207,8 @@ public class Environment {
 				if(dist < minDist)
 					minDist = dist;
 			}
-			distancesFromPrey.add(minDist);
+			finalDistancesFromPrey.add(minDist);
 		}
-		return new SimulationResult(i + 1, preyCaught, distancesFromPrey);
+		return new SimulationResult(i + 1, preyCaught, finalDistancesFromPrey, initialDistancesFromPrey);
 	}
 }

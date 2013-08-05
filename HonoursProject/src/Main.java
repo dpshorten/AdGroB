@@ -7,7 +7,7 @@ public class Main
 		final int boardSize = 10;
 		final int numPrey = 1;
 		
-		Environment env = new Environment(boardSize);
+		Environment env = new Environment(boardSize, 1);
 		
 		Vector<Piece> predatorPieces = new Vector<Piece>();
 		Vector<Piece> preyPieces = new Vector<Piece>();
@@ -46,6 +46,7 @@ public class Main
 		env.setPieces(predatorPieces, preyPieces);
 		
 		SimulationResult result = env.run(true, false);
+		
 		System.out.println("Board size: " + boardSize);
 		System.out.println(result.preyCaught);
 	}
