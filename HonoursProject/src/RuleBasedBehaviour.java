@@ -23,6 +23,24 @@ public class RuleBasedBehaviour extends Behaviour
 		
 		int index = getIndex(myPos, predator) + 3;
 		
+		for(Piece Prey : prey)
+		{	
+			if(myPos.x == Prey.getPositionX())
+			{
+				if(myPos.y +1 == Prey.getPositionY())
+					return 2;
+				else if(myPos.y -1 == Prey.getPositionY())
+					return 0;
+			}
+			else if(myPos.y == Prey.getPositionY())
+			{
+				if(myPos.x +1 == Prey.getPositionX())
+					return 1;
+				else if(myPos.x -1 == Prey.getPositionX())
+					return 3;
+			}
+		}
+		
 		//======================================  GROUP 1 ==================================================
 		
 		if(index % 3 == 0)
@@ -30,7 +48,7 @@ public class RuleBasedBehaviour extends Behaviour
 			// Prey is to the left of predator
 			if(thePrey.pos.x < myPos.x)
 			{
-				if ( Math.abs(thePrey.pos.x - myPos.x) > Math.abs(thePrey.pos.x - myPos.x + boardSize) )
+				if ( Math.abs(thePrey.pos.x - myPos.x) < Math.abs(thePrey.pos.x - myPos.x + boardSize) )
 					move = 3;
 				else
 					move = 1;
@@ -39,7 +57,7 @@ public class RuleBasedBehaviour extends Behaviour
 			// Prey is to the right of predator
 			else if(thePrey.pos.x > myPos.x)
 			{
-				if ( Math.abs(thePrey.pos.x + myPos.x) < Math.abs(thePrey.pos.x + myPos.x - boardSize) )
+				if ( Math.abs(thePrey.pos.x + myPos.x) > Math.abs(thePrey.pos.x + myPos.x - boardSize) )
 					move = 3;
 				else
 					move = 1;
@@ -71,7 +89,7 @@ public class RuleBasedBehaviour extends Behaviour
 
 		else if (index % 2 == 0)
 		{
-			if(Math.abs(thePrey.pos.x - myPos.x) > Math.abs(thePrey.pos.y - myPos.y))
+			if(Math.abs(thePrey.pos.x - myPos.x) < Math.abs(thePrey.pos.y - myPos.y))
 			{
 				move = 1;
 			}
