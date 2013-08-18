@@ -179,4 +179,19 @@ public class Genotype implements Comparable<Genotype>
 		}
 		return distanceSquared;
 	}
+	
+	public double averageWeightDistance(Genotype other){
+		double distance = 0;
+		
+		for(int i=0; i<inputWeights.size(); i++){
+			distance += Math.abs(inputWeights.elementAt(i) - other.inputWeights.elementAt(i));
+		}
+		for(int i=0; i<outputWeights.size(); i++){
+			distance += Math.abs(outputWeights.elementAt(i) - other.outputWeights.elementAt(i));
+		}
+		
+		distance = distance / (inputWeights.size() + outputWeights.size());
+		
+		return distance;
+	}
 }

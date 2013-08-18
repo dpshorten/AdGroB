@@ -65,6 +65,45 @@ public class ESPSubPopulation {
 		}
 	}
 	
+	public boolean sendMigrantsUsingAvgWeightsDistance(ESPSubPopulation otherSubPop, int numMigrants){
+
+		//Get a random sample from each subpopulation with no repeated elements
+		Vector<Genotype> thisCopy = new Vector<Genotype>();
+		thisCopy.addAll(nodeGenotypes);
+		Vector<Genotype> otherCopy = new Vector<Genotype>();
+		otherCopy.addAll(otherSubPop.nodeGenotypes);
+		Vector<Genotype> thisSample = new Vector<Genotype>();
+		Vector<Genotype> otherSample = new Vector<Genotype>();
+		
+		int randomSampleSize = nodeGenotypes.size()/4;
+		
+		for(int i=0; i<randomSampleSize; i++){
+			int index = (int) Math.round(Math.random()*(thisCopy.size()-1));
+			thisSample.add(thisCopy.elementAt(index));
+			otherSample.add(otherCopy.elementAt(index));
+			thisCopy.remove(index);
+			otherCopy.remove(index);
+		}
+		
+		double distanceSum = 0;
+		for(Genotype t : thisSample){
+			for(Genotype o : otherSample){
+				distanceSum += t.averageWeightDistance(o);
+			}
+		}
+		
+		distanceSum = distanceSum / (thisSample.size()*otherSample.size());
+		
+		if(distanceSum < 0.37) {
+			for(int i = 0; i < numMigrants; i++) {
+				otherSubPop.acceptMigrant(thisSample.get((int)Math.round(Math.random()*(thisSample.size()-1))));
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	// NB: assumes that nodeGenotypes is sorted in ascending order.
 	public void acceptMigrant(Genotype Migrant) {
 		this.nodeGenotypes.remove(this.nodeGenotypes.size() - 1);

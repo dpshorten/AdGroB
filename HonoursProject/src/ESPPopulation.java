@@ -78,7 +78,7 @@ public class ESPPopulation {
 		int numMigrationsDone = 0;
 		for(ESPSubPopulation subPop : this.subPopulations) {
 			for(ESPSubPopulation otherSubPop : otherPopulation.subPopulations) {
-				if(subPop.sendMigrants(otherSubPop, numMigrantsPerSubPop)) {
+				if(subPop.sendMigrantsUsingAvgWeightsDistance(otherSubPop, numMigrantsPerSubPop)) {
 					numMigrationsDone++;
 				}
 			}
