@@ -44,7 +44,7 @@ public static int run( ) {
 	// Create random Genotypes for this generation	
 for(int j = 0 ; j < populationSize; j ++)
 {
-	genotypesUsed.add(new Genotype());
+	genotypesUsed.add(new Genotype(4.0f));
 }
 
 

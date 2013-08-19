@@ -28,7 +28,19 @@ public class Genotype implements Comparable<Genotype>
 		for(int i = 0; i < 2; i++) {
 			inputWeights.add(new Double(random.nextDouble() - 0.5));
 		}
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < 5; i++) {
+			outputWeights.add(new Double(random.nextDouble() - 0.5));
+		}
+	}
+	
+	public Genotype(float outputNodes) {
+		inputWeights = new Vector<Double>();
+		outputWeights = new Vector<Double>();
+		Random random = new Random();
+		for(int i = 0; i < 2; i++) {
+			inputWeights.add(new Double(random.nextDouble() - 0.5));
+		}
+		for(int i = 0; i < outputNodes; i++) {
 			outputWeights.add(new Double(random.nextDouble() - 0.5));
 		}
 	}
@@ -179,7 +191,6 @@ public class Genotype implements Comparable<Genotype>
 		}
 		return distanceSquared;
 	}
-<<<<<<< HEAD
 
 	public double getFitness() {
 		return fitness;
@@ -187,7 +198,7 @@ public class Genotype implements Comparable<Genotype>
 
 	public void setFitness(double fitness) {
 		this.fitness = fitness;
-=======
+	}
 	
 	public double averageWeightDistance(Genotype other){
 		double distance = 0;
@@ -202,6 +213,5 @@ public class Genotype implements Comparable<Genotype>
 		distance = distance / (inputWeights.size() + outputWeights.size());
 		
 		return distance;
->>>>>>> d8b1fa7679212fae92bb5b1735a286d605457448
 	}
 }
