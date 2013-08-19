@@ -9,12 +9,16 @@ public class SimpleNeuralEvolution
 	static final int populationSize = 1000;
 	static final int trialsPerGeneration = 10; // 1000
 static final int evaluationsPerTrial = 6; // 6
-static final int generations = 50;
+static final int generations = 10;
 static final int boardSize = 10;
 static final double mutationProbability = 0.4;
 static final double earlyMutationStdDev = 0.05;
 static final double lateMutationStdDev = 0.01;
 static final int rootOfNumTests = 10;
+
+	static int stagnator = 0;
+	static int Stagnatingcaptures = 0;
+	static Random random = new Random();
 
 static Vector<Genotype> genotypesUsed = new Vector<Genotype>();
 static Vector<Genotype> bestGenotypes = new Vector<Genotype>();
@@ -87,7 +91,7 @@ for(int j = 0 ; j < populationSize; j ++)
 			if (captures > 0)
 					newFitness = (boardSize * (captureCount+1)) - 2*preyPieces.elementAt(0).getDistance(predatorPieces.elementAt(0));
 			else
-				if(preyPieces.elementAt(0).getDistance(predatorPieces.elementAt(0)) < 10)
+				if(preyPieces.elementAt(0).getDistance(predatorPieces.elementAt(0)) < (boardSize / 3))
 					newFitness = boardSize - Math.pow((preyPieces.elementAt(0).getDistance(predatorPieces.elementAt(0))),2)/boardSize;
 				
 			// Update the genotypes fitnesses with the average fitness over
@@ -185,9 +189,31 @@ for(int j = 0 ; j < populationSize; j ++)
 				System.out.println("Generation " + gen + " done: " + captureCount
 						+ " captures, " + testCaptureCount + "/" + rootOfNumTests
 						* rootOfNumTests + " test score.");// and best Fitness of : " + bestGenotypes.elementAt(0).getFitness());
+				
+				System.out.println("Stagnator = " + stagnator + ", Stagnatingcaptures and testCaptureCount = " + Stagnatingcaptures + "," + testCaptureCount);
 		
-				SimpleNeuralNetwork ann = new SimpleNeuralNetwork(bestGenotypes);
-				ann.saveNetwork("SimplePredatorBehaviour");
+				if(Stagnatingcaptures == 0)
+						Stagnatingcaptures = testCaptureCount;
+				else if(Stagnatingcaptures == testCaptureCount)
+				{
+					stagnator++;
+					System.out.println("Stagnating!!!" + stagnator);
+				}
+				else
+				{
+					Stagnatingcaptures = testCaptureCount;
+					stagnator = 0;
+				}
+					
+				if(stagnator == 3)
+				{
+					stagnator = 0;
+					burstMutate();
+				}
+				else
+				{
+					SimpleNeuralNetwork ann = new SimpleNeuralNetwork(bestGenotypes);
+					ann.saveNetwork("SimplePredatorBehaviour");
 					
 					int i = 0;
 					while(genotypesUsed.size() < populationSize)
@@ -199,14 +225,63 @@ for(int j = 0 ; j < populationSize; j ++)
 							i++;
 						
 					}
-					bestGenotypes.clear();
+					
+				}
+				
+				bestGenotypes.clear();
 		
 	}
 	
 	return 1;
 }
 
-//Run a set of evaluations on the predators to get fitness values for the
+private static void burstMutate() 
+{
+	System.out.println("Running burst mutation");
+	Vector<Genotype> newGenotypes = new Vector<Genotype>();
+	
+	for(int i = 0 ; i < 15 ; i++)
+	{
+		newGenotypes.add(bestGenotypes.elementAt(i));
+	}
+	
+	
+	double mutationStdDev = 0.8;
+	//System.out.println(bestGenotypes.size());
+	int numberOfOffspring = bestGenotypes.size();
+	int replacementIndex = bestGenotypes.size() - 1;
+	for (int i = 0; i < numberOfOffspring; i++) 
+	{
+		Genotype parent1 = bestGenotypes.elementAt(random.nextInt(bestGenotypes.size()-1));
+		Genotype parent2 = bestGenotypes.elementAt(random.nextInt(bestGenotypes.size()-1));
+		Genotype child = Genotype.crossover(parent1, parent2);
+		if (random.nextDouble() < mutationProbability) {
+			child.mutate(mutationStdDev);
+		}
+		bestGenotypes.remove(replacementIndex);
+		bestGenotypes.add(replacementIndex, child);
+		replacementIndex--;
+	}
+	
+	SimpleNeuralNetwork ann = new SimpleNeuralNetwork(bestGenotypes);
+	ann.saveNetwork("SimplePredatorBehaviour");
+	
+	int i = 0;
+	while(genotypesUsed.size() < populationSize)
+	{
+		genotypesUsed.add(bestGenotypes.elementAt(i));
+		if(i == 99)
+			i=0;
+		else
+			i++;
+		
+	}
+	
+	
+	
+}
+
+	//Run a set of evaluations on the predators to get fitness values for the
 	// genotypes
 	private static TrialResult trial(Vector<Piece> predatorPieces,
 			Vector<Piece> preyPieces, Environment env, int evaluations) {
