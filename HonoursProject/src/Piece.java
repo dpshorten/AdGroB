@@ -63,6 +63,12 @@ public class Piece
 		
 		ensurePositionIsInBounds();
 	}
+	
+	double getDistance(Piece otherPiece)
+	{
+		double distance = Math.sqrt(Math.pow(this.getPositionX() - otherPiece.getPositionX(), 2) + Math.pow(this.getPositionY() - otherPiece.getPositionY(), 2));
+		return distance;
+	}
 
 	private void ensurePositionIsInBounds ()
 	{

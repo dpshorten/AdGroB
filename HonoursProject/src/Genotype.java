@@ -28,7 +28,7 @@ public class Genotype implements Comparable<Genotype>
 		for(int i = 0; i < 2; i++) {
 			inputWeights.add(new Double(random.nextDouble() - 0.5));
 		}
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 4; i++) {
 			outputWeights.add(new Double(random.nextDouble() - 0.5));
 		}
 	}
@@ -137,22 +137,22 @@ public class Genotype implements Comparable<Genotype>
 	//Include a new fitness value in the average fitness of the genotype
 	public void updateFitness(double newFitness){
 		if(fitnessSourceCount == 0){
-			fitness = newFitness;
+			setFitness(newFitness);
 			fitnessSourceCount++;
 		}
 		else{
-			fitness = (fitness * fitnessSourceCount + newFitness) / (double) (fitnessSourceCount + 1);
+			setFitness((getFitness() * fitnessSourceCount + newFitness) / (double) (fitnessSourceCount + 1));
 			fitnessSourceCount++;
 		}
 	}
 	
 	@Override
 	public int compareTo(Genotype other) {
-		if(fitness > other.fitness)
+		if(getFitness() > other.getFitness())
 			return 1;
-		else if (fitness < other.fitness)
+		else if (getFitness() < other.getFitness())
 			return -1;
-		else if (fitness == other.fitness)
+		else if (getFitness() == other.getFitness())
 			return 0;
 		else{
 			System.out.println("Something went wrong with the genotype comparisons! (Probably NaN related)");
@@ -178,5 +178,13 @@ public class Genotype implements Comparable<Genotype>
 			distanceSquared += Math.pow(outputWeights.elementAt(i).doubleValue() - otherOutputWeights.elementAt(i).doubleValue(), 2);
 		}
 		return distanceSquared;
+	}
+
+	public double getFitness() {
+		return fitness;
+	}
+
+	public void setFitness(double fitness) {
+		this.fitness = fitness;
 	}
 }

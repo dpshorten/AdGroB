@@ -27,6 +27,7 @@ public class HiddenNode extends Node{
 		}
 		double sigma = sigmoid(t);
 		for(int i = 0; i < outputWeights.size(); i++) {
+			if(number < 10)
 			children.get(i).receiveInput(sigma * outputWeights.get(i), number);
 		}
 		return sigma;
