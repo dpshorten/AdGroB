@@ -179,6 +179,7 @@ public class Genotype implements Comparable<Genotype>
 		}
 		return distanceSquared;
 	}
+<<<<<<< HEAD
 
 	public double getFitness() {
 		return fitness;
@@ -186,5 +187,21 @@ public class Genotype implements Comparable<Genotype>
 
 	public void setFitness(double fitness) {
 		this.fitness = fitness;
+=======
+	
+	public double averageWeightDistance(Genotype other){
+		double distance = 0;
+		
+		for(int i=0; i<inputWeights.size(); i++){
+			distance += Math.abs(inputWeights.elementAt(i) - other.inputWeights.elementAt(i));
+		}
+		for(int i=0; i<outputWeights.size(); i++){
+			distance += Math.abs(outputWeights.elementAt(i) - other.outputWeights.elementAt(i));
+		}
+		
+		distance = distance / (inputWeights.size() + outputWeights.size());
+		
+		return distance;
+>>>>>>> d8b1fa7679212fae92bb5b1735a286d605457448
 	}
 }
