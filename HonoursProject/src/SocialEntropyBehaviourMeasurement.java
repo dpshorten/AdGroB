@@ -6,7 +6,7 @@ public class SocialEntropyBehaviourMeasurement {
 	private static final int numberOfSimulations = 1000;
 	
 	// In the returned double[][]: [x][y] is the similarity of predators x and y.
-	public static double[][] measureSimularity(Vector<Piece> predators, int boardSize, Environment env) {
+	public static double[][] measureSimilarity(Vector<Piece> predators, int boardSize, Environment env) {
 
 		int halfBoardSize = (int)Math.floor(boardSize/((double)2));
 		for (Piece predator : predators) {
