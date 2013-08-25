@@ -74,13 +74,13 @@ public class ESPPopulation {
 		}
 	}
 	
+	//Send numMigrantsPerSubPop random migrants from each subpopulation to each other subpopulation
 	public void sendMigrants(ESPPopulation otherPopulation, int numMigrantsPerSubPop) {
 		int numMigrationsDone = 0;
 		for(ESPSubPopulation subPop : this.subPopulations) {
 			for(ESPSubPopulation otherSubPop : otherPopulation.subPopulations) {
-				if(subPop.sendMigrantsUsingAvgWeightsDistance(otherSubPop, numMigrantsPerSubPop)) {
-					numMigrationsDone++;
-				}
+				subPop.sendMigrants(otherSubPop, numMigrantsPerSubPop);
+				numMigrationsDone++;
 			}
 		}
 		System.out.println(numMigrationsDone + " migrations done");

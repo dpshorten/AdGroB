@@ -30,8 +30,12 @@ public class ESPEvolution {
 	public static void main(String[] args) {
 		run(true);
 	}
+	
+	public static int run(boolean doMigration){
+		return run(doMigration, true, true);
+	}
 
-	public static int run(boolean doMigration) {
+	public static int run(boolean doMigration, boolean useBehaviourDistance, boolean useGenotypeDistance) {
 		
 		//refresh the agent populations vector
 		agentPopulations = new Vector<ESPPopulation>();
@@ -175,23 +179,19 @@ public class ESPEvolution {
 			for (int pred = 0; pred < numPredators; pred++) {
 				Vector<Genotype> hiddenNodes = new Vector<Genotype>();
 				for (int node = 0; node < numHiddenNodes; node++) {
-					hiddenNodes
-							.add(agentPopulations.elementAt(pred)
+					hiddenNodes.add(agentPopulations.elementAt(pred)
 									.getSubPopulationForNode(node)
 									.getFittestGenotype());
 				}
 
-				ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(
-						hiddenNodes);
-				ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
-						boardSize, ann);
-				testPredatorPieces
-						.add(new Piece(5, 5, false, env, annBehaviour));
+				ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
+				ESPArtificialNeuralNetworkBehaviour annBehaviour = 
+					new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
+				testPredatorPieces.add(new Piece(5, 5, false, env, annBehaviour));
 			}
 			// Run the n instance test.
 			int testCaptureCount = 0;
-			int preyPlacementIncrememnt = (int) Math.floor(boardSize
-					/ ((double) rootOfNumTests));
+			int preyPlacementIncrememnt = (int) Math.floor(boardSize / ((double) rootOfNumTests));
 			for (int preyRow = 0; preyRow < rootOfNumTests; preyRow++) {
 				for (int preyCol = 0; preyCol < rootOfNumTests; preyCol++) {
 					Vector<Piece> testPreyPieces = new Vector<Piece>();
@@ -210,18 +210,60 @@ public class ESPEvolution {
 					* rootOfNumTests + " test score.");
 
 			// Migration
+			final int startingGen = 15;
+			final int genInterval = 3;
+			final int numMigrants = 2;
+			final double behaviourSimilarityThreshhold = 0.65;
+			final double genotypeDistanceThreshhold = 0.37;
+			
 			if (doMigration) {
-				if (gen % 3 == 0) {
-					double[][] similarities = SocialEntropyBehaviourMeasurement
-							.measureSimularity(testPredatorPieces, boardSize,
-									env);
-					for (int i = 0; i < similarities.length; i++) {
-						for (int j = 0; j < similarities[0].length; j++) {
-							if (similarities[i][j] > 0.65 & gen > 15) {
-								System.out.println("Migrating " + i + " to "
-										+ j);
-								agentPopulations.get(i).sendMigrants(
-										agentPopulations.get(j), 2);
+				if (gen % genInterval == 0 && gen > startingGen) {
+					if(useBehaviourDistance){
+						double[][] similarities = SocialEntropyBehaviourMeasurement.measureSimilarity(testPredatorPieces, boardSize, env);
+						for (int i = 0; i < numPredators; i++) {
+							for (int j = 0; j < numPredators; j++) {
+								if (similarities[i][j] > behaviourSimilarityThreshhold) {
+									System.out.println("Migrating " + i + " to " + j);
+									if(useGenotypeDistance){
+										int migrantCount = 0;
+										for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
+											for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
+												if(subPopI.averageWeightDistance(subPopJ) < genotypeDistanceThreshhold){
+													subPopI.sendMigrants(subPopJ, numMigrants);
+													migrantCount++;
+												}
+											}
+										}
+										System.out.println(migrantCount+" migrations done");
+									}
+									else{
+										agentPopulations.get(i).sendMigrants(agentPopulations.get(j), numMigrants);
+									}
+								}
+							}
+						}
+					}
+					else if (useGenotypeDistance){
+						for (int i = 0; i < numPredators; i++) {
+							for (int j = 0; j < numPredators; j++) {
+								int migrantCount = 0;
+								for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
+									for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
+										if(subPopI.averageWeightDistance(subPopJ) < genotypeDistanceThreshhold){
+											subPopI.sendMigrants(subPopJ, numMigrants);
+											migrantCount++;
+										}
+									}
+								}
+								System.out.println(migrantCount+" migrations done");
+							}
+						}
+					}
+					else{
+						for (int i = 0; i < numPredators; i++) {
+							for (int j = 0; j < numPredators; j++) {
+									System.out.println("Migrating " + i + " to " + j);
+									agentPopulations.get(i).sendMigrants(agentPopulations.get(j), numMigrants);
 							}
 						}
 					}
