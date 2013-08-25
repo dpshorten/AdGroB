@@ -14,12 +14,12 @@ import pygame
 
 
 # Pixel length of the square cells, this must always be even.
-CELLLENGTH = 8
+CELLLENGTH = 10
 # Frames per second.
 FRAMERATE = 20
 BACKGROUND_COLOR = (255, 255, 255)
 LINE_COLOR = (0, 0, 255)
-PREY_COLOR = (0, 255, 0)
+PREY_COLOR = (0, 0, 255)
 PREDATOR_COLOR = (255, 0, 0)
 
 inputFile = open("../log.txt")

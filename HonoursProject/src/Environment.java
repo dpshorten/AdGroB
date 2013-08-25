@@ -13,6 +13,8 @@ public class Environment {
 	
 	private double preyMovesMultiplier = 1;
 	private double preyTurnIncrement = 1;
+	
+	private int numPredators = 3;
 
 	Vector<Piece> predators = new Vector<Piece>();
 	Vector<Piece> prey = new Vector<Piece>();
@@ -156,16 +158,18 @@ public class Environment {
 			try {
 				if(poppedPiece.isPrey) {
 					//System.out.println("Prey popped");
-					while(preyTurnCounter < i) {
+					//System.out.println("counters " + i + " " + preyTurnCounter);
+					while((numPredators + 1) * preyTurnCounter < i) {
 						//System.out.println("Moving Prey");
 						poppedPiece.makeMove();
-						//System.out.println("Prey Moved : " + preyTurnCounter + " - " + i);
+						//System.out.println("Prey Moved : " + poppedPiece.getPositionX() + "  " + poppedPiece.getPositionY());
 						preyTurnCounter += preyTurnIncrement;
 					}
 				} else {
 					
 					//System.out.println("Predator popped \nMoving Predator");
 					poppedPiece.makeMove();
+					//System.out.println("Predator Moved : " + poppedPiece.getPositionX() + "  " + poppedPiece.getPositionY());
 				}
 			} catch (Exception e) {
 				System.out.println("Error : " + e);

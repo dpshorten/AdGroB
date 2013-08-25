@@ -104,6 +104,15 @@ public class ESPSubPopulation {
 		}
 	}
 	
+	public boolean sendMigrantsUsingSpray(ESPSubPopulation otherSubPop, int numMigrants) {
+		Collections.sort(this.nodeGenotypes);
+		Collections.reverse(this.nodeGenotypes);
+		Collections.sort(otherSubPop.nodeGenotypes);
+		Collections.reverse(otherSubPop.nodeGenotypes);
+		otherSubPop.acceptMigrant(this.nodeGenotypes.get(0));
+		return true;
+	}
+	
 	// NB: assumes that nodeGenotypes is sorted in ascending order.
 	public void acceptMigrant(Genotype Migrant) {
 		this.nodeGenotypes.remove(this.nodeGenotypes.size() - 1);

@@ -6,7 +6,7 @@ public class SimulationsOfSavedANNs {
 	public static void main(String[] args) {
 		int boardSize = 100;
 		Random random = new Random();
-		Environment env = new Environment(boardSize, 10.0);
+		Environment env = new Environment(boardSize, 1.0);
 		
 		final int simulations = 10;
 		for (int i = 0; i < simulations; i++) {
