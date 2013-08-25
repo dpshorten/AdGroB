@@ -87,14 +87,10 @@ public class ESPPopulation {
 	}
 	
 	public void sendSprayMigrants(ESPPopulation otherPopulation, int numMigrantsPerSubPop) {
-		int numMigrationsDone = 0;
 		for(ESPSubPopulation subPop : this.subPopulations) {
 			for(ESPSubPopulation otherSubPop : otherPopulation.subPopulations) {
-				if(subPop.sendMigrantsUsingSpray(otherSubPop, numMigrantsPerSubPop)) {
-					numMigrationsDone++;
-				}
+				subPop.sendMigrantsUsingSpray(otherSubPop, numMigrantsPerSubPop);
 			}
 		}
-		System.out.println(numMigrationsDone + " migrations done");
 	}
 }

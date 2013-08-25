@@ -29,7 +29,7 @@ public class ESPEvolution {
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
 	public static void main(String[] args) {
-		run(true);
+		run(true, true, false);
 	}
 	
 	public static int run(boolean doMigration){
@@ -175,6 +175,8 @@ public class ESPEvolution {
 				}
 			}// replacement
 
+			capturesForEachGeneration.add(captureCount);
+			
 			// Construct the fittest predators for the n instance test.
 			Vector<Piece> testPredatorPieces = new Vector<Piece>();
 			for (int pred = 0; pred < numPredators; pred++) {
@@ -223,13 +225,31 @@ public class ESPEvolution {
 					+ " captures, " + testCaptureCount + "/" + rootOfNumTests
 					* rootOfNumTests + " test score.");
 
+			// Check if we can move onto the next epoch
+			if (testCaptureCount / ((double) rootOfNumTests * rootOfNumTests) > ratioCapturesForNextEpoch) {
+				// epochRatioHits++;
+				// if (epochRatioHits == ratioHitsBeforeNextEpoch) {
+				epochRatioHits = 0;
+				epochNumber++;
+				System.out.println("Epoch Change to number "
+						+ (epochNumber + 1));
+				burstMutationTicker = burstMutationWaitBeforeFirst;
+				for (ESPPopulation pop : agentPopulations) {
+					pop.runBurstMutation(newEpochBurstMutationAmountStdDev);
+				}
+				if (epochNumber >= preySpeeds.length) {
+					break;
+				}
+				continue;
+			}
+
 			// Migration
-			final int startingGen = 15;
-			final int genInterval = 3;
+			final int startingGen = 5;
+			final int genInterval = 4;
 			final int numMigrants = 2;
-			final double behaviourSimilarityThreshhold = 0.65;
+			final double behaviourSimilarityThreshhold = 0.5;
 			final double genotypeDistanceThreshhold = 0.37;
-			
+
 			if (doMigration) {
 				if (gen % genInterval == 0 && gen > startingGen) {
 					if(useBehaviourDistance){
@@ -251,7 +271,8 @@ public class ESPEvolution {
 										System.out.println(migrantCount+" migrations done");
 									}
 									else{
-										agentPopulations.get(i).sendMigrants(agentPopulations.get(j), numMigrants);
+										// NB: Note the change to the spraying method.
+										agentPopulations.get(i).sendSprayMigrants(agentPopulations.get(j), numMigrants);
 									}
 								}
 							}
@@ -284,7 +305,6 @@ public class ESPEvolution {
 				}
 			}
 			// If the improvement is stagnating, burst mutation is run.
-			capturesForEachGeneration.add(captureCount);
 			if (gen >= burstMutationTestLookBackDistance) {
 				if ((burstMutationTicker <= 0)
 						& (capturesForEachGeneration.get(gen) < (capturesForEachGeneration
@@ -307,23 +327,7 @@ public class ESPEvolution {
 				}
 			}
 
-			// Check if we can move onto the next epoch
-			if (testCaptureCount
-					/ ((double) rootOfNumTests * rootOfNumTests) > ratioCapturesForNextEpoch) {
-				//epochRatioHits++;
-				//if (epochRatioHits == ratioHitsBeforeNextEpoch) {
-					epochRatioHits = 0;
-					epochNumber++;
-					System.out.println("Epoch Change to number " + (epochNumber + 1));
-					burstMutationTicker = burstMutationWaitBeforeFirst;
-					for (ESPPopulation pop : agentPopulations) {
-						pop.runBurstMutation(newEpochBurstMutationAmountStdDev);
-					}
-					if (epochNumber >= preySpeeds.length) {
-						break;
-					}
-				//}
-			}
+			
 
 		}// generations
 

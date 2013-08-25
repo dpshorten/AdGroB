@@ -1,13 +1,13 @@
 
 public class BehaviourTests {
-	private static final int numRuns = 5;
+	private static final int numRuns = 20;
 	
 	public static void main(String[] args) {
 		int[] withMigration = new int[numRuns]; 
 		int[] withoutMigration = new int[numRuns]; 
 		for(int i = 0; i < numRuns; i++) {
-			withMigration[i] = ESPEvolution.run(true);
-			withoutMigration[i] =  ESPEvolution.run(false);
+			withMigration[i] = ESPEvolution.run(true, true, false);
+			withoutMigration[i] =  ESPEvolution.run(false, false, false);
 		}
 		System.out.println("\n\nSummary\n");
 		System.out.println("Without Migration");
