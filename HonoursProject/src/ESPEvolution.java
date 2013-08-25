@@ -4,11 +4,11 @@ import java.util.Random;
 
 public class ESPEvolution {
 	static final int numHiddenNodes = 10;
-	static final int numPredators = 3;
+	static final int numPredators = 4;
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; // 1000
 	static final int evaluationsPerTrial = 3; // 6
-	static final int generations = 400;
+	static final int generations = 50;
 	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
@@ -16,7 +16,7 @@ public class ESPEvolution {
 	static final double earlyBurstMutationAmountStdDev = 0.3;
 	static final double lateBurstMutationAmountStdDev = 0.05;
 	static final double newEpochBurstMutationAmountStdDev = 0.2;
-	static final int burstMutationWaitBeforeRepeat = 30;
+	static final int burstMutationWaitBeforeRepeat = 20;
 	static final int burstMutationWaitBeforeFirst = 5;
 	static final int burstMutationTestLookBackDistance = 5;
 	static final double burstMutationTestRatioOfTrialsDifference = 0.05;
@@ -24,6 +24,7 @@ public class ESPEvolution {
 	static final double ratioCapturesForNextEpoch = 0.8;
 	static final int ratioHitsBeforeNextEpoch = 2;
 	static final double[] preySpeeds = { 0.01, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7, 0.9, 1};
+	static final int[] predatorPositions = { 30, 30, boardSize - 30, 30, 30, boardSize - 30, boardSize - 30, boardSize - 30};
 
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
@@ -58,7 +59,7 @@ public class ESPEvolution {
 
 		for (int gen = 0; gen < generations; gen++) {
 
-			env = new Environment(boardSize, preySpeeds[epochNumber]);
+			env = new Environment(boardSize, preySpeeds[epochNumber], numPredators);
 
 			Vector<Piece> preyPieces = new Vector<Piece>();
 			// VectorRunAwayBehaviour runAway = new
@@ -96,7 +97,7 @@ public class ESPEvolution {
 					ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
 							boardSize, ann);
 					predatorPieces
-							.add(new Piece(5, 5, false, env, annBehaviour));
+							.add(new Piece(predatorPositions[2*pred], predatorPositions[2*pred + 1], false, env, annBehaviour));
 					usedGenotypes.add(hiddenNodes);
 				}
 
@@ -174,7 +175,7 @@ public class ESPEvolution {
 				}
 			}// replacement
 
-			// Construct the 3 fittest predators for the n instance test.
+			// Construct the fittest predators for the n instance test.
 			Vector<Piece> testPredatorPieces = new Vector<Piece>();
 			for (int pred = 0; pred < numPredators; pred++) {
 				Vector<Genotype> hiddenNodes = new Vector<Genotype>();
@@ -187,7 +188,7 @@ public class ESPEvolution {
 				ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
 				ESPArtificialNeuralNetworkBehaviour annBehaviour = 
 					new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
-				testPredatorPieces.add(new Piece(5, 5, false, env, annBehaviour));
+				testPredatorPieces.add(new Piece(predatorPositions[2*pred], predatorPositions[2*pred + 1], false, env, annBehaviour));
 			}
 			// Run the n instance test.
 			int testCaptureCount = 0;
@@ -198,6 +199,19 @@ public class ESPEvolution {
 					testPreyPieces.add(new Piece(preyRow
 							* preyPlacementIncrememnt, preyCol
 							* preyPlacementIncrememnt, true, env, runAway));
+					/*
+					 * I am not sure why there is the need to reset the position of the pieces
+					 * (as in the trial() method), but it makes things work. - David 
+					 */
+					for (Piece prey : testPreyPieces)
+						prey.setPosition(preyRow
+								* preyPlacementIncrememnt, preyCol
+								* preyPlacementIncrememnt);
+					int k = 0;
+					for (Piece predator : testPredatorPieces) {
+						predator.setPosition(predatorPositions[2*k], predatorPositions[2*k + 1]);
+						k++;
+					}
 					env.setPieces(testPredatorPieces, testPreyPieces);
 					SimulationResult result = env.run(false, false);
 					testCaptureCount += result.preyCaught;
@@ -306,7 +320,7 @@ public class ESPEvolution {
 						pop.runBurstMutation(newEpochBurstMutationAmountStdDev);
 					}
 					if (epochNumber >= preySpeeds.length) {
-						return gen;
+						break;
 					}
 				//}
 			}
@@ -342,7 +356,7 @@ public class ESPEvolution {
 			ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
 					boardSize, ann);
 			fittestPredatorPieces
-					.add(new Piece(5, 5, false, env, annBehaviour));
+					.add(new Piece(predatorPositions[2*j], predatorPositions[2*j + 1], false, env, annBehaviour));
 			j += 1;
 		}
 
@@ -383,8 +397,11 @@ public class ESPEvolution {
 			for (Piece prey : preyPieces)
 				prey.setPosition(random.nextInt(boardSize),
 						random.nextInt(boardSize));
-			for (Piece predator : predatorPieces)
-				predator.setPosition(5, 5);
+			int k = 0;
+			for (Piece predator : predatorPieces) {
+				predator.setPosition(predatorPositions[2*k], predatorPositions[2*k + 1]);
+				k++;
+			}
 			
 
 			env.setPieces(predatorPieces, preyPieces);

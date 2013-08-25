@@ -23,13 +23,9 @@ public class ESPSubPopulation {
 	}
 	
 	public Genotype getFittestGenotype() {
-		Genotype fittest = nodeGenotypes.elementAt(0);
-		for (Genotype genotype : nodeGenotypes) {
-			if(fittest.compareTo(genotype) < 1) {
-				fittest = genotype;
-			}
-		}
-		return fittest;
+		Collections.sort(this.nodeGenotypes);
+		Collections.reverse(this.nodeGenotypes);
+		return nodeGenotypes.get(0);
 	}
 	
 	public void runBurstMutation(double mutationAmountStdDev) {

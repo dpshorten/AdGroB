@@ -5,8 +5,10 @@ import java.util.Vector;
 public class SimulationsOfSavedANNs {
 	public static void main(String[] args) {
 		int boardSize = 100;
+		int[] predatorPositions = { 30, 30, boardSize - 30, 30, 30, boardSize - 30, boardSize - 30, boardSize - 30};
+		
 		Random random = new Random();
-		Environment env = new Environment(boardSize, 1.0);
+		Environment env = new Environment(boardSize, 1.0, 4);
 		
 		final int simulations = 10;
 		for (int i = 0; i < simulations; i++) {
@@ -20,11 +22,13 @@ public class SimulationsOfSavedANNs {
 			int preyY = random.nextInt(boardSize);
 			preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
 			
-			String[] fileNames = {"PredatorBehaviour0", "PredatorBehaviour1", "PredatorBehaviour2"};
+			String[] fileNames = {"PredatorBehaviour0", "PredatorBehaviour1", "PredatorBehaviour2", "PredatorBehaviour3"};
+			int j = 0;
 			for (String fileName : fileNames) {
 				ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(fileName);
 				ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
-				predatorPieces.add(new Piece(5, 5, false, env, annBehaviour));
+				predatorPieces.add(new Piece(predatorPositions[2*j], predatorPositions[2*j + 1], false, env, annBehaviour));
+				j++;
 			}
 			env.setPieces(predatorPieces, preyPieces);
 			env.run(true, i == 0 ? false : true);
