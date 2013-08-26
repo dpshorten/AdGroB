@@ -57,7 +57,8 @@ public class ESPEvolution {
 		Vector<Integer> capturesForEachGeneration = new Vector<Integer>(
 				generations);
 
-		for (int gen = 0; gen < generations; gen++) {
+		int gen = 0;
+		for (gen = 0; gen < generations; gen++) {
 
 			env = new Environment(boardSize, preySpeeds[epochNumber], numPredators);
 
@@ -247,7 +248,7 @@ public class ESPEvolution {
 			final int startingGen = 5;
 			final int genInterval = 4;
 			final int numMigrants = 2;
-			final double behaviourSimilarityThreshhold = 0.5;
+			final double behaviourSimilarityThreshhold = 0.0;
 			final double genotypeDistanceThreshhold = 0.37;
 
 			if (doMigration) {
@@ -385,7 +386,7 @@ public class ESPEvolution {
 		 * false);
 		 */
 
-		return 1;
+		return gen;
 	}
 
 	// Run a set of evaluations on the predators to get fitness values for the
