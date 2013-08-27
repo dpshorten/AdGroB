@@ -7,7 +7,7 @@ public class ESPEvolution {
 	static final int numPredators = 4;
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; // 1000
-	static final int evaluationsPerTrial = 3; // 6
+	static final int evaluationsPerTrial = 6; // 6
 	static final int generations = 50;
 	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
@@ -32,11 +32,11 @@ public class ESPEvolution {
 		run(true, true, false);
 	}
 	
-	public static int run(boolean doMigration){
+	public static TrialResult run(boolean doMigration){
 		return run(doMigration, true, true);
 	}
 
-	public static int run(boolean doMigration, boolean useBehaviourDistance, boolean useGenotypeDistance) {
+	public static TrialResult run(boolean doMigration, boolean useBehaviourDistance, boolean useGenotypeDistance) {
 		
 		//refresh the agent populations vector
 		agentPopulations = new Vector<ESPPopulation>();
@@ -63,10 +63,7 @@ public class ESPEvolution {
 			env = new Environment(boardSize, preySpeeds[epochNumber], numPredators);
 
 			Vector<Piece> preyPieces = new Vector<Piece>();
-			// VectorRunAwayBehaviour runAway = new
-			// VectorRunAwayBehaviour(boardSize);
-			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(
-					boardSize, 1);
+			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
 			int preyX = random.nextInt(boardSize);
 			int preyY = random.nextInt(boardSize);
 			preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
@@ -102,8 +99,7 @@ public class ESPEvolution {
 					usedGenotypes.add(hiddenNodes);
 				}
 
-				TrialResult result = trial(predatorPieces, preyPieces, env,
-						evaluationsPerTrial);
+				TrialResult result = trial(predatorPieces, preyPieces, env,	evaluationsPerTrial);
 				captureCount += result.captureCount;
 
 				// Update the genotypes fitnesses with the average fitness over
@@ -353,28 +349,23 @@ public class ESPEvolution {
 		int j = 0;
 		Vector<Piece> fittestPredatorPieces = new Vector<Piece>();
 		for (ESPPopulation agentPopulation : agentPopulations) {
-			Vector<Genotype> hiddenNodes = agentPopulation
-					.getFittestGenotypeInEachSubPopulation();
-			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(
-					hiddenNodes);
+			Vector<Genotype> hiddenNodes = agentPopulation.getFittestGenotypeInEachSubPopulation();
+			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
 			ann.saveNetwork("PredatorBehaviour" + j);
-			ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
-					boardSize, ann);
-			fittestPredatorPieces
-					.add(new Piece(predatorPositions[2*j], predatorPositions[2*j + 1], false, env, annBehaviour));
+			ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(boardSize, ann);
+			fittestPredatorPieces.add(new Piece(predatorPositions[2*j], predatorPositions[2*j + 1], false, env, annBehaviour));
 			j += 1;
 		}
 
-		// Run some evaluations on them
-		/*
-		 * int evaluationsToRun = 100; TrialResult result =
-		 * trial(fittestPredatorPieces, preyPieces, env, evaluationsToRun);
-		 * System.out.println("==Fittest Predators==");
-		 * System.out.println("Capture Count: " + result.captureCount + "/" +
-		 * evaluationsToRun * preyPieces.size()); for (int i = 0; i <
-		 * numPredators; i++) System.out.println("Predator " + i +
-		 * " average fitness:" + result.avgEvalFitnesses[i]);
-		 */
+		//Run a trial on the fittest predators
+		int evaluationsToRun = 100; 
+		Vector<Piece> preyPieces = new Vector<Piece>();
+		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
+		int preyX = random.nextInt(boardSize);
+		int preyY = random.nextInt(boardSize);
+		preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
+		TrialResult result = trial(fittestPredatorPieces, preyPieces, env, evaluationsToRun);
+		
 		// Run the simulation with them to create a log file
 		/*
 		 * for (Piece prey : preyPieces)
@@ -386,13 +377,12 @@ public class ESPEvolution {
 		 * false);
 		 */
 
-		return gen;
+		return result;
 	}
 
 	// Run a set of evaluations on the predators to get fitness values for the
 	// genotypes
-	private static TrialResult trial(Vector<Piece> predatorPieces,
-			Vector<Piece> preyPieces, Environment env, int evaluations) {
+	private static TrialResult trial(Vector<Piece> predatorPieces, Vector<Piece> preyPieces, Environment env, int evaluations) {
 		double[] avgEvalFitnesses = new double[numPredators];
 		int captureCount = 0;
 		Random random = new Random();
@@ -400,8 +390,7 @@ public class ESPEvolution {
 			// Randomize the prey position so that it is not the same as the
 			// previous evaluation.
 			for (Piece prey : preyPieces)
-				prey.setPosition(random.nextInt(boardSize),
-						random.nextInt(boardSize));
+				prey.setPosition(random.nextInt(boardSize),	random.nextInt(boardSize));
 			int k = 0;
 			for (Piece predator : predatorPieces) {
 				predator.setPosition(predatorPositions[2*k], predatorPositions[2*k + 1]);
@@ -421,13 +410,11 @@ public class ESPEvolution {
 					 * .elementAt(i) -
 					 * result.finalDistancesFromPrey.elementAt(i);
 					 */
-					double fitness = boardSize
-							- result.finalDistancesFromPrey.elementAt(i);
+					double fitness = boardSize - result.finalDistancesFromPrey.elementAt(i);
 					avgEvalFitnesses[i] += fitness;
 				} else {
 					// avgEvalFitnesses[i] += 2 * boardSize;
-					avgEvalFitnesses[i] += 2 * boardSize
-							- result.finalDistancesFromPrey.elementAt(i);
+					avgEvalFitnesses[i] += 2 * boardSize - result.finalDistancesFromPrey.elementAt(i);
 				}
 			}
 		}
@@ -438,7 +425,7 @@ public class ESPEvolution {
 		return new TrialResult(avgEvalFitnesses, captureCount);
 	}
 
-	private static class TrialResult {
+	public static class TrialResult {
 		public double[] avgEvalFitnesses;
 		public int captureCount;
 
