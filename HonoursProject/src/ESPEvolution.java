@@ -8,7 +8,7 @@ public class ESPEvolution {
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; // 1000
 	static final int evaluationsPerTrial = 6; // 6
-	static final int generations = 50;
+	static final int generations = 400;
 	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
@@ -423,15 +423,5 @@ public class ESPEvolution {
 			avgEvalFitnesses[i] = avgEvalFitnesses[i] / evaluationsPerTrial;
 
 		return new TrialResult(avgEvalFitnesses, captureCount);
-	}
-
-	public static class TrialResult {
-		public double[] avgEvalFitnesses;
-		public int captureCount;
-
-		public TrialResult(double[] avgEvalFitnesses, int captureCount) {
-			this.avgEvalFitnesses = avgEvalFitnesses;
-			this.captureCount = captureCount;
-		}
 	}
 }
