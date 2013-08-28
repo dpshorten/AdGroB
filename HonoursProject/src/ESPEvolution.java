@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Vector;
 import java.util.Random;
@@ -7,8 +8,8 @@ public class ESPEvolution {
 	static final int numPredators = 4;
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; // 1000
-	static final int evaluationsPerTrial = 3; // 6
-	static final int generations = 50;
+	static final int evaluationsPerTrial = 6; // 6
+	static final int generations = 70;
 	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
@@ -17,15 +18,16 @@ public class ESPEvolution {
 	static final double lateBurstMutationAmountStdDev = 0.05;
 	static final double newEpochBurstMutationAmountStdDev = 0.2;
 	static final int burstMutationWaitBeforeRepeat = 20;
-	static final int burstMutationWaitBeforeFirst = 5;
+	static final int burstMutationWaitBeforeFirst = 10;
+	static final int burstMutationWaitAfterMigration = 6;
 	static final int burstMutationTestLookBackDistance = 5;
-	static final double burstMutationTestRatioOfTrialsDifference = 0.05;
-	static final int rootOfNumTests = 10;
+	static final double burstMutationTestRatioOfTrialsDifference = 0.01;
+	static final int rootOfNumTests = 20;
 	static final double ratioCapturesForNextEpoch = 0.8;
 	static final int ratioHitsBeforeNextEpoch = 2;
-	static final double[] preySpeeds = { 0.01, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7, 0.9, 1};
-	static final int[] predatorPositions = { 30, 30, boardSize - 30, 30, 30, boardSize - 30, boardSize - 30, boardSize - 30};
-
+	static final double[] preySpeeds = { 0.01, 0.7, 0.95, 1};
+	static Integer[] predatorPositions = { 30, 30, boardSize - 30, 30, 30, boardSize - 30, boardSize - 30, boardSize - 30};
+	
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
 	public static void main(String[] args) {
@@ -59,6 +61,10 @@ public class ESPEvolution {
 
 		int gen = 0;
 		for (gen = 0; gen < generations; gen++) {
+			
+			for(ESPPopulation agentPopulation : agentPopulations) {
+				agentPopulation.resetGenotypes();
+			}
 
 			env = new Environment(boardSize, preySpeeds[epochNumber], numPredators);
 
@@ -211,6 +217,7 @@ public class ESPEvolution {
 								* preyPlacementIncrememnt, preyCol
 								* preyPlacementIncrememnt);
 					int k = 0;
+					randomizePredatorPositions();
 					for (Piece predator : testPredatorPieces) {
 						predator.setPosition(predatorPositions[2*k], predatorPositions[2*k + 1]);
 						k++;
@@ -241,18 +248,21 @@ public class ESPEvolution {
 				if (epochNumber >= preySpeeds.length) {
 					break;
 				}
-				continue;
 			}
 
 			// Migration
 			final int startingGen = 5;
-			final int genInterval = 4;
+			final int genInterval = 12;
+			final int lateGenInterval = 12;
+			final int lateGenThreshold = 25;
 			final int numMigrants = 2;
 			final double behaviourSimilarityThreshhold = 0.0;
 			final double genotypeDistanceThreshhold = 0.37;
 
 			if (doMigration) {
-				if (gen % genInterval == 0 && gen > startingGen) {
+				if ((gen % genInterval == 0 && gen > startingGen && gen < lateGenThreshold) 
+						|| (gen % lateGenInterval == 0 && gen > lateGenThreshold)) {
+					burstMutationTicker = burstMutationWaitAfterMigration;
 					if(useBehaviourDistance){
 						double[][] similarities = SocialEntropyBehaviourMeasurement.measureSimilarity(testPredatorPieces, boardSize, env);
 						for (int i = 0; i < numPredators; i++) {
@@ -403,6 +413,7 @@ public class ESPEvolution {
 				prey.setPosition(random.nextInt(boardSize),
 						random.nextInt(boardSize));
 			int k = 0;
+			randomizePredatorPositions();
 			for (Piece predator : predatorPieces) {
 				predator.setPosition(predatorPositions[2*k], predatorPositions[2*k + 1]);
 				k++;
@@ -437,7 +448,7 @@ public class ESPEvolution {
 
 		return new TrialResult(avgEvalFitnesses, captureCount);
 	}
-
+	
 	private static class TrialResult {
 		public double[] avgEvalFitnesses;
 		public int captureCount;
@@ -447,4 +458,17 @@ public class ESPEvolution {
 			this.captureCount = captureCount;
 		}
 	}
+	
+	public static void randomizePredatorPositions() {
+		Random random = new Random();
+		Vector<Integer> predatorPositionsVector = new Vector<Integer>(Arrays.asList(predatorPositions));
+		int indecesMoved = (random.nextInt() % numPredators) * 2;
+		for(int i = 0; i < indecesMoved; i++) {
+			int temp = predatorPositionsVector.remove(0);
+			predatorPositionsVector.add(temp);
+		}
+		predatorPositions = (Integer[]) predatorPositionsVector.toArray(new Integer[0]); 
+	}
 }
+
+

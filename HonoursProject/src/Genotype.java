@@ -33,6 +33,14 @@ public class Genotype implements Comparable<Genotype>
 		}
 	}
 	
+	public Genotype(Genotype otherGenotype) {
+		inputWeights = new Vector<Double>();
+		outputWeights = new Vector<Double>();
+		setInputWeights(otherGenotype.getInputWeights());
+		setOutputWeights(otherGenotype.getOutputWeights());
+		fitness = otherGenotype.getFitness();
+		fitnessSourceCount = otherGenotype.getFitnessSourceCount();	}
+	
 	public Genotype(float outputNodes) {
 		inputWeights = new Vector<Double>();
 		outputWeights = new Vector<Double>();
@@ -198,6 +206,15 @@ public class Genotype implements Comparable<Genotype>
 
 	public void setFitness(double fitness) {
 		this.fitness = fitness;
+	}
+	
+	public int getFitnessSourceCount() {
+		return fitnessSourceCount;
+	}
+	
+	public void resetFitnessAndCounts() {
+		this.fitnessSourceCount = 0;
+		this.fitness = 0;
 	}
 	
 	public double averageWeightDistance(Genotype other){

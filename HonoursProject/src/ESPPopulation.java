@@ -1,5 +1,7 @@
+import java.util.Random;
 import java.util.Vector;
 import java.util.ArrayList;
+
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
@@ -87,10 +89,19 @@ public class ESPPopulation {
 	}
 	
 	public void sendSprayMigrants(ESPPopulation otherPopulation, int numMigrantsPerSubPop) {
+		Random random = new Random();
 		for(ESPSubPopulation subPop : this.subPopulations) {
 			for(ESPSubPopulation otherSubPop : otherPopulation.subPopulations) {
-				subPop.sendMigrantsUsingSpray(otherSubPop, numMigrantsPerSubPop);
+				if(random.nextInt() % 1 == 0) {
+					subPop.sendMigrantsUsingSpray(otherSubPop, numMigrantsPerSubPop);
+				}
 			}
+		}
+	}
+	
+	public void resetGenotypes() {
+		for(ESPSubPopulation subPop : subPopulations) {
+			subPop.resetGenotypes();
 		}
 	}
 }

@@ -105,9 +105,7 @@ public class ESPSubPopulation {
 	public boolean sendMigrantsUsingSpray(ESPSubPopulation otherSubPop, int numMigrants) {
 		Collections.sort(this.nodeGenotypes);
 		Collections.reverse(this.nodeGenotypes);
-		Collections.sort(otherSubPop.nodeGenotypes);
-		Collections.reverse(otherSubPop.nodeGenotypes);
-		otherSubPop.acceptMigrant(this.nodeGenotypes.get(0));
+		otherSubPop.acceptMigrant(new Genotype(this.nodeGenotypes.get(0)));
 		return true;
 	}
 	
@@ -117,5 +115,11 @@ public class ESPSubPopulation {
 		Collections.reverse(nodeGenotypes);
 		this.nodeGenotypes.remove(this.nodeGenotypes.size() - 1);
 		this.nodeGenotypes.add(0, Migrant);
+	}
+	
+	public void resetGenotypes() {
+		for(Genotype genotype : nodeGenotypes) {
+			genotype.resetFitnessAndCounts();
+		}
 	}
 }
