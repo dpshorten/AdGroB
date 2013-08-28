@@ -7,8 +7,8 @@ public class BehaviourTests {
 		int[] withoutMigration = new int[numRuns]; 
 		for(int i = 0; i < numRuns; i++) {
 			System.out.println("\n\nTest number " + (i + 1));
-			withMigration[i] = ESPEvolution.run(true, true, false);
-			withoutMigration[i] =  ESPEvolution.run(false, false, false);
+			withMigration[i] = ESPEvolution.run(true, true, false).generations;
+			withoutMigration[i] =  ESPEvolution.run(false, false, false).generations;
 		}
 		System.out.println("\n\nSummary\n");
 		System.out.println("Without Migration");

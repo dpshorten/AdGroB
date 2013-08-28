@@ -7,7 +7,9 @@ public class Main
 		final int boardSize = 10;
 		final int numPrey = 1;
 		
-		Environment env = new Environment(boardSize, 1);
+		//TODO: This line was bugged when I did the last pull
+		//Environment env = new Environment(boardSize, 1);
+		Environment env = new Environment(boardSize);
 		
 		Vector<Piece> predatorPieces = new Vector<Piece>();
 		Vector<Piece> preyPieces = new Vector<Piece>();
