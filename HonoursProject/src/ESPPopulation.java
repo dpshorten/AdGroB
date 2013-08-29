@@ -92,7 +92,7 @@ public class ESPPopulation {
 		Random random = new Random();
 		for(ESPSubPopulation subPop : this.subPopulations) {
 			for(ESPSubPopulation otherSubPop : otherPopulation.subPopulations) {
-				if(random.nextInt() % 1 == 0) {
+				if(random.nextInt() % 2 == 0) {
 					subPop.sendMigrantsUsingSpray(otherSubPop, numMigrantsPerSubPop);
 				}
 			}

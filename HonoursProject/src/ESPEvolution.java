@@ -20,7 +20,7 @@ public class ESPEvolution {
 	static final int burstMutationWaitBeforeRepeat = 20;
 	static final int burstMutationWaitBeforeFirst = 10;
 	static final int burstMutationWaitAfterMigration = 6;
-	static final int burstMutationTestLookBackDistance = 5;
+	static int burstMutationTestLookBackDistance = 5;
 	static final double burstMutationTestRatioOfTrialsDifference = 0.01;
 	static final int rootOfNumTests = 20;
 	static final double ratioCapturesForNextEpoch = 0.8;
@@ -39,6 +39,10 @@ public class ESPEvolution {
 	}
 
 	public static TrialResult run(boolean doMigration, boolean useBehaviourDistance, boolean useGenotypeDistance) {
+		
+		if(doMigration) {
+			burstMutationTestLookBackDistance = 12;
+		}
 		
 		//refresh the agent populations vector
 		agentPopulations = new Vector<ESPPopulation>();
@@ -247,9 +251,9 @@ public class ESPEvolution {
 			}
 
 			// Migration
-			final int startingGen = 5;
-			final int genInterval = 12;
-			final int lateGenInterval = 12;
+			final int startingGen = 1;
+			final int genInterval = 2;
+			final int lateGenInterval = 2;
 			final int lateGenThreshold = 25;
 			final int numMigrants = 2;
 			final double behaviourSimilarityThreshhold = 0.0;
@@ -264,7 +268,7 @@ public class ESPEvolution {
 						for (int i = 0; i < numPredators; i++) {
 							for (int j = 0; j < numPredators; j++) {
 								if (similarities[i][j] > behaviourSimilarityThreshhold) {
-									System.out.println("Migrating " + i + " to " + j);
+									//System.out.println("Migrating " + i + " to " + j);
 									if(useGenotypeDistance){
 										int migrantCount = 0;
 										for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
@@ -312,6 +316,7 @@ public class ESPEvolution {
 				}
 			}
 			// If the improvement is stagnating, burst mutation is run.
+			/*
 			if (gen >= burstMutationTestLookBackDistance) {
 				if ((burstMutationTicker <= 0)
 						& (capturesForEachGeneration.get(gen) < (capturesForEachGeneration
@@ -332,7 +337,7 @@ public class ESPEvolution {
 				} else {
 					burstMutationTicker -= 1;
 				}
-			}
+			}*/
 
 			
 

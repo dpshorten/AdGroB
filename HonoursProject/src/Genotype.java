@@ -213,8 +213,7 @@ public class Genotype implements Comparable<Genotype>
 	}
 	
 	public void resetFitnessAndCounts() {
-		this.fitnessSourceCount = 0;
-		this.fitness = 0;
+		this.fitnessSourceCount = 1;
 	}
 	
 	public double averageWeightDistance(Genotype other){
