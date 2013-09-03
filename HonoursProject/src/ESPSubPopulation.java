@@ -14,6 +14,16 @@ public class ESPSubPopulation {
 			nodeGenotypes.add(new Genotype());
 	}
 	
+	// Constructs a new sub-population through burst mutation.
+	public ESPSubPopulation(int subPopulationSize, Genotype genotype, double burstMutationStdDev) {
+		nodeGenotypes = new Vector<Genotype>();
+		for(int i = 0; i < subPopulationSize; i++) {
+			nodeGenotypes.add(genotype);
+		}
+		runBurstMutation(burstMutationStdDev);
+	}
+	
+	
 	public Genotype getGenotype(int index){
 		return nodeGenotypes.elementAt(index);
 	}
@@ -26,6 +36,12 @@ public class ESPSubPopulation {
 		Collections.sort(this.nodeGenotypes);
 		Collections.reverse(this.nodeGenotypes);
 		return nodeGenotypes.get(0);
+	}
+	
+	public Genotype getNthFittestGenotype(int n) {
+		Collections.sort(this.nodeGenotypes);
+		Collections.reverse(this.nodeGenotypes);
+		return nodeGenotypes.get(n);
 	}
 	
 	public void runBurstMutation(double mutationAmountStdDev) {
