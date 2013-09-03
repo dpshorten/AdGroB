@@ -7,9 +7,11 @@ public class ESPEvolution {
 	static final int numHiddenNodes = 10;
 	static final int numPredators = 4;
 	static final int subPopulationSize = 100;
-	static final int trialsPerGeneration = 1000; // 1000
+	// Each trial set runs a number of trials equal to the sub-population size.
+	static final int trialSetsPerGeneration = 10; // 10
+	static final int trialsPerGeneration = trialSetsPerGeneration * subPopulationSize;
 	static final int evaluationsPerTrial = 6; // 6
-	static final int generations = 70;
+	static final int generations = 200;
 	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
@@ -20,6 +22,7 @@ public class ESPEvolution {
 	static final int burstMutationWaitBeforeRepeat = 20;
 	static final int burstMutationWaitBeforeFirst = 10;
 	static final int burstMutationWaitAfterMigration = 6;
+	static final int burstMutationWaitAfterEpochChange = 6;
 	static int burstMutationTestLookBackDistance = 5;
 	static final double burstMutationTestRatioOfTrialsDifference = 0.01;
 	static final int rootOfNumTests = 20;
@@ -31,7 +34,7 @@ public class ESPEvolution {
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
 	public static void main(String[] args) {
-		run(true, true, false);
+		run(false, false, false);
 	}
 	
 	public static TrialResult run(boolean doMigration){
@@ -81,45 +84,54 @@ public class ESPEvolution {
 			// For each generation, a number of trials are run to get fitness
 			// values for the genotypes
 			int captureCount = 0;
-			for (int trial = 0; trial < trialsPerGeneration; trial++) {
-				Vector<Piece> predatorPieces = new Vector<Piece>();
-				// usedGenotypes will contain a vector of active genotypes for
-				// each predator
-				Vector<Vector<Genotype>> usedGenotypes = new Vector<Vector<Genotype>>();
+			for (int trialSet = 0; trialSet < trialSetsPerGeneration; trialSet++) {
+				for (ESPPopulation pop : agentPopulations) {
+					pop.shuffleSubPopulations();
+				}
+				for (int trial = 0; trial < subPopulationSize; trial++) {
+					Vector<Piece> predatorPieces = new Vector<Piece>();
+					// usedGenotypes will contain a vector of active genotypes
+					// for
+					// each predator
+					Vector<Vector<Genotype>> usedGenotypes = new Vector<Vector<Genotype>>();
 
-				// Build an ANN for each predator using a randomly choosen node
-				// from each subpopulation
-				for (int pred = 0; pred < numPredators; pred++) {
-					Vector<Genotype> hiddenNodes = new Vector<Genotype>();
-					for (int node = 0; node < numHiddenNodes; node++) {
-						// Add a random genotype from the appropriate
-						// subpopulation to the hidden nodes
-						int rand = random.nextInt(subPopulationSize);
-						hiddenNodes.add(agentPopulations.elementAt(pred)
-								.getSubPopulationForNode(node)
-								.getGenotype(rand));
+					// Build an ANN for each predator using a randomly choosen
+					// node
+					// from each subpopulation
+					for (int pred = 0; pred < numPredators; pred++) {
+						Vector<Genotype> hiddenNodes = new Vector<Genotype>();
+						for (int node = 0; node < numHiddenNodes; node++) {
+							// Add a random genotype from the appropriate
+							// subpopulation to the hidden nodes
+							hiddenNodes.add(agentPopulations.elementAt(pred)
+									.getSubPopulationForNode(node)
+									.getFirstGenotypeAndSendItToBack());
+						}
+
+						ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(
+								hiddenNodes);
+						ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
+								boardSize, ann);
+						predatorPieces.add(new Piece(
+								predatorPositions[2 * pred],
+								predatorPositions[2 * pred + 1], false, env,
+								annBehaviour));
+						usedGenotypes.add(hiddenNodes);
 					}
 
-					ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(
-							hiddenNodes);
-					ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
-							boardSize, ann);
-					predatorPieces
-							.add(new Piece(predatorPositions[2*pred], predatorPositions[2*pred + 1], false, env, annBehaviour));
-					usedGenotypes.add(hiddenNodes);
-				}
+					TrialResult result = trial(predatorPieces, preyPieces, env,
+							evaluationsPerTrial);
+					captureCount += result.captureCount;
 
-				TrialResult result = trial(predatorPieces, preyPieces, env,	evaluationsPerTrial);
-				captureCount += result.captureCount;
-
-				// Update the genotypes fitnesses with the average fitness over
-				// the evaluations
-				for (int i = 0; i < numPredators; i++) {
-					for (Genotype genotype : usedGenotypes.elementAt(i))
-						genotype.updateFitness(result.avgEvalFitnesses[i]);
-				}
-
-			}// trials
+					// Update the genotypes fitnesses with the average fitness
+					// over
+					// the evaluations
+					for (int i = 0; i < numPredators; i++) {
+						for (Genotype genotype : usedGenotypes.elementAt(i))
+							genotype.updateFitness(result.avgEvalFitnesses[i]);
+					}
+				}// trial
+			}// trialSets
 
 			double mutationStdDev = 0;
 			if (captureCount
@@ -241,7 +253,7 @@ public class ESPEvolution {
 				epochNumber++;
 				System.out.println("Epoch Change to number "
 						+ (epochNumber + 1));
-				burstMutationTicker = burstMutationWaitBeforeFirst;
+				burstMutationTicker = burstMutationWaitAfterEpochChange;
 				for (ESPPopulation pop : agentPopulations) {
 					pop.runBurstMutation(newEpochBurstMutationAmountStdDev);
 				}
@@ -316,8 +328,10 @@ public class ESPEvolution {
 				}
 			}
 			// If the improvement is stagnating, burst mutation is run.
-			/*
 			if (gen >= burstMutationTestLookBackDistance) {
+				System.out.println(capturesForEachGeneration.get(gen) + "  " 
+						+ capturesForEachGeneration.get(gen - burstMutationTestLookBackDistance)
+						+ "  " + burstMutationTicker);
 				if ((burstMutationTicker <= 0)
 						& (capturesForEachGeneration.get(gen) < (capturesForEachGeneration
 								.get(gen - burstMutationTestLookBackDistance) + (int) (Math
@@ -337,7 +351,7 @@ public class ESPEvolution {
 				} else {
 					burstMutationTicker -= 1;
 				}
-			}*/
+			}
 
 			
 

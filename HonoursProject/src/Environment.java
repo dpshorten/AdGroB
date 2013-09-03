@@ -27,13 +27,13 @@ public class Environment {
 
 	public Environment() {
 		boardSize = 100;
-		maxMoves = (int) Math.round(6 * boardSize);
+		maxMoves = (int) Math.round(7 * boardSize);
 		board = new int[boardSize][boardSize];
 	}
 	
 	public Environment(int size) {
 		boardSize = size;
-		maxMoves = (int) Math.round(6 * boardSize);
+		maxMoves = (int) Math.round(7 * boardSize);
 		board = new int[boardSize][boardSize];
 	}
 
@@ -41,7 +41,7 @@ public class Environment {
 		boardSize = size;
 		preyMovesMultiplier = aPreyMovesMultiplier;
 		preyTurnIncrement = 1/preyMovesMultiplier;
-		maxMoves = (int) Math.round(6 * boardSize);
+		maxMoves = (int) Math.round(7 * boardSize);
 		board = new int[boardSize][boardSize];
 		numPredators = aNumPredators;
 	}

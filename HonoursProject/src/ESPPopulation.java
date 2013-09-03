@@ -104,4 +104,10 @@ public class ESPPopulation {
 			subPop.resetGenotypes();
 		}
 	}
+	
+	public void shuffleSubPopulations() {
+		for(ESPSubPopulation subPop : subPopulations) {
+			subPop.shuffleGenotypes();
+		}
+	}
 }

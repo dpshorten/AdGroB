@@ -122,4 +122,14 @@ public class ESPSubPopulation {
 			genotype.resetFitnessAndCounts();
 		}
 	}
+	
+	public void shuffleGenotypes() {
+		Collections.shuffle(nodeGenotypes);
+	}
+	
+	public Genotype getFirstGenotypeAndSendItToBack() {
+		Genotype firstGenotype = nodeGenotypes.remove(0);
+		nodeGenotypes.add(firstGenotype);
+		return firstGenotype;
+	}
 }
