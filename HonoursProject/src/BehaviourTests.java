@@ -1,12 +1,12 @@
 
 public class BehaviourTests {
-	private static final int numRuns = 10;
+	private static final int numRuns = 5;
 	
 	public static void main(String[] args) {
 		int[] withMigration = new int[numRuns]; 
 		for(int i = 0; i < numRuns; i++) {
 			System.out.println("\n\nTest number " + (i + 1));
-			withMigration[i] = ESPEvolution.run(false, false, false, false).generations;
+			withMigration[i] = DeltaEvolution.run();
 		}
 		System.out.println("\n\nSummary\n");
 		System.out.println("With Migration");

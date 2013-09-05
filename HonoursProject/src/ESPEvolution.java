@@ -1,14 +1,14 @@
-import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.Vector;
 import java.util.Random;
 
 public class ESPEvolution {
 	static final int numHiddenNodes = 10;
-	static final int numPredators = 4;
+	static final int numPredators = 3;
 	static final int subPopulationSize = 100;
 	// Each trial set runs a number of trials equal to the sub-population size.
-	static final int trialSetsPerGeneration = 12; // 10
+	static final int trialSetsPerGeneration = 10; // 10
 	static final int trialsPerGeneration = trialSetsPerGeneration
 			* subPopulationSize;
 	static final int evaluationsPerTrial = 6; // 6
@@ -31,18 +31,19 @@ public class ESPEvolution {
 	static final int ratioHitsBeforeNextEpoch = 2;
 	static final double[] preySpeeds = { 0.01, 0.7, 0.95, 1 };
 	static Integer[] predatorPositions = { 30, 30, boardSize - 30, 30, 30,
-			boardSize - 30, boardSize - 30, boardSize - 30 };
+			boardSize - 30};
 
 	// Variables for David's delta coding.
-	static final int genotypesPerSubPopulation = 2;
-	static final int testedPieceGroups = 10;
-	static final int rootOfNumTestsDelta = 10;
+	static final int genotypesPerSubPopulation = 5;
+	static final int testedPieceGroups = 100;
+	static final int rootOfNumTestsDelta = 7;
 	static final double stdDev = 0.1;
+	static final double ratioDifference = 0.0;
 
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
 	public static void main(String[] args) {
-		run(false, false, false, false);
+		run(false, false, false, true);
 	}
 
 	public static TrialResult run(boolean doMigration) {
@@ -251,9 +252,9 @@ public class ESPEvolution {
 				System.out.println("Epoch Change to number "
 						+ (epochNumber + 1));
 				burstMutationTicker = burstMutationWaitAfterEpochChange;
-				for (ESPPopulation pop : agentPopulations) {
+				/*for (ESPPopulation pop : agentPopulations) {
 					pop.runBurstMutation(newEpochBurstMutationAmountStdDev);
-				}
+				}*/
 				if (epochNumber >= preySpeeds.length) {
 					break;
 				}
@@ -302,8 +303,8 @@ public class ESPEvolution {
 					}
 				}
 				if ((numCapturesOfMostSuccessfulPieces
-						/ ((double) rootOfNumTestsDelta) > (captureCount
-						/ ((double) trialsPerGeneration * evaluationsPerTrial) + 0.3))
+						/Math.pow(rootOfNumTestsDelta, 2)) > (captureCount
+						/ ((double) trialsPerGeneration * evaluationsPerTrial) + ratioDifference)
 						|| forceBurstMutation) {
 					for (int i = 0; i < numPredators; i++) {
 						agentPopulations
