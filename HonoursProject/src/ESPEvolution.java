@@ -551,8 +551,8 @@ public class ESPEvolution {
 				 * work. - David
 				 */
 				for (Piece prey : testPreyPieces)
-					prey.setPosition(preyRow * preyPlacementIncrememnt, preyCol
-							* preyPlacementIncrememnt);
+					prey.setPosition((int)Math.round((preyRow + 0.5) * preyPlacementIncrememnt), (int)Math.round((preyCol + 0.5)
+							* preyPlacementIncrememnt));
 				int k = 0;
 				// randomizePredatorPositions();
 				for (Piece predator : testPredatorPieces) {

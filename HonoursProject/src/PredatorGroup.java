@@ -2,24 +2,20 @@ import java.util.Vector;
 
 public class PredatorGroup implements Comparable<PredatorGroup>{
 
-	public int getTotalNumEvaluations() {
-		return totalNumEvaluations;
-	}
-
-	public void setTotalNumEvaluations(int totalNumEvaluations) {
-		this.totalNumEvaluations = totalNumEvaluations;
-	}
-
-	private Vector<Piece> pieces;
 	private Vector<Vector<Genotype>> genotypes;
 	private double captureRatio;
 	private int totalNumEvaluations;
+	private Environment env;
 	
-	public PredatorGroup(Vector<Vector<Genotype>> someGenotypes, Environment env) {
+	public PredatorGroup(Vector<Vector<Genotype>> someGenotypes, Environment enviro) {
 		captureRatio = 0;
 		totalNumEvaluations = 0;
 		genotypes = someGenotypes;
-		pieces = new Vector<Piece>();
+		env = enviro;
+	}
+
+	public Vector<Piece> getPieces() {
+		Vector<Piece> pieces = new Vector<Piece>();
 		int j = 0;
 		for(Vector<Genotype> hiddenNodes : genotypes) {
 			ESPArtificialNeuralNetwork network = new ESPArtificialNeuralNetwork(hiddenNodes);
@@ -29,14 +25,7 @@ public class PredatorGroup implements Comparable<PredatorGroup>{
 								behaviour));
 			j++;
 		}
-	}
-
-	public Vector<Piece> getPieces() {
 		return pieces;
-	}
-
-	public void setPieces(Vector<Piece> pieces) {
-		this.pieces = pieces;
 	}
 
 	public Vector<Vector<Genotype>> getGenotypes() {
@@ -75,5 +64,13 @@ public class PredatorGroup implements Comparable<PredatorGroup>{
 			System.out.println("Something went wrong with the PredatorGroup comparisons! (Probably NaN related)");
 			return 0;
 		}
+	}
+	
+	public int getTotalNumEvaluations() {
+		return totalNumEvaluations;
+	}
+
+	public void setTotalNumEvaluations(int totalNumEvaluations) {
+		this.totalNumEvaluations = totalNumEvaluations;
 	}
 }
