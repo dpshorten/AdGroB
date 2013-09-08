@@ -27,9 +27,11 @@ public class ESPEvolution {
 	static int burstMutationTestLookBackDistance = 5;
 	static final double burstMutationTestRatioOfTrialsDifference = 0.01;
 	static final int rootOfNumTests = 10;
-	static final double ratioCapturesForNextEpoch = 0.8;
+	static final double ratioCapturesForNextEpoch = 0.7;
+	static final double ratioCapturesForEnd = 0.8;
 	static final int ratioHitsBeforeNextEpoch = 2;
-	static final double[] preySpeeds = { 0.01, 0.7, 0.95, 1 };
+	static final double[] preySpeeds = { 0.1, 0.95, 1 };
+
 	static Integer[] predatorPositions = { 30, 30, boardSize - 30, 30, 30,
 			boardSize - 30};
 
@@ -244,20 +246,15 @@ public class ESPEvolution {
 					* rootOfNumTests + " test score.");
 
 			// Check if we can move onto the next epoch
-			if (testCaptureCount / ((double) rootOfNumTests * rootOfNumTests) > ratioCapturesForNextEpoch) {
-				// epochRatioHits++;
-				// if (epochRatioHits == ratioHitsBeforeNextEpoch) {
+			if (epochNumber >= (preySpeeds.length - 1) & testCaptureCount / Math.pow(rootOfNumTests, 2) > ratioCapturesForEnd) {
+				break;
+			} else if (captureCount / ((double) trialsPerGeneration * evaluationsPerTrial) > ratioCapturesForNextEpoch & 
+					epochNumber < (preySpeeds.length - 1)) {
 				epochRatioHits = 0;
 				epochNumber++;
 				System.out.println("Epoch Change to number "
 						+ (epochNumber + 1));
 				burstMutationTicker = burstMutationWaitAfterEpochChange;
-				/*for (ESPPopulation pop : agentPopulations) {
-					pop.runBurstMutation(newEpochBurstMutationAmountStdDev);
-				}*/
-				if (epochNumber >= preySpeeds.length) {
-					break;
-				}
 			} else if (doDavidsDeltaThings) {
 				boolean forceBurstMutation = false;
 				numCapturesOfMostSuccessfulPieces = testOnIncrementedPositions(
@@ -556,8 +553,9 @@ public class ESPEvolution {
 				int k = 0;
 				// randomizePredatorPositions();
 				for (Piece predator : testPredatorPieces) {
-					predator.setPosition(predatorPositions[2 * k],
-							predatorPositions[2 * k + 1]);
+					//predator.setPosition(predatorPositions[2 * k],
+					//		predatorPositions[2 * k + 1]);
+					predator.setPosition(1, 1);
 					k++;
 				}
 				env.setPieces(testPredatorPieces, testPreyPieces);

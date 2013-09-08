@@ -9,6 +9,8 @@ public class Environment {
 	
 	private int maxMoves;
 	
+	public int numRuns = 0;
+	
 	boolean Gameover = false;
 	
 	private double preyMovesMultiplier = 1;
@@ -27,13 +29,13 @@ public class Environment {
 
 	public Environment() {
 		boardSize = 100;
-		maxMoves = (int) Math.round(6 * boardSize);
+		maxMoves = (int) Math.round(8 * boardSize);
 		board = new int[boardSize][boardSize];
 	}
 	
 	public Environment(int size) {
 		boardSize = size;
-		maxMoves = (int) Math.round(6 * boardSize);
+		maxMoves = (int) Math.round(8 * boardSize);
 		board = new int[boardSize][boardSize];
 	}
 
@@ -41,7 +43,7 @@ public class Environment {
 		boardSize = size;
 		preyMovesMultiplier = aPreyMovesMultiplier;
 		preyTurnIncrement = 1/preyMovesMultiplier;
-		maxMoves = (int) Math.round(6 * boardSize);
+		maxMoves = (int) Math.round(8 * boardSize);
 		board = new int[boardSize][boardSize];
 		numPredators = aNumPredators;
 	}
@@ -113,6 +115,7 @@ public class Environment {
 
 	public SimulationResult run(boolean shouldWriteToFile, boolean shouldAppendFile)
 	{	
+		numRuns++;
 		clearBoard();
 		// Clear the log file.
 		if (shouldWriteToFile & (!shouldAppendFile)) {
