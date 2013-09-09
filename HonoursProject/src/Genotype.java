@@ -1,5 +1,4 @@
 import java.util.Random;
-import org.jgap.impl.CauchyRandomGenerator;
 import java.util.Vector;
 
 public class Genotype implements Comparable<Genotype>

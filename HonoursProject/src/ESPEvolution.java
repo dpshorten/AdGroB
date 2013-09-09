@@ -350,24 +350,12 @@ public class ESPEvolution {
 												}
 											}
 										}
-<<<<<<< HEAD
-										//System.out.println(migrantCount+" migrations done");
+
+										System.out.println(migrantCount+" migrations done");
 									}
 									else{
 										// NB: Note the change to the spraying method.
 										agentPopulations.get(i).sendSprayMigrants(agentPopulations.get(j), numMigrants);
-=======
-										System.out.println(migrantCount
-												+ " migrations done");
-									} else {
-										// NB: Note the change to the spraying
-										// method.
-										agentPopulations
-												.get(i)
-												.sendSprayMigrants(
-														agentPopulations.get(j),
-														numMigrants);
->>>>>>> 03e9562bc960f3a027356474750affd0602de141
 									}
 								}
 							}
@@ -388,12 +376,8 @@ public class ESPEvolution {
 										}
 									}
 								}
-<<<<<<< HEAD
-								//System.out.println(migrantCount+" migrations done");
-=======
-								System.out.println(migrantCount
-										+ " migrations done");
->>>>>>> 03e9562bc960f3a027356474750affd0602de141
+
+								System.out.println(migrantCount	+ " migrations done");
 							}
 						}
 					} else {
