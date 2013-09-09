@@ -5,7 +5,7 @@ public class HiddenNode extends Node{
 	private Vector<Double> inputWeights;
 	private Vector<Double> outputWeights;
 	private Vector<OutputNode> children;
-	
+
 	public HiddenNode(int number, Vector<OutputNode> children) {
 		super(number);
 		this.children = children;

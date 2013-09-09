@@ -17,6 +17,14 @@ public class ESPPopulation {
 			subPopulations.add(new ESPSubPopulation(subPopulationSize));
 	}
 	
+	// Useful for creating a new population through burst mutation.
+	public ESPPopulation(int subPopSize, Vector<Genotype> genotypes, double burstMutationStdDev) {
+		subPopulations = new Vector<ESPSubPopulation>();
+		for(Genotype genotype : genotypes) {
+			subPopulations.add(new ESPSubPopulation(subPopSize, genotype, burstMutationStdDev));
+		}
+	}
+	
 	public ESPSubPopulation getSubPopulationForNode(int index){
 		return subPopulations.elementAt(index);
 	}
@@ -102,6 +110,12 @@ public class ESPPopulation {
 	public void resetGenotypes() {
 		for(ESPSubPopulation subPop : subPopulations) {
 			subPop.resetGenotypes();
+		}
+	}
+	
+	public void shuffleSubPopulations() {
+		for(ESPSubPopulation subPop : subPopulations) {
+			subPop.shuffleGenotypes();
 		}
 	}
 }

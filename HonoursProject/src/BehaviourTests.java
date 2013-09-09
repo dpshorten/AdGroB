@@ -1,21 +1,15 @@
 
 public class BehaviourTests {
-	private static final int numRuns = 5;
+	private static final int numRuns = 10;
 	
 	public static void main(String[] args) {
 		int[] withMigration = new int[numRuns]; 
-		int[] withoutMigration = new int[numRuns]; 
 		for(int i = 0; i < numRuns; i++) {
 			System.out.println("\n\nTest number " + (i + 1));
-			withMigration[i] = ESPEvolution.run(true, true, false).generations;
-			withoutMigration[i] =  ESPEvolution.run(false, false, false).generations;
+			withMigration[i] = DeltaEvolution.run();
+			//withMigration[i] = ESPEvolution.run(false, false, false, false).generations;
 		}
 		System.out.println("\n\nSummary\n");
-		System.out.println("Without Migration");
-		for(int i = 0; i < numRuns; i++) {
-			System.out.print(withoutMigration[i] + " ");
-		}
-		System.out.println("Average " + mean(withoutMigration));
 		System.out.println("With Migration");
 		for(int i = 0; i < numRuns; i++) {
 			System.out.print(withMigration[i] + " ");

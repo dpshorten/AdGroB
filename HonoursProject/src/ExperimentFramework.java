@@ -85,7 +85,8 @@ public class ExperimentFramework {
 				for(int rep=0; rep<params[ex].reps; rep++){
 					System.out.println("\nRep "+rep+"/"+params[ex].reps);
 					fw.write("\nRep: "+rep+"\n");
-					TrialResult result = ESPEvolution.run(params[ex].useMigration, params[ex].useBehaviourDistance, params[ex].useGenotypeDistance);
+					TrialResult result = ESPEvolution.run(params[ex].useMigration, params[ex].useBehaviourDistance, 
+							params[ex].useGenotypeDistance, false);
 					fw.write("Capture count: "+result.captureCount+"\nAverage fitnesses: ");
 					for(int i=0; i<result.avgEvalFitnesses.length; i++)
 						fw.write(result.avgEvalFitnesses[i]+" ");
