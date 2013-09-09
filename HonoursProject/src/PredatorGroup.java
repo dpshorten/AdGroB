@@ -19,9 +19,9 @@ public class PredatorGroup implements Comparable<PredatorGroup>{
 		int j = 0;
 		for(Vector<Genotype> hiddenNodes : genotypes) {
 			ESPArtificialNeuralNetwork network = new ESPArtificialNeuralNetwork(hiddenNodes);
-			ESPArtificialNeuralNetworkBehaviour behaviour = new ESPArtificialNeuralNetworkBehaviour(ESPEvolution.boardSize, network);
-			pieces.add(new Piece(ESPEvolution.predatorPositions[2 * j],
-						ESPEvolution.predatorPositions[2 * j + 1], false, env,
+			ESPArtificialNeuralNetworkBehaviour behaviour = new ESPArtificialNeuralNetworkBehaviour(EvolutionParameters.boardSize, network);
+			pieces.add(new Piece(EvolutionParameters.predatorPositions[2 * j],
+					EvolutionParameters.predatorPositions[2 * j + 1], false, env,
 								behaviour));
 			j++;
 		}

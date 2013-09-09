@@ -2,8 +2,11 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 
+@SuppressWarnings("static-access")
 public class DeltaEvolution {
 
+	static EvolutionParameters params = new EvolutionParameters();
+	
 	static final double[] preySpeeds = { 1 };
 	public static final int deltaSubPopulationSize = 100;
 	public static final int[] numGroupsFirstRound = { 2000, 2000};
@@ -39,8 +42,8 @@ public class DeltaEvolution {
 		Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
 		// Initialise a population of genotypes for each predator
-		for (int i = 0; i < ESPEvolution.numPredators; i++) {
-			agentPopulations.add(new ESPPopulation(ESPEvolution.numHiddenNodes,
+		for (int i = 0; i < params.numPredators; i++) {
+			agentPopulations.add(new ESPPopulation(params.numHiddenNodes,
 					deltaSubPopulationSize));
 		}
 
@@ -50,14 +53,14 @@ public class DeltaEvolution {
 
 		int gen = 0;
 		Vector<Double> previousBestCaptureRatios = new Vector<Double>();
-		for (gen = 0; gen < ESPEvolution.generations; gen++) {
+		for (gen = 0; gen < params.generations; gen++) {
 
-			Environment env = new Environment(ESPEvolution.boardSize,
+			Environment env = new Environment(params.boardSize,
 					preySpeeds[epochNumber],
-					ESPEvolution.numPredators);
+					params.numPredators);
 
 			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(
-					ESPEvolution.boardSize, 1);
+					params.boardSize, 1);
 
 			Vector<PredatorGroup> predatorGroups = new Vector<PredatorGroup>();
 			for (int i = 0; i < numGroupsFirstRound[evaluationStructureIndex]; i++) {
@@ -125,8 +128,8 @@ public class DeltaEvolution {
 				if (previousBestCaptureRatios.get(gen) < previousBestCaptureRatios
 						.get(gen - bigBurstMutationLookBackDistance) + 0.20) {
 					agentPopulations.clear();
-					for (int i = 0; i < ESPEvolution.numPredators; i++) {
-						agentPopulations.add(new ESPPopulation(ESPEvolution.numHiddenNodes,
+					for (int i = 0; i < params.numPredators; i++) {
+						agentPopulations.add(new ESPPopulation(params.numHiddenNodes,
 								deltaSubPopulationSize));
 					}
 					bigBurstMutationTicker = bigBurstMutationWaitBeforeRepeat + 1;
@@ -136,12 +139,12 @@ public class DeltaEvolution {
 			}
 			bigBurstMutationTicker--;
 
-			for (int i = 0; i < ESPEvolution.numPredators; i++) {
+			for (int i = 0; i < params.numPredators; i++) {
 				agentPopulations.set(i, new ESPPopulation(
 						deltaSubPopulationSize, predatorGroups.get(0)
 								.getGenotypes().get(i), stdDev));
 			}
-			if (predatorGroups.get(0).getCaptureRatio() > ESPEvolution.ratioCapturesForEnd) {
+			if (predatorGroups.get(0).getCaptureRatio() > params.ratioCapturesForEnd) {
 				bigBurstMutationTicker = bigBurstMutationWaitBeforeRepeat + 1;
 				evaluationStructureIndex = 0;
 				epochNumber++;
