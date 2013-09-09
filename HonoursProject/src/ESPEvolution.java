@@ -9,7 +9,7 @@ public class ESPEvolution {
 	static final int subPopulationSize = 100;
 	static final int trialsPerGeneration = 1000; // 1000
 	static final int evaluationsPerTrial = 6; // 6
-	static final int generations = 70;
+	static final int generations = 250;
 	static final int boardSize = 100;
 	static final double mutationProbability = 0.4;
 	static final double earlyMutationStdDev = 0.05;
@@ -279,7 +279,7 @@ public class ESPEvolution {
 												}
 											}
 										}
-										System.out.println(migrantCount+" migrations done");
+										//System.out.println(migrantCount+" migrations done");
 									}
 									else{
 										// NB: Note the change to the spraying method.
@@ -301,7 +301,7 @@ public class ESPEvolution {
 										}
 									}
 								}
-								System.out.println(migrantCount+" migrations done");
+								//System.out.println(migrantCount+" migrations done");
 							}
 						}
 					}

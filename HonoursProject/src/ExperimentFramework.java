@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 //TODO:
-//genotype distance only
 //experiment framework
 //crossover instead of migration
 //enforced specialisation
