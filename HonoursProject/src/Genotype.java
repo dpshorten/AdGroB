@@ -14,7 +14,7 @@ public class Genotype implements Comparable<Genotype>
 	 * 3 - West
 	 * 4 - Stay
 	 */
-	private final int WEIGHT_MUTATIONS_PER_GENOTYPE_MUTATION = 6;
+	private final int WEIGHT_MUTATIONS_PER_GENOTYPE_MUTATION = 1;
 	private Vector<Double> inputWeights;
 	private Vector<Double> outputWeights;
 	private double fitness = 0;
@@ -215,7 +215,8 @@ public class Genotype implements Comparable<Genotype>
 	}
 	
 	public void resetFitnessAndCounts() {
-		this.fitnessSourceCount = 1;
+		this.fitnessSourceCount =  0;
+		this.fitness = 0;
 	}
 	
 	public double averageWeightDistance(Genotype other){

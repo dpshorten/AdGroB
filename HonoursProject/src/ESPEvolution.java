@@ -1,4 +1,3 @@
-
 import java.util.Collections;
 import java.util.Vector;
 import java.util.Random;
@@ -8,7 +7,7 @@ public class ESPEvolution {
 
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 	static EvolutionParameters params = new EvolutionParameters();
-	
+
 	public static void main(String[] args) {
 		run(false, false, false, true);
 	}
@@ -21,16 +20,10 @@ public class ESPEvolution {
 			boolean useBehaviourDistance, boolean useGenotypeDistance,
 			boolean doDavidsDeltaThings) {
 
-		if (doMigration) {
-			params.burstMutationTestLookBackDistance = 12;
-		}
-
 		// refresh the agent populations vector
 		agentPopulations = new Vector<ESPPopulation>();
 
 		int epochNumber = 0;
-		int epochRatioHits = 0;
-
 		int burstMutationTicker = params.burstMutationWaitBeforeFirst;
 
 		// Initialise a population of genotypes for each predator
@@ -51,8 +44,8 @@ public class ESPEvolution {
 				agentPopulation.resetGenotypes();
 			}
 
-			env = new Environment(params.boardSize, params.preySpeeds[epochNumber],
-					params.numPredators);
+			env = new Environment(params.boardSize,
+					params.preySpeeds[epochNumber], params.numPredators);
 
 			Vector<Piece> preyPieces = new Vector<Piece>();
 			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(
@@ -71,13 +64,11 @@ public class ESPEvolution {
 				for (int trial = 0; trial < params.subPopulationSize; trial++) {
 					Vector<Piece> predatorPieces = new Vector<Piece>();
 					// usedGenotypes will contain a vector of active genotypes
-					// for
-					// each predator
+					// for each predator
 					Vector<Vector<Genotype>> usedGenotypes = new Vector<Vector<Genotype>>();
 
-					// Build an ANN for each predator using a randomly choosen
-					// node
-					// from each subpopulation
+					// Build an ANN for each predator using a randomly chosen
+					// node from each subpopulation
 					for (int pred = 0; pred < params.numPredators; pred++) {
 						Vector<Genotype> hiddenNodes = new Vector<Genotype>();
 						for (int node = 0; node < params.numHiddenNodes; node++) {
@@ -94,8 +85,8 @@ public class ESPEvolution {
 								params.boardSize, ann);
 						predatorPieces.add(new Piece(
 								params.predatorPositions[2 * pred],
-								params.predatorPositions[2 * pred + 1], false, env,
-								annBehaviour));
+								params.predatorPositions[2 * pred + 1], false,
+								env, annBehaviour));
 						usedGenotypes.add(hiddenNodes);
 					}
 
@@ -155,7 +146,7 @@ public class ESPEvolution {
 						replacementIndex--;
 					}
 
-					// Cloning for now
+					// Cloning code, if needed.
 					/*
 					 * int endOfElites = 10; int replacementIndex =
 					 * genotypes.size() - 1; for (int i = 0; i < endOfElites;
@@ -176,7 +167,7 @@ public class ESPEvolution {
 
 			capturesForEachGeneration.add(captureCount);
 
-			// Construct the fittest predators for the n instance test.
+			// The fittest predators for the n instance test.
 			Vector<Piece> testPredatorPieces = new Vector<Piece>();
 
 			// These 3 variables are for David's delta things.
@@ -184,6 +175,7 @@ public class ESPEvolution {
 			Vector<Vector<Genotype>> mostSuccessfulGenotypes = new Vector<Vector<Genotype>>();
 			int numCapturesOfMostSuccessfulPieces = 0;
 
+			// Construct the fittest predators.
 			for (int pred = 0; pred < params.numPredators; pred++) {
 
 				Vector<Genotype> hiddenNodes = new Vector<Genotype>();
@@ -198,32 +190,40 @@ public class ESPEvolution {
 						hiddenNodes);
 				ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
 						params.boardSize, ann);
-				testPredatorPieces.add(new Piece(params.predatorPositions[2 * pred],
+				testPredatorPieces.add(new Piece(
+						params.predatorPositions[2 * pred],
 						params.predatorPositions[2 * pred + 1], false, env,
 						annBehaviour));
 			}
 			// Run the n instance test.
-			int testCaptureCount = testOnIncrementedPositions(params.rootOfNumTests,
-					env, testPredatorPieces, runAway);
+			int testCaptureCount = testOnIncrementedPositions(
+					params.rootOfNumTests, env, testPredatorPieces, runAway);
 
 			System.out.println("Generation " + gen + " done: " + captureCount
-					+ " captures, " + testCaptureCount + "/" + params.rootOfNumTests
-					* params.rootOfNumTests + " test score.");
+					+ " captures, " + testCaptureCount + "/"
+					+ params.rootOfNumTests * params.rootOfNumTests
+					+ " test score.");
 
-			// Check if we can move onto the next epoch
-			if (epochNumber >= (params.preySpeeds.length - 1) & testCaptureCount / Math.pow(params.rootOfNumTests, 2) > params.ratioCapturesForEnd) {
+			// Check if we can move onto the next epoch (because the population
+			// capture rate is high enough).
+			if (epochNumber >= (params.preySpeeds.length - 1)
+					& testCaptureCount / Math.pow(params.rootOfNumTests, 2) > params.ratioCapturesForEnd) {
 				break;
-			} else if (captureCount / ((double) params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch & 
-					epochNumber < (params.preySpeeds.length - 1)) {
-				epochRatioHits = 0;
+			} else if (captureCount
+					/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch
+					& epochNumber < (params.preySpeeds.length - 1)) {
 				epochNumber++;
 				System.out.println("Epoch Change to number "
 						+ (epochNumber + 1));
 				burstMutationTicker = params.burstMutationWaitAfterEpochChange;
-			} else if (doDavidsDeltaThings) {
+			}
+			// If we the epoch cannot be changed, the delta things can be done.
+			else if (doDavidsDeltaThings) {
 				boolean forceBurstMutation = false;
 				numCapturesOfMostSuccessfulPieces = testOnIncrementedPositions(
-						params.rootOfNumTestsDelta, env, mostSuccessfulPieces, runAway);
+						params.rootOfNumTestsDelta, env, mostSuccessfulPieces,
+						runAway);
+				// Try a number of genotype combinations, 'saving' the fittest.
 				for (int i = 0; i < params.testedPieceGroups; i++) {
 					Vector<Piece> testPieces = new Vector<Piece>();
 					int j = 0;
@@ -231,31 +231,34 @@ public class ESPEvolution {
 					for (ESPPopulation pop : agentPopulations) {
 						Vector<Genotype> genotypes = new Vector<Genotype>();
 						for (ESPSubPopulation subPop : pop.subPopulations) {
-							genotypes.add(subPop.getNthFittestGenotype(random
-									.nextInt(params.genotypesPerSubPopulation)));
+							genotypes
+									.add(subPop.getNthFittestGenotype(random
+											.nextInt(params.genotypesPerSubPopulation)));
 						}
 						thisPiecesGenotypes.add(genotypes);
 						ESPArtificialNeuralNetwork network = new ESPArtificialNeuralNetwork(
 								genotypes);
 						ESPArtificialNeuralNetworkBehaviour behaviour = new ESPArtificialNeuralNetworkBehaviour(
 								params.boardSize, network);
-						testPieces.add(new Piece(params.predatorPositions[2 * j],
-								params.predatorPositions[2 * j + 1], false, env,
-								behaviour));
+						testPieces.add(new Piece(
+								params.predatorPositions[2 * j],
+								params.predatorPositions[2 * j + 1], false,
+								env, behaviour));
 						j++;
 					}
 					int testResult = testOnIncrementedPositions(
-							params.rootOfNumTestsDelta, env, testPieces, runAway);
+							params.rootOfNumTestsDelta, env, testPieces,
+							runAway);
 					if (testResult > numCapturesOfMostSuccessfulPieces) {
 						numCapturesOfMostSuccessfulPieces = testResult;
 						mostSuccessfulPieces = testPieces;
 						mostSuccessfulGenotypes = thisPiecesGenotypes;
 					}
 				}
+				// If the fittest is fit enough, the epoch can be changed.
 				if (numCapturesOfMostSuccessfulPieces
-						/ ((double) params.rootOfNumTestsDelta * params.rootOfNumTestsDelta) > params.ratioCapturesForNextEpoch) {
+						/ Math.pow(params.rootOfNumTestsDelta, 2) > params.ratioCapturesForNextEpoch) {
 					forceBurstMutation = true;
-					epochRatioHits = 0;
 					epochNumber++;
 					System.out.println("Epoch Change to number "
 							+ (epochNumber + 1));
@@ -264,32 +267,26 @@ public class ESPEvolution {
 						break;
 					}
 				}
-				if ((numCapturesOfMostSuccessfulPieces
-						/Math.pow(params.rootOfNumTestsDelta, 2)) > (captureCount
+				// If the fittest is much fitter than the population, burst
+				// mutation can still be applied.
+				if ((numCapturesOfMostSuccessfulPieces / Math.pow(
+						params.rootOfNumTestsDelta, 2)) > (captureCount
 						/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) + params.ratioDifference)
 						|| forceBurstMutation) {
 					for (int i = 0; i < params.numPredators; i++) {
-						agentPopulations
-								.set(i, new ESPPopulation(params.subPopulationSize,
-										mostSuccessfulGenotypes.get(i), params.stdDev));
+						agentPopulations.set(i, new ESPPopulation(
+								params.subPopulationSize,
+								mostSuccessfulGenotypes.get(i), params.stdDev));
 					}
 					System.out.println("Delta Done : "
 							+ numCapturesOfMostSuccessfulPieces);
 				}
 			}
 
-			// Migration
-			final int startingGen = 1;
-			final int genInterval = 2;
-			final int lateGenInterval = 2;
-			final int lateGenThreshold = 25;
-			final int numMigrants = 2;
-			final double behaviourSimilarityThreshhold = 0.0;
-			final double genotypeDistanceThreshhold = 0.37;
-
 			if (doMigration) {
-				if ((gen % genInterval == 0 && gen > startingGen && gen < lateGenThreshold)
-						|| (gen % lateGenInterval == 0 && gen > lateGenThreshold)) {
+				if ((gen % params.migrationGenInterval == 0
+						&& gen > params.migrationStartingGen && gen < params.migrationLateGenThreshold)
+						|| (gen % params.migrationLateGenInterval == 0 && gen > params.migrationLateGenThreshold)) {
 					burstMutationTicker = params.burstMutationWaitAfterMigration;
 					if (useBehaviourDistance) {
 						double[][] similarities = SocialEntropyBehaviourMeasurement
@@ -297,9 +294,7 @@ public class ESPEvolution {
 										params.boardSize, env);
 						for (int i = 0; i < params.numPredators; i++) {
 							for (int j = 0; j < params.numPredators; j++) {
-								if (similarities[i][j] > behaviourSimilarityThreshhold) {
-									// System.out.println("Migrating " + i +
-									// " to " + j);
+								if (similarities[i][j] > params.migrationBehaviourSimilarityThreshhold) {
 									if (useGenotypeDistance) {
 										int migrantCount = 0;
 										for (ESPSubPopulation subPopI : agentPopulations
@@ -307,20 +302,25 @@ public class ESPEvolution {
 											for (ESPSubPopulation subPopJ : agentPopulations
 													.get(j).subPopulations) {
 												if (subPopI
-														.averageWeightDistance(subPopJ) < genotypeDistanceThreshhold) {
+														.averageWeightDistance(subPopJ) < params.migrationGenotypeDistanceThreshhold) {
 													subPopI.sendMigrants(
 															subPopJ,
-															numMigrants);
+															params.migrationNumMigrants);
 													migrantCount++;
 												}
 											}
 										}
 
-										System.out.println(migrantCount+" migrations done");
-									}
-									else{
-										// NB: Note the change to the spraying method.
-										agentPopulations.get(i).sendSprayMigrants(agentPopulations.get(j), numMigrants);
+										System.out.println(migrantCount
+												+ " migrations done");
+									} else {
+										// NB: Note the change to the spraying
+										// method.
+										agentPopulations
+												.get(i)
+												.sendSprayMigrants(
+														agentPopulations.get(j),
+														params.migrationNumMigrants);
 									}
 								}
 							}
@@ -334,15 +334,16 @@ public class ESPEvolution {
 									for (ESPSubPopulation subPopJ : agentPopulations
 											.get(j).subPopulations) {
 										if (subPopI
-												.averageWeightDistance(subPopJ) < genotypeDistanceThreshhold) {
+												.averageWeightDistance(subPopJ) < params.migrationGenotypeDistanceThreshhold) {
 											subPopI.sendMigrants(subPopJ,
-													numMigrants);
+													params.migrationNumMigrants);
 											migrantCount++;
 										}
 									}
 								}
 
-								System.out.println(migrantCount	+ " migrations done");
+								System.out.println(migrantCount
+										+ " migrations done");
 							}
 						}
 					} else {
@@ -351,7 +352,8 @@ public class ESPEvolution {
 								System.out.println("Migrating " + i + " to "
 										+ j);
 								agentPopulations.get(i).sendMigrants(
-										agentPopulations.get(j), numMigrants);
+										agentPopulations.get(j),
+										params.migrationNumMigrants);
 							}
 						}
 					}
@@ -361,14 +363,15 @@ public class ESPEvolution {
 			if (gen >= params.burstMutationTestLookBackDistance) {
 				if ((burstMutationTicker <= 0)
 						& (capturesForEachGeneration.get(gen) < (capturesForEachGeneration
-								.get(gen - params.burstMutationTestLookBackDistance) + (int) (Math
+								.get(gen
+										- params.burstMutationTestLookBackDistance) + (int) (Math
 								.ceil(params.burstMutationTestRatioOfTrialsDifference
 										* params.trialsPerGeneration
 										* params.evaluationsPerTrial))))) {
 					System.out.println("Burst Mutation!!");
 					for (ESPPopulation pop : agentPopulations) {
 						if (captureCount
-								/ ((double) ((params.trialsPerGeneration * params.evaluationsPerTrial))) < 0.9) {
+								/ ((double) ((params.trialsPerGeneration * params.evaluationsPerTrial))) < params.burstMutationEarlyLateFitnessCutoff) {
 							pop.runBurstMutation(params.earlyBurstMutationAmountStdDev);
 						} else {
 							pop.runBurstMutation(params.lateBurstMutationAmountStdDev);
@@ -382,23 +385,6 @@ public class ESPEvolution {
 
 		}// generations
 
-		// Compute the genotypal euclidean distances between the predators.
-		/*
-		 * double[] distances1 =
-		 * agentPopulations.get(0).maxAndMinEuclideanDistance
-		 * (agentPopulations.get(1));
-		 * System.out.println("Distances 0 - 1: min - " + distances1[0] +
-		 * " max - " + distances1[1]); double[] distances2 =
-		 * agentPopulations.get
-		 * (0).maxAndMinEuclideanDistance(agentPopulations.get(2));
-		 * System.out.println("Distances 0 - 2: min - " + distances2[0] +
-		 * " max - " + distances2[1]); double[] distances3 =
-		 * agentPopulations.get
-		 * (1).maxAndMinEuclideanDistance(agentPopulations.get(2));
-		 * System.out.println("Distances 1 - 2: min - " + distances3[0] +
-		 * " max - " + distances3[1]);
-		 */
-
 		// Create the fittest predators and save them.
 		int j = 0;
 		Vector<Piece> fittestPredatorPieces = new Vector<Piece>();
@@ -410,35 +396,25 @@ public class ESPEvolution {
 			ann.saveNetwork("PredatorBehaviour" + j);
 			ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
 					params.boardSize, ann);
-			fittestPredatorPieces.add(new Piece(params.predatorPositions[2 * j],
-					params.predatorPositions[2 * j + 1], false, env, annBehaviour));
+			fittestPredatorPieces.add(new Piece(
+					params.predatorPositions[2 * j],
+					params.predatorPositions[2 * j + 1], false, env,
+					annBehaviour));
 			j += 1;
 		}
 
 		// Run a trial on the fittest predators
-		int evaluationsToRun = 100;
 		Vector<Piece> preyPieces = new Vector<Piece>();
 		StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(
 				params.boardSize, 1);
 		int preyX = random.nextInt(params.boardSize);
 		int preyY = random.nextInt(params.boardSize);
 		preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
-		TrialResult result = trial(fittestPredatorPieces, preyPieces, env,
-				evaluationsToRun);
-		result.generations = gen;
+		TrialResult finalResult = trial(fittestPredatorPieces, preyPieces, env,
+				params.FinalTestNumEvaluationsToRun);
+		finalResult.generations = gen;
 
-		// Run the simulation with them to create a log file
-		/*
-		 * for (Piece prey : preyPieces)
-		 * prey.setPosition(random.nextInt(boardSize),
-		 * random.nextInt(boardSize)); for(Piece predator :
-		 * fittestPredatorPieces) predator.setPosition(5, 5);
-		 * preyPieces.get(0).setPosition(preyX, preyY);
-		 * env.setPieces(fittestPredatorPieces, preyPieces); env.run(true,
-		 * false);
-		 */
-
-		return result;
+		return finalResult;
 	}
 
 	// Run a set of evaluations on the predators to get fitness values for the
@@ -484,9 +460,9 @@ public class ESPEvolution {
 				}
 			}
 		}
-
 		for (int i = 0; i < params.numPredators; i++)
-			avgEvalFitnesses[i] = avgEvalFitnesses[i] / params.evaluationsPerTrial;
+			avgEvalFitnesses[i] = avgEvalFitnesses[i]
+					/ params.evaluationsPerTrial;
 
 		return new TrialResult(avgEvalFitnesses, captureCount, 0);
 	}
@@ -509,14 +485,16 @@ public class ESPEvolution {
 				 * work. - David
 				 */
 				for (Piece prey : testPreyPieces)
-					prey.setPosition((int)Math.round((preyRow + 0.5) * preyPlacementIncrememnt), (int)Math.round((preyCol + 0.5)
-							* preyPlacementIncrememnt));
+					prey.setPosition(
+							(int) Math.round((preyRow + 0.5)
+									* preyPlacementIncrememnt),
+							(int) Math.round((preyCol + 0.5)
+									* preyPlacementIncrememnt));
 				int k = 0;
 				// randomizePredatorPositions();
 				for (Piece predator : testPredatorPieces) {
-					//predator.setPosition(predatorPositions[2 * k],
-					//		predatorPositions[2 * k + 1]);
-					predator.setPosition(1, 1);
+					predator.setPosition(params.predatorPositions[2 * k],
+							params.predatorPositions[2 * k + 1]);
 					k++;
 				}
 				env.setPieces(testPredatorPieces, testPreyPieces);
@@ -526,14 +504,4 @@ public class ESPEvolution {
 		}
 		return testCaptureCount;
 	}
-
-	/*
-	 * public static void randomizePredatorPositions() { Random random = new
-	 * Random(); Vector<Integer> predatorPositionsVector = new
-	 * Vector<Integer>(Arrays.asList(predatorPositions)); int indecesMoved =
-	 * (random.nextInt() % numPredators) * 2; for(int i = 0; i < indecesMoved;
-	 * i++) { int temp = predatorPositionsVector.remove(0);
-	 * predatorPositionsVector.add(temp); } predatorPositions = (Integer[])
-	 * predatorPositionsVector.toArray(new Integer[0]); }
-	 */
 }

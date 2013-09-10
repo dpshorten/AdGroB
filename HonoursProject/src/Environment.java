@@ -16,7 +16,7 @@ public class Environment {
 	private double preyMovesMultiplier = 1;
 	private double preyTurnIncrement = 1;
 	
-	private int numPredators = 4;
+	private int numPredators = 3;
 
 	Vector<Piece> predators = new Vector<Piece>();
 	Vector<Piece> prey = new Vector<Piece>();

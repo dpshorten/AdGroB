@@ -11,11 +11,11 @@ public class EvolutionParameters {
 	public static int generations = 200;
 	public static int boardSize = 100;
 	public static double mutationProbability = 0.4;
-	public static double earlyMutationStdDev = 0.05;
-	public static double lateMutationStdDev = 0.01;
+	public static double earlyMutationStdDev = 0.5;
+	public static double lateMutationStdDev = 0.2;
 	public static double earlyBurstMutationAmountStdDev = 0.3;
 	public static double lateBurstMutationAmountStdDev = 0.05;
-	public static double newEpochBurstMutationAmountStdDev = 0.2;
+	public static double burstMutationEarlyLateFitnessCutoff = 0.9;
 	public static int burstMutationWaitBeforeRepeat = 20;
 	public static int burstMutationWaitBeforeFirst = 10;
 	public static int burstMutationWaitAfterMigration = 6;
@@ -27,9 +27,17 @@ public class EvolutionParameters {
 	public static double ratioCapturesForEnd = 0.8;
 	public static int ratioHitsBeforeNextEpoch = 2;
 	public static double[] preySpeeds = { 0.1, 0.95, 1 };
-
-	public static Integer[] predatorPositions = { 30, 30, boardSize - 30, 30, 30,
-			boardSize - 30};
+	public static Integer[] predatorPositions = { 1, 1, 1, 1, 1, 1};
+	public static final int FinalTestNumEvaluationsToRun = 100;
+	
+	// Migration
+	final int migrationStartingGen = 1;
+	final int migrationGenInterval = 2;
+	final int migrationLateGenInterval = 2;
+	final int migrationLateGenThreshold = 25;
+	final int migrationNumMigrants = 2;
+	final double migrationBehaviourSimilarityThreshhold = 0.0;
+	final double migrationGenotypeDistanceThreshhold = 0.37;
 	
 	// Variables for David's delta coding.
 	public static int genotypesPerSubPopulation = 5;

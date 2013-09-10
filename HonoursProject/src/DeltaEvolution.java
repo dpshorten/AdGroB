@@ -53,6 +53,7 @@ public class DeltaEvolution {
 
 		int gen = 0;
 		Vector<Double> previousBestCaptureRatios = new Vector<Double>();
+		PredatorGroup bestPredatorGroup = null;
 		for (gen = 0; gen < params.generations; gen++) {
 
 			Environment env = new Environment(params.boardSize,
@@ -151,10 +152,19 @@ public class DeltaEvolution {
 				System.out.println("Epoch Change to number "
 						+ (epochNumber + 1));
 				if (epochNumber >= preySpeeds.length) {
+					bestPredatorGroup = predatorGroups.get(0);
 					break;
 				}
 			}
 		}
+		
+		int j = 0;
+		for(Vector<Genotype> hiddenNodes : bestPredatorGroup.getGenotypes()) {
+			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
+			ann.saveNetwork("PredatorBehaviour" + j);
+			j++;
+		}
+		
 		return gen + 1;
 	}
 
