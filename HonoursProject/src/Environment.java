@@ -181,14 +181,14 @@ public class Environment {
 			}
 			// Add caught prey to a list of to-be-removed pieces.
 			Vector<Piece> removals = new Vector<Piece>();
-			int j = 0;
+			//int j = 0;
 			for (Piece pred : predators) {
 				for (Piece aPrey : prey) {
 					if (pred.getPosition().equals(aPrey.getPosition()) & !removals.contains(aPrey)) {
-						j += 1;
-						if(j > 1) {
-							System.out.println("foo");
-						}
+//						j += 1;
+//						if(j > 1) {
+//							System.out.println("foo");
+//						}
 						preyCaught++;
 						removals.add(aPrey);
 						clearBoard(aPrey);

@@ -29,17 +29,26 @@ public class Main
 		ESPArtificialNeuralNetwork ESPTestNetwork2 = new ESPArtificialNeuralNetwork(genotypes2);  
 		ESPArtificialNeuralNetwork ESPTestNetwork3 = new ESPArtificialNeuralNetwork(genotypes3);
 		
-		SimpleNeuralNetwork SNNtest;
+		SimpleNeuralNetwork SNNBehaviour1;
+		SimpleNeuralNetwork SNNBehaviour2;
+		SimpleNeuralNetwork SNNBehaviour3;
 		try
 		{
-			SNNtest = new SimpleNeuralNetwork("SimplePredatorBehaviour");
+			SNNBehaviour1 = new SimpleNeuralNetwork("SimplePredatorBehaviour0");
+			SNNBehaviour2 = new SimpleNeuralNetwork("SimplePredatorBehaviour1");
+			SNNBehaviour3 = new SimpleNeuralNetwork("SimplePredatorBehaviour2");
 		}
 		catch(Exception e)
 		{
 			System.out.println("Error opening file for SNN, using default");
-			SNNtest = new SimpleNeuralNetwork(genotypes1);
+			SNNBehaviour1 = new SimpleNeuralNetwork(genotypes1);
+			SNNBehaviour2 = new SimpleNeuralNetwork(genotypes2);
+			SNNBehaviour3 = new SimpleNeuralNetwork(genotypes3);
 		}
-		SimpleNeuralNetworkBehaviour SNNB= new SimpleNeuralNetworkBehaviour(boardSize, SNNtest);
+		
+		SimpleNeuralNetworkBehaviour SNNB1= new SimpleNeuralNetworkBehaviour(boardSize, SNNBehaviour1);
+		SimpleNeuralNetworkBehaviour SNNB2= new SimpleNeuralNetworkBehaviour(boardSize, SNNBehaviour2);
+		SimpleNeuralNetworkBehaviour SNNB3= new SimpleNeuralNetworkBehaviour(boardSize, SNNBehaviour3);
 		
 		
 		ESPArtificialNeuralNetworkBehaviour ESPTestBehaviour1 = new ESPArtificialNeuralNetworkBehaviour(boardSize, ESPTestNetwork1);  
@@ -48,9 +57,9 @@ public class Main
 		
 		RuleBasedBehaviour RBB1 = new RuleBasedBehaviour(boardSize);
 		
-		predatorPieces.add(new Piece(2,1,false,env,SNNB));
-		predatorPieces.add(new Piece(2,2,false,env,SNNB));
-		predatorPieces.add(new Piece(2,3,false,env,SNNB));
+		predatorPieces.add(new Piece(2,1,false,env,SNNB1));
+		predatorPieces.add(new Piece(2,2,false,env,SNNB2));
+		predatorPieces.add(new Piece(2,3,false,env,SNNB3));
 		
 		preyPieces.add(new Piece(0, 1, true, env, runAway));
 		
