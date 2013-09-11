@@ -1,5 +1,7 @@
+import java.util.Random;
 import java.util.Vector;
 import java.util.ArrayList;
+
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
@@ -13,6 +15,14 @@ public class ESPPopulation {
 		subPopulations = new Vector<ESPSubPopulation>();
 		for(int i=0; i<numSubPopulations; i++)
 			subPopulations.add(new ESPSubPopulation(subPopulationSize));
+	}
+	
+	// Useful for creating a new population through burst mutation.
+	public ESPPopulation(int subPopSize, Vector<Genotype> genotypes, double burstMutationStdDev) {
+		subPopulations = new Vector<ESPSubPopulation>();
+		for(Genotype genotype : genotypes) {
+			subPopulations.add(new ESPSubPopulation(subPopSize, genotype, burstMutationStdDev));
+		}
 	}
 	
 	public ESPSubPopulation getSubPopulationForNode(int index){
@@ -74,15 +84,38 @@ public class ESPPopulation {
 		}
 	}
 	
+	//Send numMigrantsPerSubPop random migrants from each subpopulation to each other subpopulation
 	public void sendMigrants(ESPPopulation otherPopulation, int numMigrantsPerSubPop) {
 		int numMigrationsDone = 0;
 		for(ESPSubPopulation subPop : this.subPopulations) {
 			for(ESPSubPopulation otherSubPop : otherPopulation.subPopulations) {
-				if(subPop.sendMigrantsUsingAvgWeightsDistance(otherSubPop, numMigrantsPerSubPop)) {
-					numMigrationsDone++;
-				}
+				subPop.sendMigrants(otherSubPop, numMigrantsPerSubPop);
+				numMigrationsDone++;
 			}
 		}
 		System.out.println(numMigrationsDone + " migrations done");
+	}
+	
+	public void sendSprayMigrants(ESPPopulation otherPopulation, int numMigrantsPerSubPop) {
+		Random random = new Random();
+		for(ESPSubPopulation subPop : this.subPopulations) {
+			for(ESPSubPopulation otherSubPop : otherPopulation.subPopulations) {
+				if(random.nextInt() % 2 == 0) {
+					subPop.sendMigrantsUsingSpray(otherSubPop, numMigrantsPerSubPop);
+				}
+			}
+		}
+	}
+	
+	public void resetGenotypes() {
+		for(ESPSubPopulation subPop : subPopulations) {
+			subPop.resetGenotypes();
+		}
+	}
+	
+	public void shuffleSubPopulations() {
+		for(ESPSubPopulation subPop : subPopulations) {
+			subPop.shuffleGenotypes();
+		}
 	}
 }

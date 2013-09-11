@@ -14,6 +14,16 @@ public class ESPSubPopulation {
 			nodeGenotypes.add(new Genotype());
 	}
 	
+	// Constructs a new sub-population through burst mutation.
+	public ESPSubPopulation(int subPopulationSize, Genotype genotype, double burstMutationStdDev) {
+		nodeGenotypes = new Vector<Genotype>();
+		for(int i = 0; i < subPopulationSize; i++) {
+			nodeGenotypes.add(genotype);
+		}
+		runBurstMutation(burstMutationStdDev);
+	}
+	
+	
 	public Genotype getGenotype(int index){
 		return nodeGenotypes.elementAt(index);
 	}
@@ -23,13 +33,15 @@ public class ESPSubPopulation {
 	}
 	
 	public Genotype getFittestGenotype() {
-		Genotype fittest = nodeGenotypes.elementAt(0);
-		for (Genotype genotype : nodeGenotypes) {
-			if(fittest.compareTo(genotype) < 1) {
-				fittest = genotype;
-			}
-		}
-		return fittest;
+		Collections.sort(this.nodeGenotypes);
+		Collections.reverse(this.nodeGenotypes);
+		return nodeGenotypes.get(0);
+	}
+	
+	public Genotype getNthFittestGenotype(int n) {
+		Collections.sort(this.nodeGenotypes);
+		Collections.reverse(this.nodeGenotypes);
+		return nodeGenotypes.get(n);
 	}
 	
 	public void runBurstMutation(double mutationAmountStdDev) {
@@ -44,29 +56,8 @@ public class ESPSubPopulation {
 			//	+ "   " + nodeGenotypes.elementAt(1).getInputWeights().elementAt(0));
 	}
 	
-	public boolean sendMigrants(ESPSubPopulation otherSubPop, int numMigrants) {
-		Collections.sort(this.nodeGenotypes);
-		Collections.reverse(this.nodeGenotypes);
-		Collections.sort(otherSubPop.nodeGenotypes);
-		Collections.reverse(otherSubPop.nodeGenotypes);
-		double distanceSum = 0;
-		for(int i = 0; i < 5; i++) {
-			distanceSum += this.nodeGenotypes.get(i).euclideanDistanceSquared(
-					otherSubPop.nodeGenotypes.get(i));
-		}
-		distanceSum /= 5;
-		if(distanceSum < migrationSimilarityCutOff) {
-			for(int i = 0; i < numMigrants; i++) {
-				otherSubPop.acceptMigrant(this.nodeGenotypes.get(i));
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public boolean sendMigrantsUsingAvgWeightsDistance(ESPSubPopulation otherSubPop, int numMigrants){
-
+	public double averageWeightDistance(ESPSubPopulation otherSubPop){
+		
 		//Get a random sample from each subpopulation with no repeated elements
 		Vector<Genotype> thisCopy = new Vector<Genotype>();
 		thisCopy.addAll(nodeGenotypes);
@@ -85,6 +76,7 @@ public class ESPSubPopulation {
 			otherCopy.remove(index);
 		}
 		
+		//Get total distance between each pair of genotypes
 		double distanceSum = 0;
 		for(Genotype t : thisSample){
 			for(Genotype o : otherSample){
@@ -92,21 +84,68 @@ public class ESPSubPopulation {
 			}
 		}
 		
+		//Reduce the sum to the average distance between pairs
 		distanceSum = distanceSum / (thisSample.size()*otherSample.size());
 		
-		if(distanceSum < 0.37) {
-			for(int i = 0; i < numMigrants; i++) {
-				otherSubPop.acceptMigrant(thisSample.get((int)Math.round(Math.random()*(thisSample.size()-1))));
-			}
-			return true;
-		} else {
-			return false;
+		return distanceSum;
+	}
+	
+//	public boolean sendMigrants(ESPSubPopulation otherSubPop, int numMigrants) {
+//		Collections.sort(this.nodeGenotypes);
+//		Collections.reverse(this.nodeGenotypes);
+//		Collections.sort(otherSubPop.nodeGenotypes);
+//		Collections.reverse(otherSubPop.nodeGenotypes);
+//		double distanceSum = 0;
+//		for(int i = 0; i < 5; i++) {
+//			distanceSum += this.nodeGenotypes.get(i).euclideanDistanceSquared(
+//					otherSubPop.nodeGenotypes.get(i));
+//		}
+//		distanceSum /= 5;
+//		if(distanceSum < migrationSimilarityCutOff) {
+//			for(int i = 0; i < numMigrants; i++) {
+//				otherSubPop.acceptMigrant(this.nodeGenotypes.get(i));
+//			}
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
+	
+	//Send numMigrants random migrants to the other subpopulation
+	public void sendMigrants(ESPSubPopulation otherSubPop, int numMigrants){
+		for(int i = 0; i < numMigrants; i++) {
+			otherSubPop.acceptMigrant(getGenotype((int)Math.round(Math.random()*(nodeGenotypes.size()-1))));
 		}
+	}
+	
+	public boolean sendMigrantsUsingSpray(ESPSubPopulation otherSubPop, int numMigrants) {
+		Collections.sort(this.nodeGenotypes);
+		Collections.reverse(this.nodeGenotypes);
+		otherSubPop.acceptMigrant(new Genotype(this.nodeGenotypes.get(0)));
+		return true;
 	}
 	
 	// NB: assumes that nodeGenotypes is sorted in ascending order.
 	public void acceptMigrant(Genotype Migrant) {
+		Collections.sort(nodeGenotypes);
+		Collections.reverse(nodeGenotypes);
 		this.nodeGenotypes.remove(this.nodeGenotypes.size() - 1);
 		this.nodeGenotypes.add(0, Migrant);
+	}
+	
+	public void resetGenotypes() {
+		for(Genotype genotype : nodeGenotypes) {
+			genotype.resetFitnessAndCounts();
+		}
+	}
+	
+	public void shuffleGenotypes() {
+		Collections.shuffle(nodeGenotypes);
+	}
+	
+	public Genotype getFirstGenotypeAndSendItToBack() {
+		Genotype firstGenotype = nodeGenotypes.remove(0);
+		nodeGenotypes.add(firstGenotype);
+		return firstGenotype;
 	}
 }

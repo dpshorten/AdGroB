@@ -26,12 +26,20 @@ public class Genotype implements Comparable<Genotype>
 		outputWeights = new Vector<Double>();
 		Random random = new Random();
 		for(int i = 0; i < 2; i++) {
-			inputWeights.add(new Double(random.nextDouble() - 0.5));
+			inputWeights.add(new Double(cauchy(1, random.nextDouble())));
 		}
 		for(int i = 0; i < 5; i++) {
-			outputWeights.add(new Double(random.nextDouble() - 0.5));
+			outputWeights.add(new Double(cauchy(1, random.nextDouble())));
 		}
 	}
+	
+	public Genotype(Genotype otherGenotype) {
+		inputWeights = new Vector<Double>();
+		outputWeights = new Vector<Double>();
+		setInputWeights(otherGenotype.getInputWeights());
+		setOutputWeights(otherGenotype.getOutputWeights());
+		fitness = otherGenotype.getFitness();
+		fitnessSourceCount = otherGenotype.getFitnessSourceCount();	}
 	
 	public Genotype(float outputNodes) {
 		inputWeights = new Vector<Double>();
@@ -60,15 +68,17 @@ public class Genotype implements Comparable<Genotype>
 	}
 	
 	public Genotype burstMutate(double mutationAmountStdDev) {
-		Random random = new Random(); 
+		Random random = new Random();
 		Genotype newGenotype = new Genotype(0);
 		Vector<Double> newInputWeights = this.getInputWeights();
 		Vector<Double> newOutputWeights = this.getOutputWeights();
 		for(int i = 0; i < newInputWeights.size(); i++) {
-			newInputWeights.set(i, newInputWeights.get(i).doubleValue() + random.nextGaussian() * mutationAmountStdDev);
+			//newInputWeights.set(i, newInputWeights.get(i).doubleValue() + random.nextGaussian() * mutationAmountStdDev);
+			newInputWeights.set(i, newInputWeights.get(i).doubleValue() + cauchy(mutationAmountStdDev, random.nextDouble()));
 		}
 		for(int i = 0; i < newOutputWeights.size(); i++) {
-			newOutputWeights.set(i, newOutputWeights.get(i).doubleValue() + random.nextGaussian() * mutationAmountStdDev);
+			//newOutputWeights.set(i, newOutputWeights.get(i).doubleValue() + random.nextGaussian() * mutationAmountStdDev);
+			newOutputWeights.set(i, newOutputWeights.get(i).doubleValue() + cauchy(mutationAmountStdDev, random.nextDouble()));
 		}
 		newGenotype.setInputWeights(newInputWeights);
 		newGenotype.setOutputWeights(newOutputWeights);
@@ -200,6 +210,15 @@ public class Genotype implements Comparable<Genotype>
 		this.fitness = fitness;
 	}
 	
+	public int getFitnessSourceCount() {
+		return fitnessSourceCount;
+	}
+	
+	public void resetFitnessAndCounts() {
+		this.fitnessSourceCount =  0;
+		this.fitness = 0;
+	}
+	
 	public double averageWeightDistance(Genotype other){
 		double distance = 0;
 		
@@ -214,4 +233,8 @@ public class Genotype implements Comparable<Genotype>
 		
 		return distance;
 	}
+	
+	public static double cauchy(double gamma, double random) {
+        return gamma*Math.tan(Math.PI * (random - 0.5));
+    }
 }
