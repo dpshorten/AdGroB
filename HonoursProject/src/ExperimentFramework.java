@@ -4,12 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-//TODO:
-//experiment framework
-//crossover instead of migration
-//enforced specialisation
-//epoch changes - wait until 2 or 3 generations over threshhold?
-
 public class ExperimentFramework {
 
 	public static void main(String[] args) {
@@ -33,7 +27,7 @@ public class ExperimentFramework {
 		}
 		
 		//Array to hold parameters for each experiment
-		ExperimentParams[] params = new ExperimentParams[linecount];
+		MetaParams[] params = new MetaParams[linecount];
 		
 		s.close();
 		s = null;
@@ -61,7 +55,7 @@ public class ExperimentFramework {
 				boolean useBehaviourDistance = useB.equals("t");
 				boolean useGenotypeDistance = useG.equals("t");
 				
-				params[counter] = new ExperimentParams(reps, useMigration, useBehaviourDistance, useGenotypeDistance);
+				params[counter] = new MetaParams(reps, useMigration, useBehaviourDistance, useGenotypeDistance);
 				counter++;
 				ls.close();
 			}
@@ -101,13 +95,13 @@ public class ExperimentFramework {
 		}
 	}
 
-	private static class ExperimentParams{
+	private static class MetaParams{
 		int reps;
 		boolean useMigration;
 		boolean useBehaviourDistance;
 		boolean useGenotypeDistance;
 		
-		public ExperimentParams(int reps, boolean useMigration, boolean useBehaviourDistance, boolean useGenotypeDistance){
+		public MetaParams(int reps, boolean useMigration, boolean useBehaviourDistance, boolean useGenotypeDistance){
 			this.reps = reps;
 			this.useMigration = useMigration;
 			this.useBehaviourDistance = useBehaviourDistance;

@@ -173,7 +173,7 @@ public class DeltaEvolution {
 			Environment env, Behaviour preyBehaviour, int numToSelect) {
 		for (PredatorGroup group : inputGroups) {
 			int captures = ESPEvolution.testOnIncrementedPositions(
-					rootOfNumTests, env, group.getPieces(), preyBehaviour);
+					rootOfNumTests, env, group.getPieces(), preyBehaviour, params);
 			group.updateCaptureRatio(captures / Math.pow(rootOfNumTests, 2),
 					(int) Math.pow(rootOfNumTests, 2));
 		}
@@ -181,4 +181,5 @@ public class DeltaEvolution {
 		Collections.reverse(inputGroups);
 		return new Vector<PredatorGroup>(inputGroups.subList(0, numToSelect));
 	}
+	
 }
