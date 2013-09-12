@@ -1,12 +1,18 @@
 
 public class EvolutionParameters {
+	
+	//Control parameters
+	boolean doMigration = true;
+	boolean useBehaviourDistance = true;
+	boolean useGenotypeDistance = true;
+	boolean doDavidsDeltaThings = true;
+	
 	public static int numHiddenNodes = 10;
 	public static int numPredators = 3;
 	public static int subPopulationSize = 100;
 	// Each trial set runs a number of trials equal to the sub-population size.
 	public static int trialSetsPerGeneration = 10; // 10
-	public static int trialsPerGeneration = trialSetsPerGeneration
-			* subPopulationSize;
+	public static int trialsPerGeneration = trialSetsPerGeneration * subPopulationSize;
 	public static int evaluationsPerTrial = 6; // 6
 	public static int generations = 200;
 	public static int boardSize = 100;
