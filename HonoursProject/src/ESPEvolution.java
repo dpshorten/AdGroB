@@ -425,13 +425,13 @@ public class ESPEvolution {
 		int captureCount = 0;
 		Random random = new Random();
 		for (int eval = 0; eval < evaluations; eval++) {
-			// Randomize the prey position so that it is not the same as the
-			// previous evaluation.
-			for (Piece prey : preyPieces)
+			// Randomize the prey positions so that they are not the 
+			// same as the previous evaluation.
+			for (Piece prey : preyPieces) {
 				prey.setPosition(random.nextInt(params.boardSize),
 						random.nextInt(params.boardSize));
+			}
 			int k = 0;
-			// randomizePredatorPositions();
 			for (Piece predator : predatorPieces) {
 				predator.setPosition(params.predatorPositions[2 * k],
 						params.predatorPositions[2 * k + 1]);
@@ -443,8 +443,6 @@ public class ESPEvolution {
 			captureCount += result.preyCaught;
 			for (int i = 0; i < params.numPredators; i++) {
 				if (result.preyCaught == 0) {
-					// double fitness = boardSize -
-					// result.finalDistancesFromPrey.elementAt(i);
 					/*
 					 * double fitness = result.initialDistancesFromPrey
 					 * .elementAt(i) -
@@ -476,9 +474,10 @@ public class ESPEvolution {
 		for (int preyRow = 0; preyRow < rootOfTotalNumTests; preyRow++) {
 			for (int preyCol = 0; preyCol < rootOfTotalNumTests; preyCol++) {
 				Vector<Piece> testPreyPieces = new Vector<Piece>();
-				testPreyPieces.add(new Piece(preyRow * preyPlacementIncrememnt,
-						preyCol * preyPlacementIncrememnt, true, env,
-						preyBehaviour));
+				testPreyPieces.add(new Piece((int) Math.round((preyRow + 0.5)
+						* preyPlacementIncrememnt), (int) Math
+						.round((preyCol + 0.5) * preyPlacementIncrememnt),
+						true, env, preyBehaviour));
 				/*
 				 * I am not sure why there is the need to reset the position of
 				 * the pieces (as in the trial() method), but it makes things
@@ -491,7 +490,6 @@ public class ESPEvolution {
 							(int) Math.round((preyCol + 0.5)
 									* preyPlacementIncrememnt));
 				int k = 0;
-				// randomizePredatorPositions();
 				for (Piece predator : testPredatorPieces) {
 					predator.setPosition(params.predatorPositions[2 * k],
 							params.predatorPositions[2 * k + 1]);
