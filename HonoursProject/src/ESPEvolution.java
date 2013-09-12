@@ -293,6 +293,7 @@ public class ESPEvolution {
 				}
 			}
 
+			//Migration
 			if (params.doMigration) {
 				if ((gen % params.migrationGenInterval == 0
 						&& gen > params.migrationStartingGen && gen < params.migrationLateGenThreshold)
@@ -307,15 +308,11 @@ public class ESPEvolution {
 								if (similarities[i][j] > params.migrationBehaviourSimilarityThreshhold) {
 									if (params.useGenotypeDistance) {
 										int migrantCount = 0;
-										for (ESPSubPopulation subPopI : agentPopulations
-												.get(i).subPopulations) {
-											for (ESPSubPopulation subPopJ : agentPopulations
-													.get(j).subPopulations) {
-												if (subPopI
-														.averageWeightDistance(subPopJ) < params.migrationGenotypeDistanceThreshhold) {
-													subPopI.sendMigrants(
-															subPopJ,
-															params.migrationNumMigrants);
+										for (ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations) {
+											for (ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations) {
+												if (subPopI.averageWeightDistance(subPopJ) < 
+														params.migrationGenotypeDistanceThreshhold) {
+													subPopI.sendMigrants(subPopJ, params.migrationNumMigrants);
 													migrantCount++;
 												}
 											}
@@ -370,6 +367,89 @@ public class ESPEvolution {
 				}
 			}//migration
 			
+			//Inter-population crossover
+			if(params.doInterpopulationCrossover){
+				if(gen % params.crossoverGenInterval == 0 && gen >= params.crossoverFirstGen){
+					
+					if(params.useBehaviourDistance){
+						double[][] similarities = SocialEntropyBehaviourMeasurement.measureSimilarity(
+									testPredatorPieces, params.boardSize, env);
+						for (int i = 0; i < params.numPredators; i++) {
+							for (int j = 0; j < params.numPredators; j++) {
+								if (similarities[i][j] > params.crossoverBehaviourSimilarityThreshhold) {
+									for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
+										for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
+											if((!params.useGenotypeDistance) || subPopI.averageWeightDistance(subPopJ) < params.crossoverGenotypeDistanceThreshhold){
+												
+												Vector<Genotype> genotypesI = subPopI.getAllGenotypes();
+												Vector<Genotype> genotypesJ = subPopJ.getAllGenotypes();
+												
+												//Sort by descending fitness (element 0 = fittest)
+												Collections.sort(genotypesI);
+												Collections.reverse(genotypesI);
+												Collections.sort(genotypesJ);
+												Collections.reverse(genotypesJ);
+												
+												int replacementIndex = params.subPopulationSize;
+												int numReplacements = (int)Math.round(params.crossoverPopulationPercentage * params.subPopulationSize);
+												
+												for(int k=0; k < numReplacements; k++){
+													Genotype parentI = genotypesI.get(k);
+													Genotype parentJ = genotypesJ.get(k);
+													Genotype child = Genotype.crossover(parentI, parentJ);
+													
+													genotypesI.remove(replacementIndex);
+													genotypesJ.remove(replacementIndex);
+													genotypesI.add(replacementIndex, child);
+													genotypesJ.add(replacementIndex, child);
+													replacementIndex--;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					else if(params.useGenotypeDistance){
+						for (int i = 0; i < params.numPredators; i++) {
+							for (int j = 0; j < params.numPredators; j++) {
+								for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
+									for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
+										if(subPopI.averageWeightDistance(subPopJ) <	params.crossoverGenotypeDistanceThreshhold){
+											Vector<Genotype> genotypesI = subPopI.getAllGenotypes();
+											Vector<Genotype> genotypesJ = subPopJ.getAllGenotypes();
+											
+											//Sort by descending fitness (element 0 = fittest)
+											Collections.sort(genotypesI);
+											Collections.reverse(genotypesI);
+											Collections.sort(genotypesJ);
+											Collections.reverse(genotypesJ);
+											
+											int replacementIndex = params.subPopulationSize;
+											int numReplacements = (int)Math.round(params.crossoverPopulationPercentage * params.subPopulationSize);
+											
+											for(int k=0; k < numReplacements; k++){
+												Genotype parentI = genotypesI.get(k);
+												Genotype parentJ = genotypesJ.get(k);
+												Genotype child = Genotype.crossover(parentI, parentJ);
+												
+												genotypesI.remove(replacementIndex);
+												genotypesJ.remove(replacementIndex);
+												genotypesI.add(replacementIndex, child);
+												genotypesJ.add(replacementIndex, child);
+												replacementIndex--;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					
+				}
+			}//Interpop crossover
+		
 			// If the improvement is stagnating, burst mutation is run.
 			if (gen >= params.burstMutationTestLookBackDistance) {
 				if ((burstMutationTicker <= 0)

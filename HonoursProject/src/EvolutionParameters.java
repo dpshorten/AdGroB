@@ -6,6 +6,7 @@ public class EvolutionParameters {
 	boolean useBehaviourDistance = true;
 	boolean useGenotypeDistance = true;
 	boolean doDavidsDeltaThings = true;
+	boolean doInterpopulationCrossover = true;
 	
 	public static int numHiddenNodes = 10;
 	public static int numPredators = 3;
@@ -37,13 +38,20 @@ public class EvolutionParameters {
 	public static final int FinalTestNumEvaluationsToRun = 100;
 	
 	// Migration
-	final int migrationStartingGen = 1;
-	final int migrationGenInterval = 2;
-	final int migrationLateGenInterval = 2;
-	final int migrationLateGenThreshold = 25;
-	final int migrationNumMigrants = 2;
-	final double migrationBehaviourSimilarityThreshhold = 0.0;
-	final double migrationGenotypeDistanceThreshhold = 0.37;
+	public static int migrationStartingGen = 1;
+	public static int migrationGenInterval = 2;
+	public static int migrationLateGenInterval = 2;
+	public static int migrationLateGenThreshold = 25;
+	public static int migrationNumMigrants = 2;
+	public static double migrationBehaviourSimilarityThreshhold = 0.0;
+	public static double migrationGenotypeDistanceThreshhold = 0.37;
+	
+	//Crossover
+	public int crossoverGenInterval = 4;
+	public int crossoverFirstGen = 4;
+	public double crossoverPopulationPercentage = 0.05;
+	public double crossoverBehaviourSimilarityThreshhold = 0.0;
+	public double crossoverGenotypeDistanceThreshhold = 0.37;
 	
 	// Variables for David's delta coding.
 	public static int genotypesPerSubPopulation = 5;
