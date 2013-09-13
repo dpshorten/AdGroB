@@ -5,12 +5,12 @@ import java.util.Random;
 public class SimpleNeuralEvolution 
 {
 	static final int numHiddenNodes = 10;
-	static final int numPredators = 3;
+	static final int numPredators = 1;
 	static final int populationSize = 100;
 	static final int numberOfBest = 100;
 	static final int trialsPerGeneration = 100; // 1000
 static final int evaluationsPerTrial = 6; // 6
-static final int generations = 3;
+static final int generations = 10;
 static final int boardSize = 10;
 static final double mutationProbability = 0.4;
 static final double earlyMutationStdDev = 0.05;
@@ -18,7 +18,7 @@ static final double lateMutationStdDev = 0.01;
 static final int rootOfNumTests = 10;
 static int speed = 0;
 
-static final double[] preySpeeds = { 0.01, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7, 0.9, 1};
+static final double[] preySpeeds = { 0.5, 1, 1, 0.2, 0.3, 0.5, 0.7, 0.9, 1};
 
 static int stagnator = 0;
 static int Stagnatingcaptures = 0;
@@ -87,7 +87,7 @@ public static int run( )
 {
 
 	Random random = new Random();
-	Environment env = new Environment(boardSize, preySpeeds[speed]);
+	Environment env = new Environment(boardSize, preySpeeds[speed], numPredators);
 	SimpleNeuralNetwork network;
 	SimpleNeuralNetworkBehaviour sNNB;
 	
@@ -133,7 +133,7 @@ public static int run( )
 			speed++;
 			if (speed >= preySpeeds.length)
 				speed = preySpeeds.length;
-			env = new Environment(boardSize, preySpeeds[speed]);
+			env = new Environment(boardSize, preySpeeds[speed],numPredators);
 		
 		}
 		for(int i = 0 ; i < numPredators; i ++)
@@ -172,8 +172,12 @@ public static int run( )
 			
 				sNNB = new SimpleNeuralNetworkBehaviour(boardSize,network);
 					
-				predatorPieces.add(new Piece(5, 5, false, env, sNNB));
-		
+				predatorPieces.add(new Piece(random.nextInt(boardSize), random.nextInt(boardSize), false, env, sNNB));
+				
+				predatorPieces.add(new Piece(random.nextInt(boardSize), random.nextInt(boardSize), false, env, sNNB));
+				
+				predatorPieces.add(new Piece(random.nextInt(boardSize), random.nextInt(boardSize), false, env, sNNB));
+				
 				env.setPieces(predatorPieces, preyPieces);
 		
 				for (int trial = 0; trial < trialsPerGeneration; trial++) 
@@ -184,11 +188,15 @@ public static int run( )
 					captures += result.captureCount;
 	
 					double newFitness = 0;
-					if (captures > 0)
-						newFitness = (boardSize * (captureCount+1)) - 2*preyPieces.elementAt(0).getDistance(predatorPieces.elementAt(0));
-					else
-						if(preyPieces.elementAt(0).getDistance(predatorPieces.elementAt(0)) < (boardSize / 3))
-							newFitness = boardSize - Math.pow((preyPieces.elementAt(0).getDistance(predatorPieces.elementAt(0))),2)/boardSize;
+					
+					for(Piece aPrey: preyPieces)
+					{
+						for(Piece aPred: predatorPieces)
+						{
+							if (preyPieces.elementAt(0).getDistance(predatorPieces.elementAt(0)) < (boardSize / 5))
+								newFitness += (boardSize / aPrey.getDistance(aPred));
+						}
+					}
 				
 					// Update the genotypes fitnesses with the average fitness over
 					// the evaluations
