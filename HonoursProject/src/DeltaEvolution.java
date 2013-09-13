@@ -152,12 +152,16 @@ public class DeltaEvolution {
 				System.out.println("Epoch Change to number "
 						+ (epochNumber + 1));
 				if (epochNumber >= preySpeeds.length) {
-					bestPredatorGroup = predatorGroups.get(0);
-					break;
+					if (predatorGroups.get(0).getMostRecentCaptureRatio() > params.ratioCapturesForEnd) {
+						bestPredatorGroup = predatorGroups.get(0);
+						break;
+					} else {
+						epochNumber--;
+					}
 				}
 			}
 		}
-		
+
 		int j = 0;
 		for(Vector<Genotype> hiddenNodes : bestPredatorGroup.getGenotypes()) {
 			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
@@ -173,7 +177,7 @@ public class DeltaEvolution {
 			Environment env, Behaviour preyBehaviour, int numToSelect) {
 		for (PredatorGroup group : inputGroups) {
 			int captures = ESPEvolution.testOnIncrementedPositions(
-					rootOfNumTests, env, group.getPieces(), preyBehaviour);
+					rootOfNumTests, env, group.getPieces(), preyBehaviour, params);
 			group.updateCaptureRatio(captures / Math.pow(rootOfNumTests, 2),
 					(int) Math.pow(rootOfNumTests, 2));
 		}
@@ -181,4 +185,5 @@ public class DeltaEvolution {
 		Collections.reverse(inputGroups);
 		return new Vector<PredatorGroup>(inputGroups.subList(0, numToSelect));
 	}
+	
 }

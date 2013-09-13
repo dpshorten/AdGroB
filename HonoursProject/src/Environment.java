@@ -38,6 +38,11 @@ public class Environment {
 		maxMoves = (int) Math.round(8 * boardSize);
 		board = new int[boardSize][boardSize];
 	}
+	
+	public Environment(int size, double aPreyMovesMultiplier){
+		this(size, aPreyMovesMultiplier, 3);
+	}
+	
 
 	public Environment(int size, double aPreyMovesMultiplier, int aNumPredators) {
 		boardSize = size;
