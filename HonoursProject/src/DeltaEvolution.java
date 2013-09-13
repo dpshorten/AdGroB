@@ -152,12 +152,16 @@ public class DeltaEvolution {
 				System.out.println("Epoch Change to number "
 						+ (epochNumber + 1));
 				if (epochNumber >= preySpeeds.length) {
-					bestPredatorGroup = predatorGroups.get(0);
-					break;
+					if (predatorGroups.get(0).getMostRecentCaptureRatio() > params.ratioCapturesForEnd) {
+						bestPredatorGroup = predatorGroups.get(0);
+						break;
+					} else {
+						epochNumber--;
+					}
 				}
 			}
 		}
-		
+
 		int j = 0;
 		for(Vector<Genotype> hiddenNodes : bestPredatorGroup.getGenotypes()) {
 			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);

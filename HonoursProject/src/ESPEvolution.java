@@ -212,7 +212,7 @@ public class ESPEvolution {
 			System.out.println("Generation " + gen + " done: " + captureCount
 					+ " captures, " + testCaptureCount + "/"
 					+ params.rootOfNumTests * params.rootOfNumTests
-					+ " test score.");
+					+ " test score, " + env.numRuns + " evaluations.");
 
 			// Check if we can move onto the next epoch (because the population
 			// capture rate is high enough).

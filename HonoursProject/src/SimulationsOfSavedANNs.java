@@ -18,8 +18,10 @@ public class SimulationsOfSavedANNs {
 			
 			//VectorRunAwayBehaviour runAway = new VectorRunAwayBehaviour(boardSize);
 			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(boardSize, 1);
-			int preyX = random.nextInt(boardSize);
-			int preyY = random.nextInt(boardSize);
+			//int preyX = random.nextInt(boardSize);
+			//int preyY = random.nextInt(boardSize);
+			int preyX = i*10;
+			int preyY = i*10;
 			preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
 			
 			String[] fileNames = {"PredatorBehaviour0", "PredatorBehaviour1", "PredatorBehaviour2"};

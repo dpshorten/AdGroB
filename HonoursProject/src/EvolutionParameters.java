@@ -29,9 +29,9 @@ public class EvolutionParameters {
 	public static int burstMutationWaitAfterEpochChange = 6;
 	public static int burstMutationTestLookBackDistance = 5;
 	public static double burstMutationTestRatioOfTrialsDifference = 0.01;
-	public static int rootOfNumTests = 3;
-	public static double ratioCapturesForNextEpoch = 0.7;
-	public static double ratioCapturesForEnd = 7/((double) 9);
+	public static int rootOfNumTests = 10;
+	public static double ratioCapturesForNextEpoch = 0.8;
+	public static double ratioCapturesForEnd = 0.8;
 	public static int ratioHitsBeforeNextEpoch = 2;
 	public static double[] preySpeeds = { 0.1, 1};
 	public static Integer[] predatorPositions = { 1, 1, 1, 1, 1, 1};
