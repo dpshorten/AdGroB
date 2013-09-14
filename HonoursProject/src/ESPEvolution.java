@@ -370,16 +370,18 @@ public class ESPEvolution {
 			//Inter-population crossover
 			if(params.doInterpopulationCrossover){
 				if(gen % params.crossoverGenInterval == 0 && gen >= params.crossoverFirstGen){
-					
+					int crossovercount = 0;
 					if(params.useBehaviourDistance){
 						double[][] similarities = SocialEntropyBehaviourMeasurement.measureSimilarity(
 									testPredatorPieces, params.boardSize, env);
+						
 						for (int i = 0; i < params.numPredators; i++) {
 							for (int j = 0; j < params.numPredators; j++) {
 								if (similarities[i][j] > params.crossoverBehaviourSimilarityThreshhold) {
 									for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 										for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
 											if((!params.useGenotypeDistance) || subPopI.averageWeightDistance(subPopJ) < params.crossoverGenotypeDistanceThreshhold){
+												crossovercount++;
 												
 												Vector<Genotype> genotypesI = subPopI.getAllGenotypes();
 												Vector<Genotype> genotypesJ = subPopJ.getAllGenotypes();
@@ -390,7 +392,7 @@ public class ESPEvolution {
 												Collections.sort(genotypesJ);
 												Collections.reverse(genotypesJ);
 												
-												int replacementIndex = params.subPopulationSize;
+												int replacementIndex = params.subPopulationSize - 1;
 												int numReplacements = (int)Math.round(params.crossoverPopulationPercentage * params.subPopulationSize);
 												
 												for(int k=0; k < numReplacements; k++){
@@ -417,6 +419,8 @@ public class ESPEvolution {
 								for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 									for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
 										if(subPopI.averageWeightDistance(subPopJ) <	params.crossoverGenotypeDistanceThreshhold){
+											crossovercount++;
+											
 											Vector<Genotype> genotypesI = subPopI.getAllGenotypes();
 											Vector<Genotype> genotypesJ = subPopJ.getAllGenotypes();
 											
@@ -447,6 +451,7 @@ public class ESPEvolution {
 						}
 					}
 					
+					System.out.println("Crossover occured between "+crossovercount+" subpopulations.");
 				}
 			}//Interpop crossover
 		
