@@ -4,11 +4,13 @@ public class PredatorGroup implements Comparable<PredatorGroup>{
 
 	private Vector<Vector<Genotype>> genotypes;
 	private double captureRatio;
+	private double mostRecentCaptureRatio;
 	private int totalNumEvaluations;
 	private Environment env;
 	
 	public PredatorGroup(Vector<Vector<Genotype>> someGenotypes, Environment enviro) {
 		captureRatio = 0;
+		mostRecentCaptureRatio = 0;
 		totalNumEvaluations = 0;
 		genotypes = someGenotypes;
 		env = enviro;
@@ -41,6 +43,7 @@ public class PredatorGroup implements Comparable<PredatorGroup>{
 	}
 
 	public void updateCaptureRatio(double newRatio, int numEvaluations) {
+		mostRecentCaptureRatio = newRatio;
 		if(numEvaluations == 0){
 			captureRatio = newRatio;
 			totalNumEvaluations += numEvaluations;
@@ -52,6 +55,14 @@ public class PredatorGroup implements Comparable<PredatorGroup>{
 		}
 	}
 	
+	public double getMostRecentCaptureRatio() {
+		return mostRecentCaptureRatio;
+	}
+
+	public void setMostRecentCaptureRatio(double mostRecentCaptureRatio) {
+		this.mostRecentCaptureRatio = mostRecentCaptureRatio;
+	}
+
 	@Override
 	public int compareTo(PredatorGroup other) {
 		if(captureRatio > other.getCaptureRatio())

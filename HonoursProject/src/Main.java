@@ -37,8 +37,8 @@ public class Main
 		try
 		{
 			SNNBehaviour1 = new SimpleNeuralNetwork("SimplePredatorBehaviour0");
-			SNNBehaviour2 = new SimpleNeuralNetwork("SimplePredatorBehaviour1");
-			SNNBehaviour3 = new SimpleNeuralNetwork("SimplePredatorBehaviour2");
+			SNNBehaviour2 = new SimpleNeuralNetwork("SimplePredatorBehaviour0");
+			SNNBehaviour3 = new SimpleNeuralNetwork("SimplePredatorBehaviour0");
 		}
 		catch(Exception e)
 		{

@@ -1,6 +1,6 @@
 
 public class BehaviourTests {
-	private static final int numRuns = 10;
+	private static final int numRuns = 50;
 	
 	public static void main(String[] args) {
 		int[] withMigration = new int[numRuns]; 
