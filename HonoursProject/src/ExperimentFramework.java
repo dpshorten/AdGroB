@@ -83,24 +83,52 @@ public class ExperimentFramework {
 			fw = new FileWriter("results");
 			
 			for(int ex=0; ex<linecount; ex++){
+				
 				System.out.println("Experiment "+ex+": Migration="+params[ex].doMigration+", " +
-						"InterpopulationCrossover="+params[ex].doInterpopulationCrossover + " BehaviourDistace="
+						"InterpopulationCrossover="+params[ex].doInterpopulationCrossover + ", BehaviourDistace="
 						+params[ex].useBehaviourDistance+", GenotypeDistance="+params[ex].useGenotypeDistance+
-						" , DeltaThings ="+params[ex].doDavidsDeltaThings);
+						", DeltaThings ="+params[ex].doDavidsDeltaThings);
 				fw.write("\n\nExperiment "+ex+": Migration="+params[ex].doMigration+",InterpopulationCrossover="+params[ex].doInterpopulationCrossover + " BehaviourDistace="
 						+params[ex].useBehaviourDistance+", GenotypeDistance="+params[ex].useGenotypeDistance+" , DeltaThings ="+params[ex].doDavidsDeltaThings+"\n");
 				
+				double averageGen = 0, averageCaptures = 0;
+				double[] averageAverageFitnesses = new double[params[ex].numPredators];
+				
 				for(int rep=0; rep<reps[ex]; rep++){
+					
 					System.out.println("\nRep "+rep+"/"+reps[ex]);
 					fw.write("\nRep: "+rep+"\n");
 					TrialResult result = ESPEvolution.run(params[ex]);
+					
+					averageGen += result.generations;
+					averageCaptures += result.captureCount;
+					for(int i=0; i < result.avgEvalFitnesses.length; i++)
+						averageAverageFitnesses[i] =+ result.avgEvalFitnesses[i];
+					
+					fw.write("Generations: "+result.generations+"\n");
 					fw.write("Capture count: "+result.captureCount+"\nAverage fitnesses: ");
 					for(int i=0; i<result.avgEvalFitnesses.length; i++)
 						fw.write(result.avgEvalFitnesses[i]+" ");
 					fw.write("\n");
 					
-				}
-			}
+				}//reps
+				
+				//Summary
+				averageGen = averageGen / reps[ex];
+				averageCaptures = averageCaptures / reps[ex];
+				for(int i=0; i<params[ex].numPredators; i++)
+					averageAverageFitnesses[i] = averageAverageFitnesses[i] / reps[ex];
+				
+				fw.write("\n==================\nSummary of experiment "+ex+"\n==================\n");
+				fw.write("Average generations until completion: "+averageGen+"\n");
+				fw.write("Average captures: "+averageCaptures+"\n");
+				fw.write("Average average fitnesses: ");
+				for(int i=0; i<params[ex].numPredators; i++)
+					fw.write(averageAverageFitnesses[i]+" ");
+				fw.write("\n\n");
+				
+			}//experiments
+			
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();

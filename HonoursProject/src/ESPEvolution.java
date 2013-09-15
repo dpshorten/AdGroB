@@ -304,8 +304,8 @@ public class ESPEvolution {
 								.measureSimilarity(testPredatorPieces,
 										params.boardSize, env);
 						for (int i = 0; i < params.numPredators; i++) {
-							for (int j = 0; j < params.numPredators; j++) {
-								if (similarities[i][j] > params.migrationBehaviourSimilarityThreshhold) {
+							for (int j = i + 1; j < params.numPredators; j++) {
+								if (similarities[i][j] < params.migrationBehaviourSimilarityThreshhold) {
 									if (params.useGenotypeDistance) {
 										int migrantCount = 0;
 										for (ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations) {
@@ -376,10 +376,12 @@ public class ESPEvolution {
 									testPredatorPieces, params.boardSize, env);
 						
 						for (int i = 0; i < params.numPredators; i++) {
-							for (int j = 0; j < params.numPredators; j++) {
-								if (similarities[i][j] > params.crossoverBehaviourSimilarityThreshhold) {
+							for (int j = i + 1; j < params.numPredators; j++) {
+								System.out.println("Behaviour distance "+i+":"+j+"= "+similarities[i][j]);
+								if (similarities[i][j] < params.crossoverBehaviourSimilarityThreshhold) {
 									for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 										for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
+											//System.out.println("\tGenotype distance: "+subPopI.averageWeightDistance(subPopJ));
 											if((!params.useGenotypeDistance) || subPopI.averageWeightDistance(subPopJ) < params.crossoverGenotypeDistanceThreshhold){
 												crossovercount++;
 												

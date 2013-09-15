@@ -43,15 +43,15 @@ public class EvolutionParameters {
 	public static int migrationLateGenInterval = 2;
 	public static int migrationLateGenThreshold = 25;
 	public static int migrationNumMigrants = 2;
-	public static double migrationBehaviourSimilarityThreshhold = 0.0;
-	public static double migrationGenotypeDistanceThreshhold = 0.37;
+	public static double migrationBehaviourSimilarityThreshhold = 0.7;
+	public static double migrationGenotypeDistanceThreshhold = 5;
 	
 	//Crossover
-	public int crossoverGenInterval = 4;
-	public int crossoverFirstGen = 4;
+	public int crossoverGenInterval = 2;
+	public int crossoverFirstGen = 2;
 	public double crossoverPopulationPercentage = 0.05;
-	public double crossoverBehaviourSimilarityThreshhold = 0.0;
-	public double crossoverGenotypeDistanceThreshhold = 0.37;
+	public double crossoverBehaviourSimilarityThreshhold = 0.6;
+	public double crossoverGenotypeDistanceThreshhold = 5;
 	
 	// Variables for David's delta coding.
 	public static int genotypesPerSubPopulation = 5;
