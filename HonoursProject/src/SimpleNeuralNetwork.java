@@ -7,26 +7,28 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 public class SimpleNeuralNetwork {
-	private final int NUMBERINPUTNODES = 2;
-	private final int NUMBEROUTPUTNODES = 4;
-	private final int NUMBERHIDDENNODES = 10;
+	private int NUMBERINPUTNODES = 2;
+	private int NUMBEROUTPUTNODES = 4;
+	private int NUMBERHIDDENNODES = 10;
 	private Vector<InputNode> inputNodes;
 	private Vector<HiddenNode> hiddenNodes;
 	private Vector<OutputNode> outputNodes;
 	private Vector<Genotype> hiddenNodeGenotypes;
-
-	public SimpleNeuralNetwork(Genotype node) {
-		outputNodes = new Vector<OutputNode>();
-		hiddenNodes = new Vector<HiddenNode>();
-		inputNodes = new Vector<InputNode>();
-		this.AddWeightsFromGenotype(node);
-	}
 	
 	public SimpleNeuralNetwork(Vector<Genotype> nodes) {
 		outputNodes = new Vector<OutputNode>();
 		hiddenNodes = new Vector<HiddenNode>();
 		inputNodes = new Vector<InputNode>();
 		this.AddNodesFromGenotypes(nodes);
+	}
+	
+	public SimpleNeuralNetwork(SimpleGenotype genomes)
+	{
+		outputNodes = new Vector<OutputNode>();
+		hiddenNodes = new Vector<HiddenNode>();
+		inputNodes = new Vector<InputNode>();
+		Vector<Genotype> genotypes = genomes.convertToGenotype();
+		this.AddNodesFromGenotypes(genotypes);
 	}
 
 	public SimpleNeuralNetwork(String fileName) {
@@ -62,7 +64,41 @@ public class SimpleNeuralNetwork {
 		this.AddNodesFromGenotypes(hiddenNodeGenotypes);
 	}
 	
-	private void AddNodesFromGenotypes(Vector<Genotype> hiddenNodeGenotypes) {
+//	public SimpleNeuralNetwork(String fileName) {
+//		outputNodes = new Vector<OutputNode>();
+//		hiddenNodes = new Vector<HiddenNode>();
+//		inputNodes = new Vector<InputNode>();
+//		BufferedReader in = null;
+//		try {
+//			in = new BufferedReader(new FileReader(fileName));
+//		} catch(Exception e) {
+//			System.out.println("Error : (SimpleNeuralNetwork(String)) :  " + e);
+//		}
+//		hiddenNodeGenotypes = new Vector<Genotype>();
+//		String line;
+//		try{
+//			while((line = in.readLine()) != null) {
+//				StringTokenizer tokenizer = new StringTokenizer(line, ",");
+//				Vector<Double> inputWeights = new Vector<Double>();
+//				while(tokenizer.hasMoreTokens()) {
+//					inputWeights.add(new Double(Double.parseDouble(tokenizer.nextToken())));
+//				}
+//				line = in.readLine();
+//				tokenizer = new StringTokenizer(line, ",");
+//				Vector<Double> outputWeights = new Vector<Double>();
+//				while(tokenizer.hasMoreTokens()) {
+//					outputWeights.add(new Double(Double.parseDouble(tokenizer.nextToken())));
+//				}
+//				hiddenNodeGenotypes.add(new Genotype(inputWeights, outputWeights));
+//			}
+//		} catch(Exception e) {
+//			System.out.println("Error : " + e);
+//		}
+//		this.AddNodesFromGenotypes(hiddenNodeGenotypes);
+//	}
+	
+	private void AddNodesFromGenotypes(Vector<Genotype> hiddenNodeGenotypes) 
+	{		
 		for (int i = 0; i < NUMBEROUTPUTNODES; i++) {
 			outputNodes.add(new OutputNode(i, null));
 		}
@@ -75,34 +111,20 @@ public class SimpleNeuralNetwork {
 			inputNodes.add(new InputNode(i, hiddenNodes));
 		}
 	}
-	
-	private void AddWeightsFromGenotype(Genotype hiddenNodeGenotypes) {
-		for (int i = 0; i < NUMBEROUTPUTNODES; i++) {
-			outputNodes.add(new OutputNode(i, null));
-		}
-		
-		for (int i = 0; i < NUMBERHIDDENNODES; i++) {
-			hiddenNodes.add(new HiddenNode(i, outputNodes, hiddenNodeGenotypes));
-		}
-		
-		for (int i = 0; i < NUMBERINPUTNODES; i++) {
-			inputNodes.add(new InputNode(i, hiddenNodes));
-		}
-	}
 
 	public double[] run(double xOffset, double yOffset) {
 		inputNodes.get(0).setExteriorInput(xOffset);
 		inputNodes.get(1).setExteriorInput(yOffset);
 		for (Node node : inputNodes) {
-			node.calculateAndPassOnActivation();
+			node.calculateAndPassOnActivation(NUMBERINPUTNODES, NUMBEROUTPUTNODES);
 		}
 		for (Node node : hiddenNodes) {
-			node.calculateAndPassOnActivation();
+			node.calculateAndPassOnActivation(NUMBERINPUTNODES, NUMBEROUTPUTNODES);
 		}
 		int i = 0;
 		double[] activations = new double[5];
 		for (Node node : outputNodes) {
-			activations[i] = node.calculateAndPassOnActivation();
+			activations[i] = node.calculateAndPassOnActivation(NUMBERINPUTNODES,NUMBEROUTPUTNODES);
 			i += 1;
 		}
 		return activations;

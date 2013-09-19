@@ -18,6 +18,13 @@ public class InputNode extends Node {
 		return inputs.get(0).doubleValue();
 	}
 	
+	public double calculateAndPassOnActivation(int in, int out) {
+		for(Node child : children) {
+			child.receiveInput(exteriorInput, number);
+		}
+		return inputs.get(0).doubleValue();
+	}
+	
 	public void setExteriorInput(double input) {
 		exteriorInput = input;
 	}

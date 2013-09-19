@@ -23,4 +23,6 @@ public abstract class Node {
 	}
 	
 	public abstract double calculateAndPassOnActivation();
+
+	public abstract double calculateAndPassOnActivation(int nUMBERINPUTNODES, int nUMBEROUTPUTNODES);
 }

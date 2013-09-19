@@ -13,4 +13,12 @@ public class OutputNode extends Node {
 		}
 		return sigmoid(t);
 	}
+	
+	public double calculateAndPassOnActivation(int in , int out) {
+		double t = 0;
+		for(Double input : inputs) {
+			t += input.doubleValue();
+		}
+		return sigmoid(t);
+	}
 }
