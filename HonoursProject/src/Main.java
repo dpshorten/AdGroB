@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Vector;
 
 public class Main
@@ -6,6 +7,7 @@ public class Main
 	{
 		final int boardSize = 10;
 		final int numPrey = 1;
+		Random random = new Random();
 		
 		//TODO: This line was bugged when I did the last pull
 		//Environment env = new Environment(boardSize, 1);
@@ -37,8 +39,8 @@ public class Main
 		try
 		{
 			SNNBehaviour1 = new SimpleNeuralNetwork("SimplePredatorBehaviour0");
-			SNNBehaviour2 = new SimpleNeuralNetwork("SimplePredatorBehaviour0");
-			SNNBehaviour3 = new SimpleNeuralNetwork("SimplePredatorBehaviour0");
+			SNNBehaviour2 = new SimpleNeuralNetwork("SimplePredatorBehaviour1");
+			SNNBehaviour3 = new SimpleNeuralNetwork("SimplePredatorBehaviour2");
 		}
 		catch(Exception e)
 		{
@@ -63,7 +65,7 @@ public class Main
 		predatorPieces.add(new Piece(2,2,false,env,SNNB2));
 		predatorPieces.add(new Piece(2,3,false,env,SNNB3));
 		
-		preyPieces.add(new Piece(0, 1, true, env, runAway));
+		preyPieces.add(new Piece(random.nextInt(boardSize), random.nextInt(boardSize), true, env, runAway));
 		
 		//for (int i = 0; i < numPrey; i++) {
 		//	preyPieces.add(new Piece(0, i, true, env, runAway));

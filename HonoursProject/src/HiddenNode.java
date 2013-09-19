@@ -4,6 +4,7 @@ import java.util.Vector;
 public class HiddenNode extends Node{	
 	private Vector<Double> inputWeights;
 	private Vector<Double> outputWeights;
+	private int outputNodes;
 	private Vector<OutputNode> children;
 
 	public HiddenNode(int number, Vector<OutputNode> children) {
@@ -11,11 +12,19 @@ public class HiddenNode extends Node{
 		this.children = children;
 		inputWeights = new Vector<Double>();
 		outputWeights = new Vector<Double>();
+		outputNodes = children.size();
 	}
 	
 	public HiddenNode(int number, Vector<OutputNode> children, Genotype genotype) {
 		super(number);
 		this.children = children;
+		inputWeights = genotype.getInputWeights();
+		outputWeights = genotype.getOutputWeights();
+		outputNodes = children.size();
+	}
+	
+	public HiddenNode( int number, Genotype genotype) {
+		super(number);
 		inputWeights = genotype.getInputWeights();
 		outputWeights = genotype.getOutputWeights();
 	}
@@ -27,6 +36,19 @@ public class HiddenNode extends Node{
 		}
 		double sigma = sigmoid(t);
 		for(int i = 0; i < outputWeights.size(); i++) {
+			if(number < 10)
+			children.get(i).receiveInput(sigma * outputWeights.get(i), number);
+		}
+		return sigma;
+	}
+	
+	public double calculateAndPassOnActivation(int in, int out) {
+		double t = 0;
+		for(int i = 0; i < in; i++){
+			t += inputWeights.get(i) * inputs.get(i);
+		}
+		double sigma = sigmoid(t);
+		for(int i = 0; i < out; i++) {
 			if(number < 10)
 			children.get(i).receiveInput(sigma * outputWeights.get(i), number);
 		}

@@ -238,4 +238,9 @@ public class Environment {
 		}
 		return new SimulationResult(i + 1, preyCaught, finalDistancesFromPrey, initialDistancesFromPrey);
 	}
+
+	public void resetCaptureCount() {
+		this.caughtPieces.clear();
+		
+	}
 }
