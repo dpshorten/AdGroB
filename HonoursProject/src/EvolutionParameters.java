@@ -49,9 +49,9 @@ public class EvolutionParameters {
 	//Crossover
 	public int crossoverGenInterval = 2;
 	public int crossoverFirstGen = 2;
-	public double crossoverPopulationPercentage = 0.05;
+	public double crossoverPopulationPercentage = 0.35;
 	public double crossoverBehaviourSimilarityThreshhold = 0.6;
-	public double crossoverGenotypeDistanceThreshhold = 5;
+	public double crossoverGenotypeDistanceThreshhold = 7;
 	
 	// Variables for David's delta coding.
 	public static int genotypesPerSubPopulation = 5;

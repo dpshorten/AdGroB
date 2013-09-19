@@ -58,6 +58,22 @@ public class ESPSubPopulation {
 	
 	public double averageWeightDistance(ESPSubPopulation otherSubPop){
 		
+		//Get total distance between each pair of genotypes
+		double distanceSum = 0;
+		for(Genotype t : nodeGenotypes){
+			for(Genotype o : otherSubPop.nodeGenotypes){
+				distanceSum += t.averageWeightDistance(o);
+			}
+		}
+		
+		//Reduce the sum to the average distance between pairs
+		distanceSum = distanceSum / (nodeGenotypes.size()*otherSubPop.nodeGenotypes.size());
+		
+		return distanceSum;
+	}
+	
+	public double averageWeightDistanceUsingRandomSample(ESPSubPopulation otherSubPop){
+		
 		//Get a random sample from each subpopulation with no repeated elements
 		Vector<Genotype> thisCopy = new Vector<Genotype>();
 		thisCopy.addAll(nodeGenotypes);

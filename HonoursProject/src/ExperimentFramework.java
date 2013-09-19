@@ -96,8 +96,12 @@ public class ExperimentFramework {
 				
 				for(int rep=0; rep<reps[ex]; rep++){
 					
+					//params[ex].crossoverPopulationPercentage = 0.05 * rep;
+					
 					System.out.println("\nRep "+rep+"/"+reps[ex]);
 					fw.write("\nRep: "+rep+"\n");
+					fw.write("Crossover percentage = " +params[ex].crossoverPopulationPercentage+"\n");
+					
 					TrialResult result = ESPEvolution.run(params[ex]);
 					
 					averageGen += result.generations;
@@ -119,7 +123,7 @@ public class ExperimentFramework {
 				for(int i=0; i<params[ex].numPredators; i++)
 					averageAverageFitnesses[i] = averageAverageFitnesses[i] / reps[ex];
 				
-				fw.write("\n==================\nSummary of experiment "+ex+"\n==================\n");
+				fw.write("\n=======================\nSummary of experiment "+ex+"\n=======================\n");
 				fw.write("Average generations until completion: "+averageGen+"\n");
 				fw.write("Average captures: "+averageCaptures+"\n");
 				fw.write("Average average fitnesses: ");
@@ -128,6 +132,8 @@ public class ExperimentFramework {
 				fw.write("\n\n");
 				
 			}//experiments
+			
+			System.out.println("\nDONE.");
 			
 			fw.close();
 		} catch (IOException e) {

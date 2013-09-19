@@ -105,8 +105,7 @@ public class ESPEvolution {
 					captureCount += result.captureCount;
 
 					// Update the genotypes fitnesses with the average fitness
-					// over
-					// the evaluations
+					// over the evaluations
 					for (int i = 0; i < params.numPredators; i++) {
 						for (Genotype genotype : usedGenotypes.elementAt(i))
 							genotype.updateFitness(result.avgEvalFitnesses[i]);
@@ -219,12 +218,11 @@ public class ESPEvolution {
 			if (epochNumber >= (params.preySpeeds.length - 1)
 					& testCaptureCount / Math.pow(params.rootOfNumTests, 2) > params.ratioCapturesForEnd) {
 				break;
-			} else if (captureCount
-					/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch
-					& epochNumber < (params.preySpeeds.length - 1)) {
+			} else if (captureCount	/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) >
+				params.ratioCapturesForNextEpoch & epochNumber < (params.preySpeeds.length - 1)) {
+				
 				epochNumber++;
-				System.out.println("Epoch Change to number "
-						+ (epochNumber + 1));
+				System.out.println("Epoch Change to number " + (epochNumber + 1));
 				burstMutationTicker = params.burstMutationWaitAfterEpochChange;
 			}
 			// If we the epoch cannot be changed, the delta things can be done.
@@ -369,6 +367,11 @@ public class ESPEvolution {
 			
 			//Inter-population crossover
 			if(params.doInterpopulationCrossover){
+				
+				//Vector to track subpopulations that have already been used so that
+				//the same subpopulation doesnt get used for cross over twice
+				Vector<ESPSubPopulation> usedSubPops = new Vector<ESPSubPopulation>();
+				
 				if(gen % params.crossoverGenInterval == 0 && gen >= params.crossoverFirstGen){
 					int crossovercount = 0;
 					if(params.useBehaviourDistance){
@@ -377,13 +380,18 @@ public class ESPEvolution {
 						
 						for (int i = 0; i < params.numPredators; i++) {
 							for (int j = i + 1; j < params.numPredators; j++) {
-								System.out.println("Behaviour distance "+i+":"+j+"= "+similarities[i][j]);
+								System.out.println("Behaviour distance "+i+":"+j+" = "+similarities[i][j]);
 								if (similarities[i][j] < params.crossoverBehaviourSimilarityThreshhold) {
 									for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 										for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
 											//System.out.println("\tGenotype distance: "+subPopI.averageWeightDistance(subPopJ));
-											if((!params.useGenotypeDistance) || subPopI.averageWeightDistance(subPopJ) < params.crossoverGenotypeDistanceThreshhold){
-												crossovercount++;
+											if((!params.useGenotypeDistance)
+													|| ( subPopI.averageWeightDistance(subPopJ) < params.crossoverGenotypeDistanceThreshhold
+															&&	!(usedSubPops.contains(subPopI) || usedSubPops.contains(subPopJ)) ) ){
+												crossovercount += 2;
+												
+												usedSubPops.add(subPopI);
+												usedSubPops.add(subPopJ);
 												
 												Vector<Genotype> genotypesI = subPopI.getAllGenotypes();
 												Vector<Genotype> genotypesJ = subPopJ.getAllGenotypes();
@@ -420,8 +428,12 @@ public class ESPEvolution {
 							for (int j = 0; j < params.numPredators; j++) {
 								for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 									for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
-										if(subPopI.averageWeightDistance(subPopJ) <	params.crossoverGenotypeDistanceThreshhold){
-											crossovercount++;
+										if(subPopI.averageWeightDistance(subPopJ) <	params.crossoverGenotypeDistanceThreshhold
+												&&	!(usedSubPops.contains(subPopI) || usedSubPops.contains(subPopJ)) ){
+											crossovercount += 2;
+											
+											usedSubPops.add(subPopI);
+											usedSubPops.add(subPopJ);
 											
 											Vector<Genotype> genotypesI = subPopI.getAllGenotypes();
 											Vector<Genotype> genotypesJ = subPopJ.getAllGenotypes();
