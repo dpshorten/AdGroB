@@ -13,16 +13,16 @@ public class SimpleNeuralEvolution
 	static final int numPredators = 3;
 	static final int weights = numInputNodes + numOutputNodes;
 	
-	static final int populationSize = 1000;
+	static final int populationSize = 300;
 	static final int numberOfBest = 100;
 	static final int trialsPerGeneration = 100; // 1000
 static final int evaluationsPerTrial = 6; // 6
 static final int generations = 30;
 static final int boardSize = 10;
 
-static final double mutationProbability = 0.4;
+static final double mutationProbability = 0.2;
 static final double mutationSTD = 0.2;
-static final double crossOverProbability = 0.2;
+static final double crossOverProbability = 0.5;
 static final int rootOfNumTests = 10;
 static final double visionRange = boardSize;
 static int speed = 0;
@@ -532,23 +532,21 @@ return 1;
 			captureCount += captures; 
 				
 				
-			if(captures >= 1)
-				newFitness += 1;
-			else
+			for(Piece aPrey: preyPieces)
 			{
-				for(Piece aPrey: preyPieces)
+				for(Piece aPred: predatorPieces)
 				{
-					for(Piece aPred: predatorPieces)
+					if (aPrey.getDistance(aPred) < (visionRange))
 					{
-						if (aPrey.getDistance(aPred) < (visionRange))
-						{
-							if(aPrey.getDistance(aPred) < shortestDistance)
-								shortestDistance = aPrey.getDistance(aPred);
-						}
+						if(aPrey.getDistance(aPred) < shortestDistance)
+							shortestDistance = aPrey.getDistance(aPred);
 					}
 				}
-				newFitness += 1/shortestDistance;
 			}
+			if(captures >= 1)
+				newFitness += 1/shortestDistance * 2;
+			else
+				newFitness += 1/shortestDistance;
 		}
 		
 		return newFitness/evaluations;

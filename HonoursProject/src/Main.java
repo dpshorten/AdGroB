@@ -5,7 +5,7 @@ public class Main
 {
 	public static void main (String [] args)
 	{
-		final int boardSize = 10;
+		final int boardSize = 100;
 		final int numPrey = 1;
 		Random random = new Random();
 		
@@ -61,9 +61,9 @@ public class Main
 		
 		RuleBasedBehaviour RBB1 = new RuleBasedBehaviour(boardSize);
 		
-		predatorPieces.add(new Piece(2,1,false,env,SNNB1));
-		predatorPieces.add(new Piece(2,2,false,env,SNNB2));
-		predatorPieces.add(new Piece(2,3,false,env,SNNB3));
+		predatorPieces.add(new Piece(random.nextInt(boardSize),random.nextInt(boardSize),false,env,SNNB1));
+		predatorPieces.add(new Piece(random.nextInt(boardSize),random.nextInt(boardSize),false,env,SNNB2));
+		predatorPieces.add(new Piece(random.nextInt(boardSize),random.nextInt(boardSize),false,env,SNNB3));
 		
 		preyPieces.add(new Piece(random.nextInt(boardSize), random.nextInt(boardSize), true, env, runAway));
 		
