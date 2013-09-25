@@ -9,9 +9,21 @@ public class ESPArtificialNeuralNetworkBehaviour extends Behaviour{
 		this.ANN = ANN;
 	}
 	
-	// For now it will go for the first prey in the prey vector
+	// Will go for the closest prey
 	public int getMove(Point myPos, Vector<Piece> predator, Vector<Piece> prey) {
-		Point offset = Point.getSmallestOffset(myPos, prey.get(0).getPosition(), boardSize);
+		
+		double minDist = Double.MAX_VALUE;
+		Piece closestPrey = null;
+		for(Piece aPrey : prey){
+			Point offset = Point.getSmallestOffset(myPos, aPrey.getPosition(), boardSize);
+			double dist = Math.sqrt(offset.x * offset.x + offset.y * offset.y);
+			if(dist < minDist){
+				minDist = dist;
+				closestPrey = aPrey;
+			}
+		}
+		
+		Point offset = Point.getSmallestOffset(myPos, closestPrey.getPosition(), boardSize);
 		offsetHistory.elementAt(offset.x + halfBoardSize).set(offset.y + halfBoardSize, 
 				offsetHistory.elementAt(offset.x + halfBoardSize).elementAt(offset.y + halfBoardSize) + 1);
 		totalNumberOfDecisions++;

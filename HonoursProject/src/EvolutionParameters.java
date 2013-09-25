@@ -9,7 +9,8 @@ public class EvolutionParameters {
 	boolean doInterpopulationCrossover = true;
 	
 	public static int numHiddenNodes = 10;
-	public static int numPredators = 3;
+	public static int numPredators = 5;
+	public static int numPrey = 3;
 	public static int subPopulationSize = 100;
 	// Each trial set runs a number of trials equal to the sub-population size.
 	public static int trialSetsPerGeneration = 10; // 10
@@ -34,7 +35,7 @@ public class EvolutionParameters {
 	public static double ratioCapturesForEnd = 0.8;
 	public static int ratioHitsBeforeNextEpoch = 2;
 	public static double[] preySpeeds = { 0.1, 1};
-	public static Integer[] predatorPositions = { 1, 1, 1, 1, 1, 1};
+//	public static Integer[] predatorPositions = { 1, 1, 1, 1, 1, 1};
 	public static final int FinalTestNumEvaluationsToRun = 100;
 	
 	// Migration
@@ -47,9 +48,9 @@ public class EvolutionParameters {
 	public static double migrationGenotypeDistanceThreshhold = 5;
 	
 	//Crossover
-	public int crossoverGenInterval = 2;
-	public int crossoverFirstGen = 2;
-	public double crossoverPopulationPercentage = 0.35;
+	public int crossoverGenInterval = 4;
+	public int crossoverFirstGen = 4;
+	public double crossoverPopulationPercentage = 0.25;
 	public double crossoverBehaviourSimilarityThreshhold = 0.6;
 	public double crossoverGenotypeDistanceThreshhold = 7;
 	

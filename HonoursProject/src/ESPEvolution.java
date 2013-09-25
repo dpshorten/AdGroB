@@ -60,12 +60,15 @@ public class ESPEvolution {
 			Vector<Piece> preyPieces = new Vector<Piece>();
 			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(
 					params.boardSize, 1);
-			int preyX = random.nextInt(params.boardSize);
-			int preyY = random.nextInt(params.boardSize);
-			preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
+			for(int i=0; i<params.numPrey; i++){
+				int preyX = random.nextInt(params.boardSize);
+				int preyY = random.nextInt(params.boardSize);
+				preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
+			}
 
 			// For each generation, a number of trials are run to get fitness
 			// values for the genotypes
+			
 			int captureCount = 0;
 			for (int trialSet = 0; trialSet < params.trialSetsPerGeneration; trialSet++) {
 				for (ESPPopulation pop : agentPopulations) {
@@ -89,14 +92,14 @@ public class ESPEvolution {
 									.getFirstGenotypeAndSendItToBack());
 						}
 
-						ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(
-								hiddenNodes);
+						ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(hiddenNodes);
 						ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
 								params.boardSize, ann);
-						predatorPieces.add(new Piece(
-								params.predatorPositions[2 * pred],
-								params.predatorPositions[2 * pred + 1], false,
-								env, annBehaviour));
+//						predatorPieces.add(new Piece(
+//								params.predatorPositions[2 * pred],
+//								params.predatorPositions[2 * pred + 1], false,
+//								env, annBehaviour));
+						predatorPieces.add(new Piece(1, 1, false, env, annBehaviour));
 						usedGenotypes.add(hiddenNodes);
 					}
 
@@ -199,26 +202,34 @@ public class ESPEvolution {
 						hiddenNodes);
 				ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
 						params.boardSize, ann);
-				testPredatorPieces.add(new Piece(
-						params.predatorPositions[2 * pred],
-						params.predatorPositions[2 * pred + 1], false, env,
-						annBehaviour));
+				testPredatorPieces.add(new Piece(1, 1, false, env, annBehaviour));
 			}
-			// Run the n instance test.
-			int testCaptureCount = testOnIncrementedPositions(
-					params.rootOfNumTests, env, testPredatorPieces, runAway, params);
-
-			System.out.println("Generation " + gen + " done: " + captureCount
+			
+			// Run the n instance test if there is only 1 prey, otherwise run random trials
+			int testCaptureCount = 0;
+			if(params.numPrey == 1){
+				testCaptureCount = testOnIncrementedPositions(params.rootOfNumTests, env, testPredatorPieces, runAway, params);
+				System.out.println("Generation " + gen + " done: " + captureCount
 					+ " captures, " + testCaptureCount + "/"
 					+ params.rootOfNumTests * params.rootOfNumTests
 					+ " test score, " + env.numRuns + " evaluations.");
+			}
+			else{
+				TrialResult result = trial(testPredatorPieces, preyPieces, env, params.rootOfNumTests * params.rootOfNumTests, params);
+				testCaptureCount = result.captureCount;
+				System.out.println("Generation " + gen + " done: " + captureCount
+						+ " captures, " + testCaptureCount + "/"
+						+ params.rootOfNumTests * params.rootOfNumTests * params.numPrey + " test score, " + env.numRuns + " evaluations.");
+			}
+
 
 			// Check if we can move onto the next epoch (because the population
 			// capture rate is high enough).
+			double possibleCaptures = params.rootOfNumTests * params.rootOfNumTests * params.numPrey;
 			if (epochNumber >= (params.preySpeeds.length - 1)
-					& testCaptureCount / Math.pow(params.rootOfNumTests, 2) > params.ratioCapturesForEnd) {
+					&& testCaptureCount / possibleCaptures > params.ratioCapturesForEnd) {
 				break;
-			} else if (captureCount	/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) >
+			} else if (captureCount	/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial * params.numPrey) >
 				params.ratioCapturesForNextEpoch & epochNumber < (params.preySpeeds.length - 1)) {
 				
 				epochNumber++;
@@ -248,10 +259,7 @@ public class ESPEvolution {
 								genotypes);
 						ESPArtificialNeuralNetworkBehaviour behaviour = new ESPArtificialNeuralNetworkBehaviour(
 								params.boardSize, network);
-						testPieces.add(new Piece(
-								params.predatorPositions[2 * j],
-								params.predatorPositions[2 * j + 1], false,
-								env, behaviour));
+						testPieces.add(new Piece(1, 1, false, env, behaviour));
 						j++;
 					}
 					int testResult = testOnIncrementedPositions(
@@ -340,8 +348,7 @@ public class ESPEvolution {
 											.get(j).subPopulations) {
 										if (subPopI
 												.averageWeightDistance(subPopJ) < params.migrationGenotypeDistanceThreshhold) {
-											subPopI.sendMigrants(subPopJ,
-													params.migrationNumMigrants);
+											subPopI.sendMigrants(subPopJ, params.migrationNumMigrants);
 											migrantCount++;
 										}
 									}
@@ -380,14 +387,13 @@ public class ESPEvolution {
 						
 						for (int i = 0; i < params.numPredators; i++) {
 							for (int j = i + 1; j < params.numPredators; j++) {
-								System.out.println("Behaviour distance "+i+":"+j+" = "+similarities[i][j]);
+//								System.out.println("Behaviour distance "+i+":"+j+" = "+similarities[i][j]);
 								if (similarities[i][j] < params.crossoverBehaviourSimilarityThreshhold) {
 									for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 										for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
-											//System.out.println("\tGenotype distance: "+subPopI.averageWeightDistance(subPopJ));
-											if((!params.useGenotypeDistance)
-													|| ( subPopI.averageWeightDistance(subPopJ) < params.crossoverGenotypeDistanceThreshhold
-															&&	!(usedSubPops.contains(subPopI) || usedSubPops.contains(subPopJ)) ) ){
+//											System.out.println("\tGenotype distance: "+subPopI.averageWeightDistance(subPopJ));
+											if( ( (!params.useGenotypeDistance) || (subPopI.averageWeightDistance(subPopJ) < params.crossoverGenotypeDistanceThreshhold) )
+															&&	!(usedSubPops.contains(subPopI) || usedSubPops.contains(subPopJ)) ){
 												crossovercount += 2;
 												
 												usedSubPops.add(subPopI);
@@ -503,13 +509,11 @@ public class ESPEvolution {
 					.getFittestGenotypeInEachSubPopulation();
 			ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(
 					hiddenNodes);
+			
 			ann.saveNetwork("PredatorBehaviour" + j);
 			ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
 					params.boardSize, ann);
-			fittestPredatorPieces.add(new Piece(
-					params.predatorPositions[2 * j],
-					params.predatorPositions[2 * j + 1], false, env,
-					annBehaviour));
+			fittestPredatorPieces.add(new Piece(1, 1, false, env, annBehaviour));
 			j += 1;
 		}
 
@@ -544,8 +548,7 @@ public class ESPEvolution {
 			}
 			int k = 0;
 			for (Piece predator : predatorPieces) {
-				predator.setPosition(params.predatorPositions[2 * k],
-						params.predatorPositions[2 * k + 1]);
+				predator.setPosition(1, 1);
 				k++;
 			}
 
@@ -602,8 +605,7 @@ public class ESPEvolution {
 									* preyPlacementIncrememnt));
 				int k = 0;
 				for (Piece predator : testPredatorPieces) {
-					predator.setPosition(params.predatorPositions[2 * k],
-							params.predatorPositions[2 * k + 1]);
+					predator.setPosition(1, 1);
 					k++;
 				}
 				env.setPieces(testPredatorPieces, testPreyPieces);

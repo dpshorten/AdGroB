@@ -29,13 +29,11 @@ public class Environment {
 
 	public Environment() {
 		boardSize = 100;
-		maxMoves = (int) Math.round(8 * boardSize);
 		board = new int[boardSize][boardSize];
 	}
 	
 	public Environment(int size) {
 		boardSize = size;
-		maxMoves = (int) Math.round(8 * boardSize);
 		board = new int[boardSize][boardSize];
 	}
 	
@@ -48,7 +46,6 @@ public class Environment {
 		boardSize = size;
 		preyMovesMultiplier = aPreyMovesMultiplier;
 		preyTurnIncrement = 1/preyMovesMultiplier;
-		maxMoves = (int) Math.round(8 * boardSize);
 		board = new int[boardSize][boardSize];
 		numPredators = aNumPredators;
 	}
@@ -131,11 +128,18 @@ public class Environment {
 			}
 			out.write("");
 			out.close();
-		}		
+		}
+		int numPrey = 0;
 		// Draw the first turn.
 		for(Piece piece : pieces) {
 			updateBoard(piece);
+			if(piece.isPrey)
+				numPrey++;
 		}
+		
+		//Scale maximum number of moves by the number of pieces
+		maxMoves = boardSize * pieces.size() * numPrey * 2;
+		
 		if (shouldWriteToFile) {
 			drawWorld();
 		}
@@ -153,6 +157,10 @@ public class Environment {
 			initialDistancesFromPrey.add(minDist);
 		}
 		
+		Hashtable<Piece, Double> preyTurnCounters = new Hashtable<Piece, Double>();
+		for(Piece aPrey : prey){
+			preyTurnCounters.put(aPrey, (double)0);
+		}
 		double preyTurnCounter = 0;
 		int preyCaught = 0;
 		int i = 0;
@@ -168,11 +176,17 @@ public class Environment {
 				if(poppedPiece.isPrey) {
 					//System.out.println("Prey popped");
 					//System.out.println("counters " + i + " " + preyTurnCounter);
-					while((numPredators + 1) * preyTurnCounter < i) {
-						//System.out.println("Moving Prey");
+//					while((numPredators + 1) * preyTurnCounter < i) {
+//						//System.out.println("Moving Prey");
+//						poppedPiece.makeMove();
+//						//System.out.println("Prey Moved : " + poppedPiece.getPositionX() + "  " + poppedPiece.getPositionY());
+//						preyTurnCounter += preyTurnIncrement;
+//					}
+					
+					preyTurnCounters.put(poppedPiece, preyTurnCounters.get(poppedPiece)+preyMovesMultiplier);
+					while(preyTurnCounters.get(poppedPiece) >= 1){
 						poppedPiece.makeMove();
-						//System.out.println("Prey Moved : " + poppedPiece.getPositionX() + "  " + poppedPiece.getPositionY());
-						preyTurnCounter += preyTurnIncrement;
+						preyTurnCounters.put(poppedPiece, preyTurnCounters.get(poppedPiece)-1);
 					}
 				} else {
 					
