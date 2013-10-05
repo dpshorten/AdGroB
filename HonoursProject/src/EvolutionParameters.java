@@ -2,15 +2,16 @@
 public class EvolutionParameters {
 	
 	//Control parameters
-	boolean doMigration = true;
+	boolean doMigration = false;
 	boolean useBehaviourDistance = true;
 	boolean useGenotypeDistance = true;
-	boolean doDavidsDeltaThings = true;
-	boolean doInterpopulationCrossover = true;
+	boolean doDavidsDeltaThings = false;
+	boolean doInterpopulationCrossover = false;
+	boolean doCrossover = true;
 	
 	public static int numHiddenNodes = 10;
-	public static int numPredators = 5;
-	public static int numPrey = 3;
+	public static int numPredators = 3;
+	public static int numPrey = 1;
 	public static int subPopulationSize = 100;
 	// Each trial set runs a number of trials equal to the sub-population size.
 	public static int trialSetsPerGeneration = 10; // 10

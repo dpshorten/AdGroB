@@ -1,0 +1,24 @@
+\begin{thebibliography}{1}
+
+\bibitem{Floreano2008}
+Dario Floreano, Peter D\"{u}rr, and Claudio Mattiussi.
+\newblock {Neuroevolution: from architectures to learning}.
+\newblock {\em Evolutionary Intelligence}, 1(1):47--62, January 2008.
+
+\bibitem{Gomez1997}
+Faustino Gomez and Risto Miikkulainen.
+\newblock {Incremental evolution of complex general behavior}.
+\newblock {\em Adaptive Behavior}, 5(3-4):317--342, 1997.
+
+\bibitem{Yao1999}
+Xin Yao.
+\newblock {Evolving artificial neural networks}.
+\newblock In {\em Proceedings of the IEEE}, volume~87, pages 1423--1447. IEEE,
+  1999.
+
+\bibitem{Yong2001}
+Chern~Han Yong and Risto Miikkulainen.
+\newblock {Cooperative coevolution of multi-agent systems}.
+\newblock {\em University of Texas at Austin, Austin, TX}, 2001.
+
+\end{thebibliography}

@@ -1,0 +1,92 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+%\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+%\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+%\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+\usepackage{amssymb,amsmath}
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+%\usepackage{sectsty}
+%\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+%\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+%\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+%\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+%\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{Brief Article}
+\author{Cai Crumley}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+This project conducted research in the field of neuro-evolution (NE), in which evolutionary algorithms (EAs) are applied to generate artificial neural networks (ANNs). In particular, we attempted to improve upon the NE method called Enforced Sub-Populations (ESP) by using behavioural and genotype metrics. We used a simulation of a simple predator/prey scenario as the testbed to compare ESP and its modifications with varying parameters.
+
+An ANN is a processing structure that simulates a neural network. An ANN consists of a set of nodes or neurons with weighted, directed connections between them. ANNs can be classified as either feedforward or recurrant depending on the connections between the nodes. An ANN is classified as feedforward if there exists a way of numbering the nodes such that there are no connections from a node to another node with a lower number. If no such numbering exists then the ANN is classified as recurrant \cite{Yao1999}. Thus a feedforward ANN can be modelled by a directed acyclic graph, whereas a recurrant ANN cannot.
+The architecture of feedforward networks typically consists of layers of nodes in which each node is connected to all nodes in adjacent layers, so that the outputs of a layer of nodes become the inputs to the next layer. The first layer of such an ANN corresponds to external inputs and the last layer corresponds to the outputs of the ANN. The output of a node is a function of the sum of its inputs minus the bias, or threshhold, of the node. Formally, we can express this using the following equation \cite{Yao1999}:
+\begin{equation}
+y_i = f_i \left(\sum_{j = 1} ^n w_{ij}x_j - \theta_i \right)
+\end{equation}
+where $y_i$ is the output of node $i$, $n$ is the number of incoming connections, $x_j$ is the $j$th input to node $i$, $w_{ij}$ is the weight of the connection between node $i$ and the node with the output correponding to $x_j$, and $\theta_i$ is the bias or threshhold of node $i$. $f_i$ is called the transfer function and is typically a nonlinear function such as a Gaussian or sigmoid function \cite{Yao1999}.
+
+Evolutionary algorithms are population-based stochastic search algorithms that mimic evolution in nature in order to generate a solution to a problem \cite{Yao1999}\cite{Floreano2008}. A population of genotypes that represent candidate solutions to the problem is gradually improved by repeated application of genetic operators, including crossover, mutation and selection. The evolution process is guided by a fitness function which defines the goal of the algorithm and is used to rate the fitness of the genotypes. In each generation genotypes are evaluated using the fitness function, and then genotypes that have a poor fitness are replaced with offspring created by applying the crossover and/or mutation operators to fitter genotypes. This process is repeated until some termination condition is met, such as a maximum number of generations being reached or a desired fitness level being achieved. EAs are well suited to solving high-dimensional optimisation problems that have complex fitness landscapes containing many local optima \cite{Yao1999}.
+
+EAs can been used in conjunction with ANNs in a few different ways. They can be used to optimise the connection weights between nodes (which  is known as training the ANN), and they can also be used to optimise the overall architecture of ANNs \cite{Yao1999}. EAs can also be used together with other algorithms as part of the traning process \cite{Yao1999}. In this project we used a predefined architecture and evolved only the connection weights.
+
+In this project we used a predator/prey simulation similar to the one used by Yong and Miikkulainen in \cite{Yong2001} in which 3 predators attempt to capture a single prey on a toroidal grid-based world. This project attempts to expand on the work done by Gomez and Miikkulainen in \cite{Gomez1997} and Yong and Miikkulainen in \cite{Yong2001} by modifying the evolution process by applying crossover between populations of genotypes of different predators based on their similarity, as measured by behavioural and genotype metrics. The hypothesis of this research is that, by using inter-agent crossover appropriately, we can reduce the number of generations taken until a predetermined level of fitness is achieved.
+
+\section{Background}
+
+More text.
+
+\bibliography{projectbib}{}
+\bibliographystyle{plain}
+
+\end{document}

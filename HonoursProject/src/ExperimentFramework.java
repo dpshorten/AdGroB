@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class ExperimentFramework {
@@ -41,7 +42,8 @@ public class ExperimentFramework {
 			System.exit(0);
 		
 		//Parse file to get experiment params
-		//reps migration crossover behaviour genotype delta
+		//reps crossover migration interpopcrossover behaviour genotype delta
+		
 		String line = "";
 		try{
 			int counter = 0;
@@ -49,23 +51,26 @@ public class ExperimentFramework {
 				line = s.nextLine();
 				Scanner ls = new Scanner(line);
 				reps[counter] = ls.nextInt();
+				String useCross = ls.next();
 				String useM = ls.next();
 				String useC = ls.next();
 				String useB = ls.next();
 				String useG = ls.next();
 				String useD = ls.next();
 				
+				boolean useCrossover = useCross.equals("t");
 				boolean useMigration = useM.equals("t");
-				boolean useCrossover = useC.equals("t");
+				boolean useInterpopCrossover = useC.equals("t");
 				boolean useBehaviourDistance = useB.equals("t");
 				boolean useGenotypeDistance = useG.equals("t");
 				boolean useDelta = useD.equals("t");
 				
 				params[counter] = new EvolutionParameters();
+				params[counter].doCrossover = useCrossover;
 				params[counter].doMigration = useMigration;
 				params[counter].useBehaviourDistance = useBehaviourDistance;
 				params[counter].useGenotypeDistance = useGenotypeDistance;
-				params[counter].doInterpopulationCrossover = useCrossover;
+				params[counter].doInterpopulationCrossover = useInterpopCrossover;
 				params[counter].doDavidsDeltaThings = useDelta;
 				
 				counter++;
@@ -78,18 +83,36 @@ public class ExperimentFramework {
 		}
 		s.close();
 		
+		Calendar calendar = Calendar.getInstance();
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		int year = calendar.get(Calendar.YEAR);
+		int hours = calendar.get(Calendar.HOUR_OF_DAY);
+		int mins = calendar.get(Calendar.MINUTE);
+		int secs = calendar.get(Calendar.SECOND);
+		String dayS = (day > 10 ? ""+day : "0"+day);
+		String monthS = (month > 10 ? ""+month : "0"+month);
+		String hour = (hours > 10 ? ""+hours : "0"+hours);
+		String min = (mins > 10 ? ""+mins : "0"+mins);
+		String sec = (secs > 10 ? ""+secs : "0"+secs);
+		
+		String date = dayS+"/"+monthS+"/"+year+" "+hour+":"+min+":"+sec;
+		
 		FileWriter fw = null;
 		try {
-			fw = new FileWriter("results");
+			fw = new FileWriter("results/"+dayS+"_"+monthS+"_"+year+" "+hour+"_"+min+" results");
 			
 			for(int ex=0; ex<linecount; ex++){
 				
-				System.out.println("Experiment "+ex+": Migration="+params[ex].doMigration+", " +
+				
+				System.out.println("\nExperiment "+ex+": Crossover="+params[ex].doCrossover+", Migration="+params[ex].doMigration+", " +
 						"InterpopulationCrossover="+params[ex].doInterpopulationCrossover + ", BehaviourDistace="
 						+params[ex].useBehaviourDistance+", GenotypeDistance="+params[ex].useGenotypeDistance+
-						", DeltaThings ="+params[ex].doDavidsDeltaThings);
-				fw.write("\n\nExperiment "+ex+": Migration="+params[ex].doMigration+",InterpopulationCrossover="+params[ex].doInterpopulationCrossover + " BehaviourDistace="
-						+params[ex].useBehaviourDistance+", GenotypeDistance="+params[ex].useGenotypeDistance+" , DeltaThings ="+params[ex].doDavidsDeltaThings+"\n");
+						", DeltaThings="+params[ex].doDavidsDeltaThings);
+				System.out.println(date);
+				fw.write("\n\nExperiment "+ex+": Crossover="+params[ex].doCrossover+", Migration="+params[ex].doMigration+",InterpopulationCrossover="+params[ex].doInterpopulationCrossover + " BehaviourDistace="
+						+params[ex].useBehaviourDistance+", GenotypeDistance="+params[ex].useGenotypeDistance+" , DeltaThings="+params[ex].doDavidsDeltaThings+"\n");
+				fw.write(date+"\n");
 				
 				double averageGen = 0, averageCaptures = 0;
 				double[] averageAverageFitnesses = new double[params[ex].numPredators];
@@ -100,7 +123,7 @@ public class ExperimentFramework {
 					
 					System.out.println("\nRep "+rep+"/"+reps[ex]);
 					fw.write("\nRep: "+rep+"\n");
-					fw.write("Crossover percentage = " +params[ex].crossoverPopulationPercentage+"\n");
+//					fw.write("Crossover percentage = " +params[ex].crossoverPopulationPercentage+"\n");
 					
 					TrialResult result = ESPEvolution.run(params[ex]);
 					
@@ -114,7 +137,6 @@ public class ExperimentFramework {
 					for(int i=0; i<result.avgEvalFitnesses.length; i++)
 						fw.write(result.avgEvalFitnesses[i]+" ");
 					fw.write("\n");
-					
 				}//reps
 				
 				//Summary

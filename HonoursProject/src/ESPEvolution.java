@@ -8,18 +8,19 @@ public class ESPEvolution {
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
 	public static void main(String[] args) {
-		run(false, false, false, true);
+		run(true, false, false, false, true);
 	}
 
 	public static TrialResult run(boolean doMigration) {
-		return run(doMigration, true, true, true);
+		return run(true, doMigration, true, true, true);
 	}
 
-	public static TrialResult run(boolean doMigration,
+	public static TrialResult run(boolean doCrossover, boolean doMigration,
 			boolean useBehaviourDistance, boolean useGenotypeDistance,
 			boolean doDavidsDeltaThings){
 		EvolutionParameters params = new EvolutionParameters();
 		
+		params.doCrossover = doCrossover;
 		params.doMigration = doMigration;
 		params.useBehaviourDistance = useBehaviourDistance;
 		params.useGenotypeDistance = useGenotypeDistance;
@@ -123,59 +124,73 @@ public class ESPEvolution {
 			} else {
 				mutationStdDev = params.lateMutationStdDev;
 			}
-			// Create offspring by applying crossover and mutation to the
-			// genotype subpopulations
+			
+			// Create offspring by applying crossover to the genotype subpopulations
+			if(params.doCrossover){
+				for (int pred = 0; pred < params.numPredators; pred++) {
+					for (int subpop = 0; subpop < params.numHiddenNodes; subpop++) {
+	
+						// Within each subpopulation, rank the genotypes by fitness
+						// with element 0 being the highest fitness
+						Vector<Genotype> genotypes = agentPopulations
+								.elementAt(pred).getSubPopulationForNode(subpop)
+								.getAllGenotypes();
+						Collections.sort(genotypes);
+						Collections.reverse(genotypes);
+	
+						// Replace the bottom ~50% of genotypes with offspring from
+						// the top ~25%
+	
+						int numberOfOffspring = params.subPopulationSize / 2;
+						int maxParentIndex = params.subPopulationSize / 4;
+						int replacementIndex = genotypes.size() - 1;
+						for (int i = 0; i < numberOfOffspring; i++) {
+							Genotype parent1 = genotypes.elementAt(random
+									.nextInt(maxParentIndex));
+							Genotype parent2 = genotypes.elementAt(random
+									.nextInt(maxParentIndex));
+							Genotype child = Genotype.crossover(parent1, parent2);
+	//						if (random.nextDouble() < params.mutationProbability) {
+	//							child.mutate(mutationStdDev);
+	//						}
+							genotypes.remove(replacementIndex);
+							genotypes.add(replacementIndex, child);
+							replacementIndex--;
+						}
+	
+						// Cloning code, if needed.
+						/*
+						 * int endOfElites = 10; int replacementIndex =
+						 * genotypes.size() - 1; for (int i = 0; i < endOfElites;
+						 * i++) { Genotype clone = genotypes.get(i).clone(); if
+						 * (random.nextDouble() < mutationProbability) { double
+						 * mutationStdDev = 0; if (captureCount / ((double)
+						 * ((trialsPerGeneration * evaluationsPerTrial))) < 0.9) {
+						 * mutationStdDev = earlyMutationStdDev; } else {
+						 * mutationStdDev = lateMutationStdDev; }
+						 * clone.mutate(mutationStdDev); }
+						 * genotypes.remove(replacementIndex);
+						 * genotypes.add(replacementIndex, clone);
+						 * replacementIndex--; }
+						 */
+					}
+				}
+			}//crossover
+			
+			//Mutation
 			for (int pred = 0; pred < params.numPredators; pred++) {
 				for (int subpop = 0; subpop < params.numHiddenNodes; subpop++) {
 
-					// Within each subpopulation, rank the genotypes by fitness
-					// with element 0 being the highest fitness
 					Vector<Genotype> genotypes = agentPopulations
 							.elementAt(pred).getSubPopulationForNode(subpop)
 							.getAllGenotypes();
-					Collections.sort(genotypes);
-					Collections.reverse(genotypes);
-
-					// Replace the bottom ~50% of genotypes with offspring from
-					// the top ~25%
-					// Also mutate offspring with probability =
-					// mutationProbability
-
-					int numberOfOffspring = params.subPopulationSize / 2;
-					int maxParentIndex = params.subPopulationSize / 4;
-					int replacementIndex = genotypes.size() - 1;
-					for (int i = 0; i < numberOfOffspring; i++) {
-						Genotype parent1 = genotypes.elementAt(random
-								.nextInt(maxParentIndex));
-						Genotype parent2 = genotypes.elementAt(random
-								.nextInt(maxParentIndex));
-						Genotype child = Genotype.crossover(parent1, parent2);
-						if (random.nextDouble() < params.mutationProbability) {
-							child.mutate(mutationStdDev);
-						}
-						genotypes.remove(replacementIndex);
-						genotypes.add(replacementIndex, child);
-						replacementIndex--;
+					
+					for(Genotype genotype : genotypes){
+						if(random.nextDouble() < params.mutationProbability)
+							genotype.mutate(mutationStdDev);
 					}
-
-					// Cloning code, if needed.
-					/*
-					 * int endOfElites = 10; int replacementIndex =
-					 * genotypes.size() - 1; for (int i = 0; i < endOfElites;
-					 * i++) { Genotype clone = genotypes.get(i).clone(); if
-					 * (random.nextDouble() < mutationProbability) { double
-					 * mutationStdDev = 0; if (captureCount / ((double)
-					 * ((trialsPerGeneration * evaluationsPerTrial))) < 0.9) {
-					 * mutationStdDev = earlyMutationStdDev; } else {
-					 * mutationStdDev = lateMutationStdDev; }
-					 * clone.mutate(mutationStdDev); }
-					 * genotypes.remove(replacementIndex);
-					 * genotypes.add(replacementIndex, clone);
-					 * replacementIndex--; }
-					 */
-
 				}
-			}// replacement
+			}//mutation
 
 			capturesForEachGeneration.add(captureCount);
 
@@ -431,7 +446,7 @@ public class ESPEvolution {
 					}
 					else if(params.useGenotypeDistance){
 						for (int i = 0; i < params.numPredators; i++) {
-							for (int j = 0; j < params.numPredators; j++) {
+							for (int j = i + 1; j < params.numPredators; j++) {
 								for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 									for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
 										if(subPopI.averageWeightDistance(subPopJ) <	params.crossoverGenotypeDistanceThreshhold
@@ -450,7 +465,7 @@ public class ESPEvolution {
 											Collections.sort(genotypesJ);
 											Collections.reverse(genotypesJ);
 											
-											int replacementIndex = params.subPopulationSize;
+											int replacementIndex = params.subPopulationSize - 1;
 											int numReplacements = (int)Math.round(params.crossoverPopulationPercentage * params.subPopulationSize);
 											
 											for(int k=0; k < numReplacements; k++){
