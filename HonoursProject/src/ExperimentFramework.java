@@ -42,7 +42,7 @@ public class ExperimentFramework {
 			System.exit(0);
 		
 		//Parse file to get experiment params
-		//reps crossover migration interpopcrossover behaviour genotype delta
+		//reps crossover crossoverinterval migration interpopcrossover behaviour genotype delta
 		
 		String line = "";
 		try{
@@ -52,6 +52,7 @@ public class ExperimentFramework {
 				Scanner ls = new Scanner(line);
 				reps[counter] = ls.nextInt();
 				String useCross = ls.next();
+				String useCrossInterval = ls.next();
 				String useM = ls.next();
 				String useC = ls.next();
 				String useB = ls.next();
@@ -59,6 +60,7 @@ public class ExperimentFramework {
 				String useD = ls.next();
 				
 				boolean useCrossover = useCross.equals("t");
+				boolean useCrossoverInterval = useCrossInterval.equals("t");
 				boolean useMigration = useM.equals("t");
 				boolean useInterpopCrossover = useC.equals("t");
 				boolean useBehaviourDistance = useB.equals("t");
@@ -67,6 +69,7 @@ public class ExperimentFramework {
 				
 				params[counter] = new EvolutionParameters();
 				params[counter].doCrossover = useCrossover;
+				params[counter].useIntrapopCrossoverInterval = useCrossoverInterval;
 				params[counter].doMigration = useMigration;
 				params[counter].useBehaviourDistance = useBehaviourDistance;
 				params[counter].useGenotypeDistance = useGenotypeDistance;
@@ -90,11 +93,11 @@ public class ExperimentFramework {
 		int hours = calendar.get(Calendar.HOUR_OF_DAY);
 		int mins = calendar.get(Calendar.MINUTE);
 		int secs = calendar.get(Calendar.SECOND);
-		String dayS = (day > 10 ? ""+day : "0"+day);
-		String monthS = (month > 10 ? ""+month : "0"+month);
-		String hour = (hours > 10 ? ""+hours : "0"+hours);
-		String min = (mins > 10 ? ""+mins : "0"+mins);
-		String sec = (secs > 10 ? ""+secs : "0"+secs);
+		String dayS = (day >= 10 ? ""+day : "0"+day);
+		String monthS = (month >= 10 ? ""+month : "0"+month);
+		String hour = (hours >= 10 ? ""+hours : "0"+hours);
+		String min = (mins >= 10 ? ""+mins : "0"+mins);
+		String sec = (secs >= 10 ? ""+secs : "0"+secs);
 		
 		String date = dayS+"/"+monthS+"/"+year+" "+hour+":"+min+":"+sec;
 		
@@ -105,13 +108,14 @@ public class ExperimentFramework {
 			for(int ex=0; ex<linecount; ex++){
 				
 				
-				System.out.println("\nExperiment "+ex+": Crossover="+params[ex].doCrossover+", Migration="+params[ex].doMigration+", " +
-						"InterpopulationCrossover="+params[ex].doInterpopulationCrossover + ", BehaviourDistace="
+				System.out.println("\nExperiment "+ex+": Crossover="+params[ex].doCrossover+", Crossover Interval="+params[ex].useIntrapopCrossoverInterval+
+						", Migration="+params[ex].doMigration+", InterpopulationCrossover="+params[ex].doInterpopulationCrossover + ", BehaviourDistace="
 						+params[ex].useBehaviourDistance+", GenotypeDistance="+params[ex].useGenotypeDistance+
 						", DeltaThings="+params[ex].doDavidsDeltaThings);
 				System.out.println(date);
-				fw.write("\n\nExperiment "+ex+": Crossover="+params[ex].doCrossover+", Migration="+params[ex].doMigration+",InterpopulationCrossover="+params[ex].doInterpopulationCrossover + " BehaviourDistace="
-						+params[ex].useBehaviourDistance+", GenotypeDistance="+params[ex].useGenotypeDistance+" , DeltaThings="+params[ex].doDavidsDeltaThings+"\n");
+				fw.write("\n\nExperiment "+ex+": Crossover="+params[ex].doCrossover+", Crossover Interval="+params[ex].useIntrapopCrossoverInterval+
+						", Migration="+params[ex].doMigration+", InterpopulationCrossover="+params[ex].doInterpopulationCrossover + ", BehaviourDistace="
+						+params[ex].useBehaviourDistance+", GenotypeDistance="+params[ex].useGenotypeDistance+", DeltaThings="+params[ex].doDavidsDeltaThings+"\n");
 				fw.write(date+"\n");
 				
 				double averageGen = 0, averageCaptures = 0;

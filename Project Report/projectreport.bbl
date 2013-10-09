@@ -10,6 +10,23 @@ Faustino Gomez and Risto Miikkulainen.
 \newblock {Incremental evolution of complex general behavior}.
 \newblock {\em Adaptive Behavior}, 5(3-4):317--342, 1997.
 
+\bibitem{Igel2003}
+Christian Igel.
+\newblock {Neuroevolution for reinforcement learning using evolution
+  strategies}.
+\newblock In {\em Evolutionary Computation, 2003. CEC'03. The 2003 Congress
+  on}, volume~4, pages 2588--2595. IEEE, 2003.
+
+\bibitem{Moriarty1996}
+David~E Moriarty and Risto Mikkulainen.
+\newblock {Efficient reinforcement learning through symbiotic evolution}.
+\newblock {\em Machine learning}, 22(1-3):11--32, 1996.
+
+\bibitem{Stanley2002}
+Kenneth~O Stanley and Risto Miikkulainen.
+\newblock {Evolving neural networks through augmenting topologies.}
+\newblock {\em Evolutionary computation}, 10(2):99--127, January 2002.
+
 \bibitem{Yao1999}
 Xin Yao.
 \newblock {Evolving artificial neural networks}.

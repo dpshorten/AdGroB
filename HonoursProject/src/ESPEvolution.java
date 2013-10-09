@@ -126,10 +126,9 @@ public class ESPEvolution {
 			}
 			
 			// Create offspring by applying crossover to the genotype subpopulations
-			if(params.doCrossover){
+			if(params.doCrossover && (!params.useIntrapopCrossoverInterval || gen % params.intrapopCrossoverInterval == 0)){
 				for (int pred = 0; pred < params.numPredators; pred++) {
 					for (int subpop = 0; subpop < params.numHiddenNodes; subpop++) {
-	
 						// Within each subpopulation, rank the genotypes by fitness
 						// with element 0 being the highest fitness
 						Vector<Genotype> genotypes = agentPopulations

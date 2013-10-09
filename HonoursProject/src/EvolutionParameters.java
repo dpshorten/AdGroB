@@ -7,6 +7,7 @@ public class EvolutionParameters {
 	boolean useGenotypeDistance = true;
 	boolean doDavidsDeltaThings = false;
 	boolean doInterpopulationCrossover = false;
+	boolean useIntrapopCrossoverInterval = false;
 	boolean doCrossover = true;
 	
 	public static int numHiddenNodes = 10;
@@ -49,8 +50,9 @@ public class EvolutionParameters {
 	public static double migrationGenotypeDistanceThreshhold = 5;
 	
 	//Crossover
-	public int crossoverGenInterval = 4;
-	public int crossoverFirstGen = 4;
+	public int intrapopCrossoverInterval = 10;
+	public int crossoverGenInterval = 10;
+	public int crossoverFirstGen = 10;
 	public double crossoverPopulationPercentage = 0.25;
 	public double crossoverBehaviourSimilarityThreshhold = 0.6;
 	public double crossoverGenotypeDistanceThreshhold = 7;
