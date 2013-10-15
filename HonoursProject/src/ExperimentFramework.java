@@ -134,7 +134,7 @@ public class ExperimentFramework {
 					averageGen += result.generations;
 					averageCaptures += result.captureCount;
 					for(int i=0; i < result.avgEvalFitnesses.length; i++)
-						averageAverageFitnesses[i] =+ result.avgEvalFitnesses[i];
+						averageAverageFitnesses[i] += result.avgEvalFitnesses[i];
 					
 					fw.write("Generations: "+result.generations+"\n");
 					fw.write("Capture count: "+result.captureCount+"\nAverage fitnesses: ");

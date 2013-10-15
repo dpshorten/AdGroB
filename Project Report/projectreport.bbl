@@ -1,14 +1,71 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{Anderson1987}
+Charles~William Anderson.
+\newblock {\em {Strategy learning with multilayer connectionist
+  representations}}.
+\newblock GTE Laboratories, 1987.
+
+\bibitem{Balch1997}
+Tucker Balch.
+\newblock {Social entropy: a new metric for learning multi-robot teams}.
+\newblock 1997.
+
+\bibitem{Barto1983}
+Andrew~G Barto, Richard~S Sutton, and Charles~W Anderson.
+\newblock {Neuronlike adaptive elements that can solve difficult learning
+  control problems}.
+\newblock {\em Systems, Man and Cybernetics, IEEE Transactions on},
+  (5):834--846, 1983.
+
+\bibitem{Cilibrasi2005}
+Rudi Cilibrasi and Paul M~B Vit\'{a}nyi.
+\newblock {Clustering by compression}.
+\newblock {\em Information Theory, IEEE Transactions on}, 51(4):1523--1545,
+  2005.
 
 \bibitem{Floreano2008}
 Dario Floreano, Peter D\"{u}rr, and Claudio Mattiussi.
 \newblock {Neuroevolution: from architectures to learning}.
 \newblock {\em Evolutionary Intelligence}, 1(1):47--62, January 2008.
 
+\bibitem{Goldberg1987}
+David~E Goldberg and Jon Richardson.
+\newblock {Genetic algorithms with sharing for multimodal function
+  optimization}.
+\newblock In {\em Proceedings of the Second International Conference on Genetic
+  Algorithms on Genetic algorithms and their application}, pages 41--49. L.
+  Erlbaum Associates Inc., 1987.
+
 \bibitem{Gomez1997}
 Faustino Gomez and Risto Miikkulainen.
 \newblock {Incremental evolution of complex general behavior}.
 \newblock {\em Adaptive Behavior}, 5(3-4):317--342, 1997.
+
+\bibitem{Gomez2009}
+Faustino~J Gomez.
+\newblock {Sustaining diversity using behavioral information distance}.
+\newblock In {\em Proceedings of the 11th Annual conference on Genetic and
+  evolutionary computation}, pages 113--120. ACM, 2009.
+
+\bibitem{Gruau1992}
+Frederic Gruau.
+\newblock {Genetic synthesis of boolean neural networks with a cell rewriting
+  developmental process}.
+\newblock In {\em Combinations of Genetic Algorithms and Neural Networks,
+  1992., COGANN-92. International Workshop on}, pages 55--74. IEEE, 1992.
+
+\bibitem{Gruau1994}
+Fr\'{e}d\'{e}ric Gruau.
+\newblock {Automatic definition of modular neural networks}.
+\newblock {\em Adaptive behavior}, 3(2):151--183, 1994.
+
+\bibitem{Gruau1996}
+Frederic Gruau, Darrell Whitley, and Larry Pyeatt.
+\newblock {A comparison between cellular encoding and direct encoding for
+  genetic neural networks}.
+\newblock In {\em Proceedings of the First Annual Conference on Genetic
+  Programming}, pages 81--89. MIT Press, 1996.
 
 \bibitem{Igel2003}
 Christian Igel.
@@ -17,15 +74,59 @@ Christian Igel.
 \newblock In {\em Evolutionary Computation, 2003. CEC'03. The 2003 Congress
   on}, volume~4, pages 2588--2595. IEEE, 2003.
 
+\bibitem{Kitano1990}
+Hiroaki Kitano.
+\newblock {Designing neural networks using genetic algorithms with graph
+  generation system}.
+\newblock {\em Complex Systems Journal}, 4:461--476, 1990.
+
+\bibitem{Li2004}
+Ming Li, Xin Chen, Xin Li, Bin Ma, and Paul M~B Vit\'{a}nyi.
+\newblock {The similarity metric}.
+\newblock {\em Information Theory, IEEE Transactions on}, 50(12):3250--3264,
+  2004.
+
 \bibitem{Moriarty1996}
 David~E Moriarty and Risto Mikkulainen.
 \newblock {Efficient reinforcement learning through symbiotic evolution}.
 \newblock {\em Machine learning}, 22(1-3):11--32, 1996.
 
+\bibitem{Moriarty1997}
+David~Eric Moriarty.
+\newblock {Symbiotic evolution of neural networks in sequential decision
+  tasks}, 1997.
+
+\bibitem{Mouret2012}
+J-B Mouret and S~Doncieux.
+\newblock {Encouraging behavioral diversity in evolutionary robotics: an
+  empirical study.}
+\newblock {\em Evolutionary computation}, 20(1):91--133, January 2012.
+
+\bibitem{Sareni1998}
+B.~Sareni and L.~Krahenbuhl.
+\newblock {Fitness sharing and niching methods revisited}.
+\newblock {\em IEEE Transactions on Evolutionary Computation}, 2(3):97--106,
+  1998.
+
 \bibitem{Stanley2002}
 Kenneth~O Stanley and Risto Miikkulainen.
 \newblock {Evolving neural networks through augmenting topologies.}
 \newblock {\em Evolutionary computation}, 10(2):99--127, January 2002.
+
+\bibitem{Watkins1992}
+Christopher J C~H Watkins and Peter Dayan.
+\newblock {Q-learning}.
+\newblock {\em Machine learning}, 8(3-4):279--292, 1992.
+
+\bibitem{Whitley1994}
+Darrell Whitley, Stephen Dominic, Rajarshi Das, and Charles~W Anderson.
+\newblock {\em {Genetic reinforcement learning for neurocontrol problems}}.
+\newblock Springer, 1994.
+
+\bibitem{Whitley1991}
+Darrell Whitley, Keith Mathias, and Patrick Fitzhorn.
+\newblock {Delta coding: An iterative search strategy for genetic algorithms}.
+\newblock In {\em ICGA}, volume~91, pages 77--84, 1991.
 
 \bibitem{Yao1999}
 Xin Yao.

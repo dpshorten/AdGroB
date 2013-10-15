@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2012.7.2)  8 OCT 2013 20:32
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2012.7.2)  15 OCT 2013 00:15
 entering extended mode
 **C:/Users/Cai/AdGroB/Project*Report/projectreport.tex
 ("C:/Users/Cai/AdGroB/Project Report/projectreport.tex"
@@ -15,8 +15,8 @@ sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
 senglishmax, welsh, loaded.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-("C:\Program Files\MiKTeX 2.9\tex\latex\base\size11.clo"
-File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size12.clo"
+File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -448,12 +448,12 @@ LaTeX Font Info:    ... okay on input line 65.
 * \topmargin=-7.86334pt
 * \headheight=12.0pt
 * \headsep=25.0pt
-* \topskip=11.0pt
+* \topskip=12.0pt
 * \footskip=30.0pt
-* \marginparwidth=59.0pt
+* \marginparwidth=44.0pt
 * \marginparsep=10.0pt
 * \columnsep=10.0pt
-* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
@@ -485,38 +485,52 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 66.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
-)
-Overfull \hbox (3.65352pt too wide) in paragraph at lines 79--80
-[]\OT1/cmr/m/n/10.95 Evolutionary al-go-rithms are population-based stochas-tic
- search al-go-rithms that mimic
- []
-
-[1
+) [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}] [2]
-("C:\Users\Cai\AdGroB\Project Report\projectreport.bbl" [3]) [4]
+Overfull \hbox (12.64603pt too wide) in paragraph at lines 97--98
+[]\OT1/cmr/m/n/12 Symbiotic, Adap-tive Neu-roevo-lu-tion (SANE), in-tro-duced b
+y Mo-ri-arty and Mikku-
+ []
+
+[3]
+Overfull \hbox (12.62334pt too wide) in paragraph at lines 103--104
+\OT1/cmr/m/n/12 Developmental rep-re-sen-ta-tions of-fer an al-ter-na-tive to d
+i-rect rep-re-sen-ta-tions. Whereas
+ []
+
+[4] [5] [6]
+Overfull \hbox (0.11986pt too wide) in paragraph at lines 125--126
+[]\OT1/cmr/m/n/12 The meth-ods that Mo-ri-arty and Mikku-lainen com-pared SANE 
+to in-clude single-
+ []
+
+[7] [8] [9] [10] [11] [12] [13] [14]
+("C:\Users\Cai\AdGroB\Project Report\projectreport.bbl" [15] [16]) [17]
 ("C:\Users\Cai\AdGroB\Project Report\projectreport.aux") ) 
 Here is how much of TeX's memory you used:
- 2950 strings out of 494045
- 36659 string characters out of 3148394
- 100830 words of memory out of 3000000
- 6206 multiletter control sequences out of 15000+200000
- 11390 words of font info for 43 fonts, out of 3000000 for 9000
+ 2980 strings out of 494045
+ 36995 string characters out of 3148394
+ 101901 words of memory out of 3000000
+ 6234 multiletter control sequences out of 15000+200000
+ 13371 words of font info for 51 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 27i,10n,43p,1505b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,11n,43p,1621b,289s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/
 fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
-ic/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr
+pe1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr
 12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C
-:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program 
-Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on projectreport.pdf (4 pages, 126161 bytes).
+:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmti12.pfb>
+Output written on projectreport.pdf (17 pages, 184236 bytes).
 PDF statistics:
- 55 PDF objects out of 1000 (max. 8388607)
+ 105 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
