@@ -102,6 +102,12 @@ J-B Mouret and S~Doncieux.
   empirical study.}
 \newblock {\em Evolutionary computation}, 20(1):91--133, January 2012.
 
+\bibitem{Nitschke2010}
+Geoff~S Nitschke, Martijn~C Schut, and A~E Eiben.
+\newblock {Collective neuro-evolution for evolving specialized sensor
+  resolutions in a multi-rover task}.
+\newblock {\em Evolutionary Intelligence}, 3(1):13--29, 2010.
+
 \bibitem{Sareni1998}
 B.~Sareni and L.~Krahenbuhl.
 \newblock {Fitness sharing and niching methods revisited}.
@@ -127,6 +133,13 @@ Darrell Whitley, Stephen Dominic, Rajarshi Das, and Charles~W Anderson.
 Darrell Whitley, Keith Mathias, and Patrick Fitzhorn.
 \newblock {Delta coding: An iterative search strategy for genetic algorithms}.
 \newblock In {\em ICGA}, volume~91, pages 77--84, 1991.
+
+\bibitem{Wineberg2003}
+Mark Wineberg and Franz Oppacher.
+\newblock {The underlying similarity of diversity measures used in evolutionary
+  computation}.
+\newblock In {\em Genetic and Evolutionary Computation—GECCO 2003}, pages
+  1493--1504. Springer, 2003.
 
 \bibitem{Yao1999}
 Xin Yao.

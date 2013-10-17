@@ -406,7 +406,7 @@ public class ESPEvolution {
 									for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 										for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
 //											System.out.println("\tGenotype distance: "+subPopI.averageWeightDistance(subPopJ));
-											if( ( (!params.useGenotypeDistance) || (subPopI.averageWeightDistance(subPopJ) < params.crossoverGenotypeDistanceThreshhold) )
+											if( ( (!params.useGenotypeDistance) || (subPopI.averageWeightDistance(subPopJ) < params.crossoverGenotypeDistanceThreshhold))
 															&&	!(usedSubPops.contains(subPopI) || usedSubPops.contains(subPopJ)) ){
 												crossovercount += 2;
 												
