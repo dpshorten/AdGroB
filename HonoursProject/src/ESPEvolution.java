@@ -333,6 +333,7 @@ public class ESPEvolution {
 												if (subPopI.averageWeightDistance(subPopJ) < 
 														params.migrationGenotypeDistanceThreshhold) {
 													subPopI.sendMigrants(subPopJ, params.migrationNumMigrants);
+													subPopJ.sendMigrants(subPopI, params.migrationNumMigrants);
 													migrantCount++;
 												}
 											}
