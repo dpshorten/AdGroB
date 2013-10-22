@@ -50,9 +50,9 @@ public class EvolutionParameters {
 	public static double migrationGenotypeDistanceThreshhold = 5;
 	
 	//Crossover
-	public int intrapopCrossoverInterval = 10;
+	public int intrapopCrossoverInterval = 4;
 	public int crossoverGenInterval = 10;
-	public int crossoverFirstGen = 10;
+	public int crossoverFirstGen = 4;
 	public double crossoverPopulationPercentage = 0.25;
 	public double crossoverBehaviourSimilarityThreshhold = 0.6;
 	public double crossoverGenotypeDistanceThreshhold = 7;

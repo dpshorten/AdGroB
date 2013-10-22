@@ -6,6 +6,11 @@ Charles~William Anderson.
   representations}}.
 \newblock GTE Laboratories, 1987.
 
+\bibitem{Back1993}
+Thomas B\"{a}ck and Hans-Paul Schwefel.
+\newblock {An overview of evolutionary algorithms for parameter optimization}.
+\newblock {\em Evolutionary computation}, 1(1):1--23, 1993.
+
 \bibitem{Balch1997}
 Tucker Balch.
 \newblock {Social entropy: a new metric for learning multi-robot teams}.
@@ -28,6 +33,12 @@ Rudi Cilibrasi and Paul M~B Vit\'{a}nyi.
 Dario Floreano, Peter D\"{u}rr, and Claudio Mattiussi.
 \newblock {Neuroevolution: from architectures to learning}.
 \newblock {\em Evolutionary Intelligence}, 1(1):47--62, January 2008.
+
+\bibitem{Goldberg1991}
+David~E Goldberg and Kalyanmoy Deb.
+\newblock {A comparative analysis of selection schemes used in genetic
+  algorithms}.
+\newblock {\em Urbana}, 51:61801--62996, 1991.
 
 \bibitem{Goldberg1987}
 David~E Goldberg and Jon Richardson.
@@ -86,6 +97,11 @@ Ming Li, Xin Chen, Xin Li, Bin Ma, and Paul M~B Vit\'{a}nyi.
 \newblock {\em Information Theory, IEEE Transactions on}, 50(12):3250--3264,
   2004.
 
+\bibitem{Montana1989}
+David~J Montana and Lawrence Davis.
+\newblock {Training Feedforward Neural Networks Using Genetic Algorithms.}
+\newblock In {\em IJCAI}, volume~89, pages 762--767, 1989.
+
 \bibitem{Moriarty1996}
 David~E Moriarty and Risto Mikkulainen.
 \newblock {Efficient reinforcement learning through symbiotic evolution}.
@@ -107,6 +123,13 @@ Geoff~S Nitschke, Martijn~C Schut, and A~E Eiben.
 \newblock {Collective neuro-evolution for evolving specialized sensor
   resolutions in a multi-rover task}.
 \newblock {\em Evolutionary Intelligence}, 3(1):13--29, 2010.
+
+\bibitem{Rudolph1997}
+G\"{u}nter Rudolph.
+\newblock {Local convergence rates of simple evolutionary algorithms with
+  Cauchy mutations}.
+\newblock {\em Evolutionary Computation, IEEE Transactions on}, 1(4):249--258,
+  1997.
 
 \bibitem{Sareni1998}
 B.~Sareni and L.~Krahenbuhl.
@@ -146,6 +169,11 @@ Xin Yao.
 \newblock {Evolving artificial neural networks}.
 \newblock In {\em Proceedings of the IEEE}, volume~87, pages 1423--1447. IEEE,
   1999.
+
+\bibitem{Yegnanarayana2004}
+B~Yegnanarayana.
+\newblock {\em {Artificial neural networks}}.
+\newblock PHI Learning Pvt. Ltd., 2004.
 
 \bibitem{Yong2001}
 Chern~Han Yong and Risto Miikkulainen.

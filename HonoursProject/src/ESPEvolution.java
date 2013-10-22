@@ -403,6 +403,10 @@ public class ESPEvolution {
 						for (int i = 0; i < params.numPredators; i++) {
 							for (int j = i + 1; j < params.numPredators; j++) {
 //								System.out.println("Behaviour distance "+i+":"+j+" = "+similarities[i][j]);
+								
+								//Allow same subpop to be used for different predator pairs
+								usedSubPops.clear();
+								
 								if (similarities[i][j] < params.crossoverBehaviourSimilarityThreshhold) {
 									for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 										for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
@@ -430,11 +434,12 @@ public class ESPEvolution {
 													Genotype parentI = genotypesI.get(k);
 													Genotype parentJ = genotypesJ.get(k);
 													Genotype child = Genotype.crossover(parentI, parentJ);
+													child.setFitness((parentI.getFitness() + parentJ.getFitness())/2);
 													
 													genotypesI.remove(replacementIndex);
 													genotypesJ.remove(replacementIndex);
 													genotypesI.add(replacementIndex, child);
-													genotypesJ.add(replacementIndex, child);
+													genotypesJ.add(replacementIndex, child.clone());
 													replacementIndex--;
 												}
 											}
@@ -447,6 +452,10 @@ public class ESPEvolution {
 					else if(params.useGenotypeDistance){
 						for (int i = 0; i < params.numPredators; i++) {
 							for (int j = i + 1; j < params.numPredators; j++) {
+								
+								//Allow same subpop to be used for different predator pairs
+								usedSubPops.clear();
+								
 								for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 									for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
 										if(subPopI.averageWeightDistance(subPopJ) <	params.crossoverGenotypeDistanceThreshhold
@@ -472,11 +481,12 @@ public class ESPEvolution {
 												Genotype parentI = genotypesI.get(k);
 												Genotype parentJ = genotypesJ.get(k);
 												Genotype child = Genotype.crossover(parentI, parentJ);
+												child.setFitness((parentI.getFitness() + parentJ.getFitness())/2);
 												
 												genotypesI.remove(replacementIndex);
 												genotypesJ.remove(replacementIndex);
 												genotypesI.add(replacementIndex, child);
-												genotypesJ.add(replacementIndex, child);
+												genotypesJ.add(replacementIndex, child.clone());
 												replacementIndex--;
 											}
 										}

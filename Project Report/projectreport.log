@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2012.7.2)  18 OCT 2013 21:54
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2012.7.2)  22 OCT 2013 17:52
 entering extended mode
-**projectreport.tex
-("C:\Users\Cai\AdGroB\Project Report\projectreport.tex"
+**C:/Users/Cai/AdGroB/Project*Report/projectreport.tex
+("C:/Users/Cai/AdGroB/Project Report/projectreport.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -499,43 +499,37 @@ Overfull \hbox (12.62334pt too wide) in paragraph at lines 103--104
 i-rect rep-re-sen-ta-tions. Whereas
  []
 
-[4] [5] [6]
-Overfull \hbox (0.11986pt too wide) in paragraph at lines 125--126
-[]\OT1/cmr/m/n/12 The meth-ods that Mo-ri-arty and Mikku-lainen com-pared SANE 
-to in-clude single-
- []
-
-[7] [8] [9] [10] [11] [12] [13] [14]
+[4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14]
 Overfull \hbox (8.41087pt too wide) in paragraph at lines 276--277
 []\OT1/cmr/m/n/12 In [[]], Nitschke et al. use an av-er-age weight dif-fer-ence
  met-ric for sub-populations
  []
 
 [15] [16] [17] [18] [19] ("C:\Users\Cai\AdGroB\Project Report\projectreport.bbl
-" [20] [21]) [22] ("C:\Users\Cai\AdGroB\Project Report\projectreport.aux") ) 
+" [20] [21] [22]) [23] ("C:\Users\Cai\AdGroB\Project Report\projectreport.aux")
+ ) 
 Here is how much of TeX's memory you used:
- 2982 strings out of 494045
- 37023 string characters out of 3148394
- 101909 words of memory out of 3000000
- 6236 multiletter control sequences out of 15000+200000
+ 2988 strings out of 494045
+ 37100 string characters out of 3148394
+ 101929 words of memory out of 3000000
+ 6242 multiletter control sequences out of 15000+200000
  13371 words of font info for 51 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 27i,11n,43p,1779b,289s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:
-/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program
- Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.
-9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
-ic/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr
-6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program 
-Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on projectreport.pdf (22 pages, 202687 bytes).
+ 27i,11n,43p,1871b,290s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
+msfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb
+><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Pro
+gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on projectreport.pdf (23 pages, 205119 bytes).
 PDF statistics:
- 121 PDF objects out of 1000 (max. 8388607)
+ 124 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
