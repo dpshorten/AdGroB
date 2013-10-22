@@ -29,7 +29,7 @@ public class Environment {
 
 	public Environment() {
 		boardSize = 100;
-		maxMoves = 1000;//(int) Math.round(8 * boardSize);
+		maxMoves = (int) Math.round(8 * boardSize);
 		board = new int[boardSize][boardSize];
 	}
 	

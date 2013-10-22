@@ -5,7 +5,7 @@ public class Main
 {
 	public static void main (String [] args)
 	{
-		final int boardSize = 100;
+		final int boardSize = 10;
 		final int numPrey = 1;
 		Random random = new Random();
 		

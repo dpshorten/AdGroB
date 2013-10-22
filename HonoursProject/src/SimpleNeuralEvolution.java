@@ -10,25 +10,31 @@ public class SimpleNeuralEvolution
 	static final int numHiddenNodes = 10;
 	static final int numInputNodes = 2;
 	static final int numOutputNodes = 4;
-	static final int numPredators = 3;
+	static final int numPredators = 1;
+	static int runNum = 0;
 	static final int weights = numInputNodes + numOutputNodes;
 	
-	static final int populationSize = 300;
-	static final int numberOfBest = 100;
+	static final int populationSize = 3000;
+	static final int numberOfBest = 300;
 	static final int trialsPerGeneration = 100; // 1000
 static final int evaluationsPerTrial = 6; // 6
-static final int generations = 30;
+static final int generations = 200;
 static final int boardSize = 10;
 
-static final double mutationProbability = 0.2;
-static final double mutationSTD = 0.2;
-static final double crossOverProbability = 0.5;
+static double mutationProbability ;//= 0.2;
+static double mutationSTD ;//= 0.2;
+static double crossOverProbability ;//= 0.5;
 static final int rootOfNumTests = 10;
-static final double visionRange = boardSize;
+static final double visionRange = boardSize/2;
 static int speed = 0;
 static int captureCount = 0;
+static double conversionrate = 0;
+static boolean conversionreached = false;
 
 static final double[] preySpeeds = { 0.0, 0.1, 0.2, 0.3, 0.5, 0.6, 0.8, 0.9, 1};
+static final double[] mutationprobabilities = {0.1};
+static final double[] mutationSTDs = {0.4};
+static final double[] crossOverProbabilities = {1};
 
 static int stagnator = 0;
 static int Stagnatingcaptures = 0;
@@ -54,23 +60,39 @@ static Vector<SimpleGenotype> best3 = new Vector<SimpleGenotype>();
 public static void main(String[] args) 
 {
 	System.out.println("running");
-	//try
-	//{
-		run();
-		printPredatorFiles();
-	//}
-	//catch(Exception e)
-	//{
-		//System.out.println("Error occured, attempting to do a rescue print : " + e);
-		//try
-	//	{
-			//printPredatorFiles();
-		//}
-		//catch(Exception a)
-		//{
-		//	System.out.println("Error occured while attempting to do a rescue print : " + a);
-		//}
-	//}
+	try
+	{
+		for(int i = 0 ; i < 2 ; i ++)
+		{
+			runNum = i;
+			for(double numM: mutationprobabilities)
+			{
+				mutationProbability = numM;
+				for(double numSTD: mutationSTDs)
+				{
+					mutationSTD = numSTD;
+					for(double numC: crossOverProbabilities)
+					{
+						crossOverProbability = numC;
+						run();
+						printPredatorFiles();
+					}
+				}
+			}
+		}
+	}
+	catch(Exception e)
+	{
+		System.out.println("Error occured, attempting to do a rescue print : " + e);
+		try
+		{
+			printPredatorFiles();
+		}
+		catch(Exception a)
+		{
+			System.out.println("Error occured while attempting to do a rescue print : " + a);
+		}
+	}
 	
 }
 
@@ -79,14 +101,12 @@ public static void printPredatorFiles()
 	for (int predator = 0 ; predator < numPredators; predator++)
 	{
 		
-		SimpleNeuralNetwork ann;
-		
 		if(predator == 0)
-			saveNetwork("SimplePredatorBehaviour" + predator , best1);
+			saveNetwork("" + runNum + "SPB" + mutationProbability + "|" + mutationSTD + "|" + crossOverProbability + "|" + best1.elementAt(0).getFitness() + "|" + predator , best1);
 		else if(predator == 1)
-			saveNetwork("SimplePredatorBehaviour" + predator , best2);
+			saveNetwork("" + runNum + "SPB" + mutationProbability + "|" + mutationSTD + "|" + crossOverProbability + "|" +best1.elementAt(0).getFitness() + "|" + predator , best2);
 		else
-			saveNetwork("SimplePredatorBehaviour" + predator , best3);
+			saveNetwork("" + runNum + "SPB" + mutationProbability + "|" + mutationSTD + "|" + crossOverProbability + "|" + best1.elementAt(0).getFitness() + "|" + predator , best3);
 	}
 }
 
@@ -192,8 +212,12 @@ public static int run( )
 	int predator = 0;
 	for (int gen = 0; gen < generations; gen++) 
 	{
+		if(conversionreached)
+		{
+			break;
+		}
 		captureCount = 0;
-		if(gen%3 == 0)
+		if(gen%5 == 0)
 		{
 			speed++;
 			if (speed >= preySpeeds.length)
@@ -232,7 +256,7 @@ public static int run( )
 			// values for the genotypes
 			
 			
-			
+			//System.out.println("Starting evals for Population");
 			for(int genotype = 0 ; genotype < populationSize ; genotype ++)
 			{
 				
@@ -284,6 +308,7 @@ public static int run( )
 					//System.out.println("Fitness Updated,  New Fitness = " + simpleGenotypesUsed.elementAt(genotype).getFitness() * 100);
 				}
 			}
+			//System.out.println("Done with evals");
 	
 			// Replace the bottom ~50% of genotypes with offspring from
 			// the top ~25%
@@ -401,7 +426,22 @@ public static int run( )
 
 		System.out.println("Generation " + gen + " done: " + captureCount
 		+ " captures, " + testCaptureCount + "/" + rootOfNumTests
-		* rootOfNumTests + " test score. Best Fitness of : " + bestGenotypes.elementAt(0).getFitness()*100);
+		* rootOfNumTests + " test score. Best Fitness of : " + bestGenotypes.elementAt(0).getFitness());
+		
+		if(conversionrate-0.01 <= bestGenotypes.elementAt(0).getFitness()  && conversionrate+0.01 >= bestGenotypes.elementAt(0).getFitness())
+		{
+			stagnator++;
+			conversionrate = bestGenotypes.elementAt(0).getFitness();
+			if(stagnator >= 4)
+			{
+				conversionreached = true;
+			}
+		}
+		else
+		{
+			stagnator = 0;
+			conversionrate = bestGenotypes.elementAt(0).getFitness();
+		}
 		
 		System.out.println("Stagnator = " + stagnator + ", Stagnatingcaptures and testCaptureCount = " + Stagnatingcaptures + "," + testCaptureCount);
 		
@@ -521,17 +561,19 @@ return 1;
 		//captureCount = 0;
 		int captures = 0;
 		double newFitness = 0;
-		double shortestDistance = Integer.MAX_VALUE;;
+		double shortestDistance;// = Integer.MAX_VALUE;
 		for (int eval = 0; eval < evaluations; eval++)
 		{
-			//System.out.println("Running evaluation " + eval );
+			
+			shortestDistance = Integer.MAX_VALUE;
 			env.resetCaptureCount();
 			env.setPieces(predatorPieces, preyPieces);
 			SimulationResult result = env.run(false, false);
 			captures = result.preyCaught;
 			captureCount += captures; 
 				
-				
+			//System.out.println("Running evaluation " + captures );	
+			
 			for(Piece aPrey: preyPieces)
 			{
 				for(Piece aPred: predatorPieces)
@@ -539,16 +581,28 @@ return 1;
 					if (aPrey.getDistance(aPred) < (visionRange))
 					{
 						if(aPrey.getDistance(aPred) < shortestDistance)
-							shortestDistance = aPrey.getDistance(aPred);
+						{
+							shortestDistance = aPred.getDistance(aPrey);
+						}
 					}
 				}
 			}
+			if(shortestDistance <= 1)
+			{
+				shortestDistance = 1;
+			}
+			
 			if(captures >= 1)
-				newFitness += 1/shortestDistance * 2;
-			else
-				newFitness += 1/shortestDistance;
+			{
+				newFitness += 100;
+			}
+			else if(shortestDistance <= visionRange && shortestDistance>1)
+			{
+				newFitness += 50/shortestDistance;
+			}
+			
 		}
-		
-		return newFitness/evaluations;
+		//System.out.println(newFitness/evaluations/numPredators);
+		return newFitness/evaluations/numPredators;
 	}
 }
