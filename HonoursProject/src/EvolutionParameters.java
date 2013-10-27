@@ -42,16 +42,16 @@ public class EvolutionParameters {
 	
 	// Migration
 	public static int migrationStartingGen = 1;
-	public static int migrationGenInterval = 2;
-	public static int migrationLateGenInterval = 2;
+	public static int migrationGenInterval = 10;
+	public static int migrationLateGenInterval = 10;
 	public static int migrationLateGenThreshold = 25;
 	public static int migrationNumMigrants = 2;
-	public static double migrationBehaviourSimilarityThreshhold = 0.7;
-	public static double migrationGenotypeDistanceThreshhold = 5;
+	public static double migrationBehaviourSimilarityThreshhold = 0.6;
+	public static double migrationGenotypeDistanceThreshhold = 7;
 	
 	//Crossover
-	public int intrapopCrossoverInterval = 4;
-	public int crossoverGenInterval = 10;
+	public int crossoverInterval = 10;
+	public int interPopCrossoverGenInterval = 4;
 	public int crossoverFirstGen = 4;
 	public double crossoverPopulationPercentage = 0.25;
 	public double crossoverBehaviourSimilarityThreshhold = 0.6;

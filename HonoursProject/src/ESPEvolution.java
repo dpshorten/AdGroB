@@ -126,7 +126,7 @@ public class ESPEvolution {
 			}
 			
 			// Create offspring by applying crossover to the genotype subpopulations
-			if(params.doCrossover && (!params.useIntrapopCrossoverInterval || gen % params.intrapopCrossoverInterval == 0)){
+			if(params.doCrossover && (!params.useIntrapopCrossoverInterval || gen % params.crossoverInterval == 0)){
 				for (int pred = 0; pred < params.numPredators; pred++) {
 					for (int subpop = 0; subpop < params.numHiddenNodes; subpop++) {
 						// Within each subpopulation, rank the genotypes by fitness
@@ -227,6 +227,16 @@ public class ESPEvolution {
 					+ " captures, " + testCaptureCount + "/"
 					+ params.rootOfNumTests * params.rootOfNumTests
 					+ " test score, " + env.numRuns + " evaluations.");
+				
+				System.out.print("Fitnesses:");
+				for(Vector<Genotype> hiddenNodes : mostSuccessfulGenotypes){
+					double avgFitness = 0;
+					for(Genotype genotype : hiddenNodes)
+						avgFitness += genotype.getFitness();
+					avgFitness = avgFitness / params.numHiddenNodes;
+					System.out.print(" "+avgFitness);
+				}
+				System.out.println();
 			}
 			else{
 				TrialResult result = trial(testPredatorPieces, preyPieces, env, params.rootOfNumTests * params.rootOfNumTests, params);
@@ -338,9 +348,6 @@ public class ESPEvolution {
 												}
 											}
 										}
-
-										System.out.println(migrantCount
-												+ " migrations done");
 									} else {
 										// NB: Note the change to the spraying
 										// method.
@@ -368,16 +375,11 @@ public class ESPEvolution {
 										}
 									}
 								}
-
-								System.out.println(migrantCount
-										+ " migrations done");
 							}
 						}
 					} else {
 						for (int i = 0; i < params.numPredators; i++) {
 							for (int j = 0; j < params.numPredators; j++) {
-								System.out.println("Migrating " + i + " to "
-										+ j);
 								agentPopulations.get(i).sendMigrants(
 										agentPopulations.get(j),
 										params.migrationNumMigrants);
@@ -394,7 +396,7 @@ public class ESPEvolution {
 				//the same subpopulation doesnt get used for cross over twice
 				Vector<ESPSubPopulation> usedSubPops = new Vector<ESPSubPopulation>();
 				
-				if(gen % params.crossoverGenInterval == 0 && gen >= params.crossoverFirstGen){
+				if(gen % params.interPopCrossoverGenInterval == 0 && gen >= params.crossoverFirstGen){
 					int crossovercount = 0;
 					if(params.useBehaviourDistance){
 						double[][] similarities = SocialEntropyBehaviourMeasurement.measureSimilarity(
@@ -427,20 +429,28 @@ public class ESPEvolution {
 												Collections.sort(genotypesJ);
 												Collections.reverse(genotypesJ);
 												
-												int replacementIndex = params.subPopulationSize - 1;
+												int lastElementIndex = params.subPopulationSize - 1;
 												int numReplacements = (int)Math.round(params.crossoverPopulationPercentage * params.subPopulationSize);
+												double childFitnessI = genotypesI.get(numReplacements).getFitness();
+												double childFitnessJ = genotypesJ.get(numReplacements).getFitness();
 												
+												//Insert children starting from the index after the elite portion
+												//Give them fitness so that they fall just outside the elite portion
+												//so that they do not get used for crossover but will not be overridden
+												//if the subpop is used for another crossover
 												for(int k=0; k < numReplacements; k++){
 													Genotype parentI = genotypesI.get(k);
 													Genotype parentJ = genotypesJ.get(k);
 													Genotype child = Genotype.crossover(parentI, parentJ);
-													child.setFitness((parentI.getFitness() + parentJ.getFitness())/2);
+													Genotype clone = child.clone();
+													child.setFitness(childFitnessI);
+													clone.setFitness(childFitnessJ);
 													
-													genotypesI.remove(replacementIndex);
-													genotypesJ.remove(replacementIndex);
-													genotypesI.add(replacementIndex, child);
-													genotypesJ.add(replacementIndex, child.clone());
-													replacementIndex--;
+													genotypesI.remove(lastElementIndex);
+													genotypesJ.remove(lastElementIndex);
+													genotypesI.add(numReplacements, child);
+													genotypesJ.add(numReplacements, clone);
+//													replacementIndex--;
 												}
 											}
 										}
@@ -474,20 +484,28 @@ public class ESPEvolution {
 											Collections.sort(genotypesJ);
 											Collections.reverse(genotypesJ);
 											
-											int replacementIndex = params.subPopulationSize - 1;
+											int lastElementIndex = params.subPopulationSize - 1;
 											int numReplacements = (int)Math.round(params.crossoverPopulationPercentage * params.subPopulationSize);
+											double childFitnessI = genotypesI.get(numReplacements).getFitness();
+											double childFitnessJ = genotypesJ.get(numReplacements).getFitness();
 											
+											//Insert children starting from the index after the elite portion
+											//Give them fitness so that they fall just outside the elite portion
+											//so that they do not get used for crossover but will not be overridden
+											//if the subpop is used for another crossover
 											for(int k=0; k < numReplacements; k++){
 												Genotype parentI = genotypesI.get(k);
 												Genotype parentJ = genotypesJ.get(k);
 												Genotype child = Genotype.crossover(parentI, parentJ);
-												child.setFitness((parentI.getFitness() + parentJ.getFitness())/2);
+												Genotype clone = child.clone();
+												child.setFitness(childFitnessI);
+												clone.setFitness(childFitnessJ);
 												
-												genotypesI.remove(replacementIndex);
-												genotypesJ.remove(replacementIndex);
-												genotypesI.add(replacementIndex, child);
-												genotypesJ.add(replacementIndex, child.clone());
-												replacementIndex--;
+												genotypesI.remove(lastElementIndex);
+												genotypesJ.remove(lastElementIndex);
+												genotypesI.add(numReplacements, child);
+												genotypesJ.add(numReplacements, clone);
+//												lastElementIndex--;
 											}
 										}
 									}
@@ -598,8 +616,7 @@ public class ESPEvolution {
 			}
 		}
 		for (int i = 0; i < params.numPredators; i++)
-			avgEvalFitnesses[i] = avgEvalFitnesses[i]
-					/ params.evaluationsPerTrial;
+			avgEvalFitnesses[i] = avgEvalFitnesses[i] / evaluations;
 
 		return new TrialResult(avgEvalFitnesses, captureCount, 0);
 	}
