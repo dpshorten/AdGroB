@@ -1,0 +1,12 @@
+\contentsline {table}{\numberline {1}{\ignorespaces CPU time in seconds required to find a successful network when starting with centered cart and pole. Copied from Moriarty and Mikkulainen \cite {Moriarty1996}.}}{7}
+\contentsline {table}{\numberline {2}{\ignorespaces CPU time in seconds required to find a successful network when staring with random cart and pole positions and random initial velocities. Copied from Moriarty and Mikkulainen \cite {Moriarty1996}.}}{7}
+\contentsline {table}{\numberline {3}{\ignorespaces Performance of ESP compared to other NE methods on the single-pole balancing problem over 50 simulations. Copied from Gomez and Mikkulainen \cite {Gomez1997}.}}{9}
+\contentsline {table}{\numberline {4}{\ignorespaces Comparison of central controller to autonomous controllers. Copied from Yong and Mikkulainen \cite {Yong2001}.}}{12}
+\contentsline {table}{\numberline {5}{\ignorespaces Comparison of autonomous controllers with and without communication. Copied from Yong and Mikkulainen \cite {Yong2001}.}}{12}
+\contentsline {table}{\numberline {6}{\ignorespaces Generations until convergence using inter-population crossover with a sharing interval of 4 generations.}}{21}
+\contentsline {table}{\numberline {7}{\ignorespaces Generations until convergence using migration with a sharing interval of 4 generations.}}{21}
+\contentsline {table}{\numberline {8}{\ignorespaces Generations until convergence using inter-population crossover with a sharing interval of 10 generations.}}{21}
+\contentsline {table}{\numberline {9}{\ignorespaces Generations until convergence using migration with a sharing interval of 10 generations.}}{22}
+\contentsline {table}{\numberline {10}{\ignorespaces Comparison of methods that used a sharing interval of 4 generations with methods that used a sharing interval of 10 generations. Note that the average number of generations required for convergence for methods that used 10 generation sharing intervals was lower in every case than the corresponding methods that used 4 generation intervals.}}{23}
+\contentsline {table}{\numberline {11}{\ignorespaces Generations until convergence with a sharing interval of 4 generations.}}{28}
+\contentsline {table}{\numberline {12}{\ignorespaces Generations until convergence with a sharing interval of 10 generations.}}{29}

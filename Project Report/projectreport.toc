@@ -1,0 +1,21 @@
+\contentsline {section}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {2}Background}{2}
+\contentsline {subsection}{\numberline {2.1}Neuro-Evolution}{2}
+\contentsline {subsubsection}{\numberline {2.1.1}Direct Representations}{3}
+\contentsline {subsubsection}{\numberline {2.1.2}Developmental Representations}{4}
+\contentsline {subsection}{\numberline {2.2}SANE, ESP and Multi-Agent ESP}{5}
+\contentsline {subsubsection}{\numberline {2.2.1}SANE}{5}
+\contentsline {subsubsection}{\numberline {2.2.2}ESP}{7}
+\contentsline {subsubsection}{\numberline {2.2.3}Multi-Agent ESP}{10}
+\contentsline {subsection}{\numberline {2.3}Metrics}{12}
+\contentsline {subsubsection}{\numberline {2.3.1}Generic Metrics}{13}
+\contentsline {subsubsection}{\numberline {2.3.2}Non-Generic Metrics}{14}
+\contentsline {subsubsection}{\numberline {2.3.3}Comparisons of Metrics}{15}
+\contentsline {section}{\numberline {3}Method}{16}
+\contentsline {subsection}{\numberline {3.1}Simulation Environment}{16}
+\contentsline {subsection}{\numberline {3.2}Neural Network Specification}{17}
+\contentsline {subsection}{\numberline {3.3}ESP Implementation}{18}
+\contentsline {subsection}{\numberline {3.4}Experiment Framework}{20}
+\contentsline {section}{\numberline {4}Results}{20}
+\contentsline {section}{\numberline {5}Discussion}{23}
+\contentsline {section}{\numberline {6}Conclusion}{24}
