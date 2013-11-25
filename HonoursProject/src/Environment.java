@@ -17,6 +17,7 @@ public class Environment {
 	private double preyTurnIncrement = 1;
 	
 	private int numPredators = 3;
+	private int numPrey = 2;
 
 	Vector<Piece> predators = new Vector<Piece>();
 	Vector<Piece> prey = new Vector<Piece>();
@@ -40,17 +41,18 @@ public class Environment {
 	}
 	
 	public Environment(int size, double aPreyMovesMultiplier){
-		this(size, aPreyMovesMultiplier, 3);
+		this(size, aPreyMovesMultiplier, 3, 2);
 	}
 	
 
-	public Environment(int size, double aPreyMovesMultiplier, int aNumPredators) {
+	public Environment(int size, double aPreyMovesMultiplier, int aNumPredators, int aNumPrey) {
 		boardSize = size;
 		preyMovesMultiplier = aPreyMovesMultiplier;
 		preyTurnIncrement = 1/preyMovesMultiplier;
 		maxMoves = (int) Math.round(8 * boardSize);
 		board = new int[boardSize][boardSize];
 		numPredators = aNumPredators;
+		numPrey = aNumPrey;
 	}
 
 	private void clearBoard() {
@@ -153,12 +155,9 @@ public class Environment {
 			initialDistancesFromPrey.add(minDist);
 		}
 		
-		double preyTurnCounter = 0;
 		int preyCaught = 0;
 		int i = 0;
 		for (i = 0; i < maxMoves; i++) {
-			
-			//System.out.println("Computing move: " + i);
 			
 			Piece poppedPiece = pieces.remove(0);
 			// Removes current piece from the board until position is updated.			
@@ -168,11 +167,11 @@ public class Environment {
 				if(poppedPiece.isPrey) {
 					//System.out.println("Prey popped");
 					//System.out.println("counters " + i + " " + preyTurnCounter);
-					while((numPredators + 1) * preyTurnCounter < i) {
+					while((numPredators + numPrey) * poppedPiece.getTurnCounter() < i) {
 						//System.out.println("Moving Prey");
 						poppedPiece.makeMove();
 						//System.out.println("Prey Moved : " + poppedPiece.getPositionX() + "  " + poppedPiece.getPositionY());
-						preyTurnCounter += preyTurnIncrement;
+						poppedPiece.addToTurnCounter(preyTurnIncrement);;
 					}
 				} else {
 					

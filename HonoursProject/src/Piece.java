@@ -4,6 +4,7 @@ public class Piece
 	Point pos;
 	boolean isPrey;
 	Behaviour behaviour;
+	double turnCounter;
 	
 	public Piece(int x, int y, boolean prey, Environment env, Behaviour behaviour)
 	{
@@ -11,6 +12,7 @@ public class Piece
 		isPrey = prey;
 		this.env = env;
 		this.behaviour = behaviour;
+		this.turnCounter = 0;
 	}
 	
 	public Piece(Point pos, boolean prey, Environment env, Behaviour behaviour)
@@ -19,6 +21,7 @@ public class Piece
 		isPrey = prey;
 		this.env = env;
 		this.behaviour = behaviour;
+		this.turnCounter = 0;
 	}
 	
 	Point getPosition(){
@@ -44,6 +47,14 @@ public class Piece
 	{
 		pos.x = newX;
 		pos.y = newY;
+	}
+	
+	public double getTurnCounter() {
+		return turnCounter;
+	}
+	
+	public void addToTurnCounter(double addedValue) {
+		turnCounter += addedValue;
 	}
 
 	void makeMove() throws Exception
