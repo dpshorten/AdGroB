@@ -10,6 +10,7 @@ public class EvolutionParameters {
 	
 	public static int numHiddenNodes = 10;
 	public static int numPredators = 3;
+	public static int numPrey = 2;
 	public static int subPopulationSize = 100;
 	// Each trial set runs a number of trials equal to the sub-population size.
 	public static int trialSetsPerGeneration = 10; // 10
@@ -33,7 +34,7 @@ public class EvolutionParameters {
 	public static double ratioCapturesForNextEpoch = 0.8;
 	public static double ratioCapturesForEnd = 0.8;
 	public static int ratioHitsBeforeNextEpoch = 2;
-	public static double[] preySpeeds = { 0.1, 1};
+	public static double[] preySpeeds = { 0.1, 0.4, 0.6, 0.8, 1.0};
 	public static Integer[] predatorPositions = { 1, 1, 1, 1, 1, 1};
 	public static final int FinalTestNumEvaluationsToRun = 100;
 	

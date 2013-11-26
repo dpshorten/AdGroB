@@ -17,7 +17,7 @@ public class Environment {
 	private double preyTurnIncrement = 1;
 	
 	private int numPredators = 3;
-	private int numPrey = 2;
+	private int numPrey = 1;
 
 	Vector<Piece> predators = new Vector<Piece>();
 	Vector<Piece> prey = new Vector<Piece>();
@@ -171,7 +171,7 @@ public class Environment {
 						//System.out.println("Moving Prey");
 						poppedPiece.makeMove();
 						//System.out.println("Prey Moved : " + poppedPiece.getPositionX() + "  " + poppedPiece.getPositionY());
-						poppedPiece.addToTurnCounter(preyTurnIncrement);;
+						poppedPiece.addToTurnCounter(preyTurnIncrement);
 					}
 				} else {
 					

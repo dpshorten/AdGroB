@@ -22,7 +22,7 @@ LINE_COLOR = (0, 0, 255)
 PREY_COLOR = (0, 0, 255)
 PREDATOR_COLOR = (255, 0, 0)
 
-inputFile = open("../log1.txt")
+inputFile = open("../log.txt")
 
 # Find out the length of the square grid.
 length = 0;

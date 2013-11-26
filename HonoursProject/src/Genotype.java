@@ -25,7 +25,7 @@ public class Genotype implements Comparable<Genotype>
 		inputWeights = new Vector<Double>();
 		outputWeights = new Vector<Double>();
 		Random random = new Random();
-		for(int i = 0; i < 2; i++) {
+		for(int i = 0; i < 10; i++) {
 			inputWeights.add(new Double(cauchy(1, random.nextDouble())));
 		}
 		for(int i = 0; i < 5; i++) {

@@ -8,7 +8,8 @@ public class SimulationsOfSavedANNs {
 		int[] predatorPositions = { 30, 30, boardSize - 30, 30, 30, boardSize - 30, boardSize - 30, boardSize - 30};
 		
 		Random random = new Random();
-		Environment env = new Environment(boardSize, 1.0, 3);
+		EvolutionParameters params = new EvolutionParameters();
+		Environment env = new Environment(boardSize, 1.0, 3, params.numPrey);
 		
 		final int simulations = 10;
 		for (int i = 0; i < simulations; i++) {

@@ -8,7 +8,7 @@ public class ESPEvolution {
 	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
 	public static void main(String[] args) {
-		run(false, false, false, true);
+		run(false, false, false, false);
 	}
 
 	public static TrialResult run(boolean doMigration) {
@@ -55,14 +55,16 @@ public class ESPEvolution {
 			}
 
 			env = new Environment(params.boardSize,
-					params.preySpeeds[epochNumber], params.numPredators);
+					params.preySpeeds[epochNumber], params.numPredators, params.numPrey);
 
 			Vector<Piece> preyPieces = new Vector<Piece>();
 			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(
 					params.boardSize, 1);
-			int preyX = random.nextInt(params.boardSize);
-			int preyY = random.nextInt(params.boardSize);
-			preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
+			for(int i = 0; i < params.numPrey; i++) {
+				int preyX = random.nextInt(params.boardSize);
+				int preyY = random.nextInt(params.boardSize);
+				preyPieces.add(new Piece(preyX, preyY, true, env, runAway, i));
+			}
 
 			// For each generation, a number of trials are run to get fitness
 			// values for the genotypes
@@ -96,7 +98,7 @@ public class ESPEvolution {
 						predatorPieces.add(new Piece(
 								params.predatorPositions[2 * pred],
 								params.predatorPositions[2 * pred + 1], false,
-								env, annBehaviour));
+								env, annBehaviour, 0));
 						usedGenotypes.add(hiddenNodes);
 					}
 
@@ -203,7 +205,7 @@ public class ESPEvolution {
 				testPredatorPieces.add(new Piece(
 						params.predatorPositions[2 * pred],
 						params.predatorPositions[2 * pred + 1], false, env,
-						annBehaviour));
+						annBehaviour, 0));
 			}
 			// Run the n instance test.
 			int testCaptureCount = testOnIncrementedPositions(
@@ -211,16 +213,16 @@ public class ESPEvolution {
 
 			System.out.println("Generation " + gen + " done: " + captureCount
 					+ " captures, " + testCaptureCount + "/"
-					+ params.rootOfNumTests * params.rootOfNumTests
+					+ params.numPrey * params.rootOfNumTests * params.rootOfNumTests
 					+ " test score, " + env.numRuns + " evaluations.");
 
 			// Check if we can move onto the next epoch (because the population
 			// capture rate is high enough).
 			if (epochNumber >= (params.preySpeeds.length - 1)
-					& testCaptureCount / Math.pow(params.rootOfNumTests, 2) > params.ratioCapturesForEnd) {
+					& testCaptureCount / (params.numPrey * Math.pow(params.rootOfNumTests, 2)) > params.ratioCapturesForEnd) {
 				break;
 			} else if (captureCount
-					/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch
+					/ ((double) params.numPrey * params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch
 					& epochNumber < (params.preySpeeds.length - 1)) {
 				epochNumber++;
 				System.out.println("Epoch Change to number "
@@ -253,7 +255,7 @@ public class ESPEvolution {
 						testPieces.add(new Piece(
 								params.predatorPositions[2 * j],
 								params.predatorPositions[2 * j + 1], false,
-								env, behaviour));
+								env, behaviour, 0));
 						j++;
 					}
 					int testResult = testOnIncrementedPositions(
@@ -267,7 +269,7 @@ public class ESPEvolution {
 				}
 				// If the fittest is fit enough, the epoch can be changed.
 				if (numCapturesOfMostSuccessfulPieces
-						/ Math.pow(params.rootOfNumTestsDelta, 2) > params.ratioCapturesForNextEpoch) {
+						/ (params.numPrey * Math.pow(params.rootOfNumTestsDelta, 2)) > params.ratioCapturesForNextEpoch) {
 					forceBurstMutation = true;
 					epochNumber++;
 					System.out.println("Epoch Change to number "
@@ -279,8 +281,8 @@ public class ESPEvolution {
 				}
 				// If the fittest is much fitter than the population, burst
 				// mutation can still be applied.
-				if ((numCapturesOfMostSuccessfulPieces / Math.pow(
-						params.rootOfNumTestsDelta, 2)) > (captureCount
+				if ((numCapturesOfMostSuccessfulPieces / (params.numPrey * Math.pow(params.rootOfNumTestsDelta, 2)))
+						> (captureCount
 						/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) + params.ratioDifference)
 						|| forceBurstMutation) {
 					for (int i = 0; i < params.numPredators; i++) {
@@ -497,7 +499,7 @@ public class ESPEvolution {
 			fittestPredatorPieces.add(new Piece(
 					params.predatorPositions[2 * j],
 					params.predatorPositions[2 * j + 1], false, env,
-					annBehaviour));
+					annBehaviour, 0));
 			j += 1;
 		}
 
@@ -507,7 +509,7 @@ public class ESPEvolution {
 				params.boardSize, 1);
 		int preyX = random.nextInt(params.boardSize);
 		int preyY = random.nextInt(params.boardSize);
-		preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
+		preyPieces.add(new Piece(preyX, preyY, true, env, runAway, 0));
 		TrialResult finalResult = trial(fittestPredatorPieces, preyPieces, env,
 				params.FinalTestNumEvaluationsToRun, params);
 		finalResult.generations = gen;
@@ -527,6 +529,7 @@ public class ESPEvolution {
 			// Randomize the prey positions so that they are not the 
 			// same as the previous evaluation.
 			for (Piece prey : preyPieces) {
+				prey.resetTurnCounter();
 				prey.setPosition(random.nextInt(params.boardSize),
 						random.nextInt(params.boardSize));
 			}
@@ -541,20 +544,9 @@ public class ESPEvolution {
 			SimulationResult result = env.run(false, false);
 			captureCount += result.preyCaught;
 			for (int i = 0; i < params.numPredators; i++) {
-				if (result.preyCaught == 0) {
-					/*
-					 * double fitness = result.initialDistancesFromPrey
-					 * .elementAt(i) -
-					 * result.finalDistancesFromPrey.elementAt(i);
-					 */
-					double fitness = params.boardSize
-							- result.finalDistancesFromPrey.elementAt(i);
-					avgEvalFitnesses[i] += fitness;
-				} else {
 					// avgEvalFitnesses[i] += 2 * boardSize;
-					avgEvalFitnesses[i] += 2 * params.boardSize
+				avgEvalFitnesses[i] += 2 * params.boardSize * result.preyCaught
 							- result.finalDistancesFromPrey.elementAt(i);
-				}
 			}
 		}
 		for (int i = 0; i < params.numPredators; i++)
@@ -576,18 +568,20 @@ public class ESPEvolution {
 				testPreyPieces.add(new Piece((int) Math.round((preyRow + 0.5)
 						* preyPlacementIncrememnt), (int) Math
 						.round((preyCol + 0.5) * preyPlacementIncrememnt),
-						true, env, preyBehaviour));
+						true, env, preyBehaviour, 0));
+				testPreyPieces.add(new Piece(80, 20, true, env, preyBehaviour, 1));
 				/*
 				 * I am not sure why there is the need to reset the position of
 				 * the pieces (as in the trial() method), but it makes things
 				 * work. - David
 				 */
-				for (Piece prey : testPreyPieces)
-					prey.setPosition(
-							(int) Math.round((preyRow + 0.5)
-									* preyPlacementIncrememnt),
-							(int) Math.round((preyCol + 0.5)
-									* preyPlacementIncrememnt));
+
+				testPreyPieces.get(0).setPosition(
+						(int) Math.round((preyRow + 0.5)
+								* preyPlacementIncrememnt),
+								(int) Math.round((preyCol + 0.5)
+										* preyPlacementIncrememnt));
+				testPreyPieces.get(1).setPosition(80, 20);
 				int k = 0;
 				for (Piece predator : testPredatorPieces) {
 					predator.setPosition(params.predatorPositions[2 * k],

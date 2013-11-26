@@ -5,23 +5,26 @@ public class Piece
 	boolean isPrey;
 	Behaviour behaviour;
 	double turnCounter;
+	int ID;
 	
-	public Piece(int x, int y, boolean prey, Environment env, Behaviour behaviour)
+	public Piece(int x, int y, boolean prey, Environment env, Behaviour behaviour, int ID)
 	{
 		pos = new Point(x,y);
 		isPrey = prey;
 		this.env = env;
 		this.behaviour = behaviour;
 		this.turnCounter = 0;
+		this.ID = ID;
 	}
 	
-	public Piece(Point pos, boolean prey, Environment env, Behaviour behaviour)
+	public Piece(Point pos, boolean prey, Environment env, Behaviour behaviour, int ID)
 	{
 		this.pos = pos;
 		isPrey = prey;
 		this.env = env;
 		this.behaviour = behaviour;
 		this.turnCounter = 0;
+		this.ID = ID;
 	}
 	
 	Point getPosition(){
@@ -55,6 +58,10 @@ public class Piece
 	
 	public void addToTurnCounter(double addedValue) {
 		turnCounter += addedValue;
+	}
+	
+	public void resetTurnCounter() {
+		turnCounter = 0;
 	}
 
 	void makeMove() throws Exception
@@ -102,5 +109,13 @@ public class Piece
 		//top reached, move to bottom
 		if(pos.y < 0)
 			pos.y = env.boardSize-1;
+	}
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
 	}
 }

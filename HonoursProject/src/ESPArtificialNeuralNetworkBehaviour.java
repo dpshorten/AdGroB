@@ -3,6 +3,7 @@ import java.util.Vector;
 
 public class ESPArtificialNeuralNetworkBehaviour extends Behaviour{
 	ESPArtificialNeuralNetwork ANN;
+	private final int NUMINPUTNODES = 10;
 	
 	public ESPArtificialNeuralNetworkBehaviour(int boardsize, ESPArtificialNeuralNetwork ANN) {
 		super(boardsize);
@@ -10,16 +11,22 @@ public class ESPArtificialNeuralNetworkBehaviour extends Behaviour{
 	}
 	
 	// For now it will go for the first prey in the prey vector
-	public int getMove(Point myPos, Vector<Piece> predator, Vector<Piece> prey) {
-		Point offset = Point.getSmallestOffset(myPos, prey.get(0).getPosition(), boardSize);
-		offsetHistory.elementAt(offset.x + halfBoardSize).set(offset.y + halfBoardSize, 
-				offsetHistory.elementAt(offset.x + halfBoardSize).elementAt(offset.y + halfBoardSize) + 1);
+	public int getMove(Point myPos, Vector<Piece> predatorPieces, Vector<Piece> preyPieces) {
+		Vector<Integer> offsets = new Vector<Integer>();
+		for(int i = 0; i < 10; i++) {
+			offsets.add(0);
+		}
+		for(Piece preyPiece : preyPieces) {
+			Point offset = Point.getSmallestOffset(myPos, preyPiece.getPosition(), boardSize);
+			offsets.set(2*preyPiece.getID(), offset.x);
+			offsets.set(2*preyPiece.getID() + 1, offset.y);
+		}
 		totalNumberOfDecisions++;
-		return getIndexOfMaximumActivation(offset.x, offset.y);
+		return getIndexOfMaximumActivation(offsets);
 	}
 	
-	public int getIndexOfMaximumActivation(int xOffset, int yOffset) {
-		double[] activations = ANN.run((double)xOffset, (double)yOffset);
+	public int getIndexOfMaximumActivation(Vector<Integer> offsets) {
+		double[] activations = ANN.run(offsets);
 		int indexOfMaximumActivation = 0;
 		double currentMax = 0;
 		for(int i = 0; i < activations.length; i++) {
