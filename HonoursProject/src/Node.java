@@ -9,7 +9,7 @@ public abstract class Node {
 	public Node(int number) {
 		this.number = number;
 		this.inputs = new Vector<Double>();
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 16; i++) {
 			inputs.add(new Double(0));
 		}
 	}

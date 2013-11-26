@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 public class ESPArtificialNeuralNetwork {
-	private final int NUMBERINPUTNODES = 10;
+	private final int NUMBERINPUTNODES = 16;
 	private final int NUMBEROUTPUTNODES = 5;
 	private Vector<InputNode> inputNodes;
 	private Vector<HiddenNode> hiddenNodes;

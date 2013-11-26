@@ -15,6 +15,7 @@ public class Genotype implements Comparable<Genotype>
 	 * 4 - Stay
 	 */
 	private final int WEIGHT_MUTATIONS_PER_GENOTYPE_MUTATION = 1;
+	private final int NUM_INPUT_NODES = 16;
 	private Vector<Double> inputWeights;
 	private Vector<Double> outputWeights;
 	private double fitness = 0;
@@ -25,7 +26,7 @@ public class Genotype implements Comparable<Genotype>
 		inputWeights = new Vector<Double>();
 		outputWeights = new Vector<Double>();
 		Random random = new Random();
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < NUM_INPUT_NODES; i++) {
 			inputWeights.add(new Double(cauchy(1, random.nextDouble())));
 		}
 		for(int i = 0; i < 5; i++) {

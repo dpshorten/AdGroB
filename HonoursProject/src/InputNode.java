@@ -26,6 +26,7 @@ public class InputNode extends Node {
 	}
 	
 	public void setExteriorInput(double input) {
-		exteriorInput = input;
+		// NEATEN THIS
+		exteriorInput = input/((double)100);
 	}
 }

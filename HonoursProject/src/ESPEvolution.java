@@ -98,7 +98,7 @@ public class ESPEvolution {
 						predatorPieces.add(new Piece(
 								params.predatorPositions[2 * pred],
 								params.predatorPositions[2 * pred + 1], false,
-								env, annBehaviour, 0));
+								env, annBehaviour, pred));
 						usedGenotypes.add(hiddenNodes);
 					}
 
@@ -205,7 +205,7 @@ public class ESPEvolution {
 				testPredatorPieces.add(new Piece(
 						params.predatorPositions[2 * pred],
 						params.predatorPositions[2 * pred + 1], false, env,
-						annBehaviour, 0));
+						annBehaviour, pred));
 			}
 			// Run the n instance test.
 			int testCaptureCount = testOnIncrementedPositions(
@@ -255,7 +255,7 @@ public class ESPEvolution {
 						testPieces.add(new Piece(
 								params.predatorPositions[2 * j],
 								params.predatorPositions[2 * j + 1], false,
-								env, behaviour, 0));
+								env, behaviour, j));
 						j++;
 					}
 					int testResult = testOnIncrementedPositions(
@@ -471,7 +471,7 @@ public class ESPEvolution {
 					System.out.println("Burst Mutation!!");
 					for (ESPPopulation pop : agentPopulations) {
 						if (captureCount
-								/ ((double) ((params.trialsPerGeneration * params.evaluationsPerTrial))) < params.burstMutationEarlyLateFitnessCutoff) {
+								/ ((double) ((params.numPrey * params.trialsPerGeneration * params.evaluationsPerTrial))) < params.burstMutationEarlyLateFitnessCutoff) {
 							pop.runBurstMutation(params.earlyBurstMutationAmountStdDev);
 						} else {
 							pop.runBurstMutation(params.lateBurstMutationAmountStdDev);
@@ -581,7 +581,7 @@ public class ESPEvolution {
 								* preyPlacementIncrememnt),
 								(int) Math.round((preyCol + 0.5)
 										* preyPlacementIncrememnt));
-				testPreyPieces.get(1).setPosition(80, 20);
+				//testPreyPieces.get(1).setPosition(80, 20);
 				int k = 0;
 				for (Piece predator : testPredatorPieces) {
 					predator.setPosition(params.predatorPositions[2 * k],
