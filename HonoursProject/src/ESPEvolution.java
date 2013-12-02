@@ -5,17 +5,10 @@ import java.util.Random;
 @SuppressWarnings("static-access")
 public class ESPEvolution {
 
-	static Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
+	Vector<ESPPopulation> agentPopulations = new Vector<ESPPopulation>();
 
-	public static void main(String[] args) {
-		run(false, false, false, true);
-	}
 
-	public static TrialResult run(boolean doMigration) {
-		return run(doMigration, true, true, true);
-	}
-
-	public static TrialResult run(boolean doMigration,
+	public TrialResult run(boolean doMigration,
 			boolean useBehaviourDistance, boolean useGenotypeDistance,
 			boolean doDavidsDeltaThings){
 		EvolutionParameters params = new EvolutionParameters();
@@ -25,11 +18,6 @@ public class ESPEvolution {
 		params.useGenotypeDistance = useGenotypeDistance;
 		params.doDavidsDeltaThings = doDavidsDeltaThings;
 		
-		return run(params);
-	}
-	
-	public static TrialResult run(EvolutionParameters params) {
-
 		// refresh the agent populations vector
 		agentPopulations = new Vector<ESPPopulation>();
 
@@ -266,17 +254,17 @@ public class ESPEvolution {
 					}
 				}
 				// If the fittest is fit enough, the epoch can be changed.
-				if (numCapturesOfMostSuccessfulPieces
+				/*if (numCapturesOfMostSuccessfulPieces
 						/ Math.pow(params.rootOfNumTestsDelta, 2) > params.ratioCapturesForNextEpoch) {
 					forceBurstMutation = true;
 					epochNumber++;
 					System.out.println("Epoch Change to number "
-							+ (epochNumber + 1));
+							+ (epochNumber + 1) + " with fittest " + numCapturesOfMostSuccessfulPieces);
 					burstMutationTicker = params.burstMutationWaitAfterEpochChange;
 					if (epochNumber >= params.preySpeeds.length) {
 						break;
 					}
-				}
+				}*/
 				// If the fittest is much fitter than the population, burst
 				// mutation can still be applied.
 				if ((numCapturesOfMostSuccessfulPieces / Math.pow(
@@ -510,7 +498,7 @@ public class ESPEvolution {
 		preyPieces.add(new Piece(preyX, preyY, true, env, runAway));
 		TrialResult finalResult = trial(fittestPredatorPieces, preyPieces, env,
 				params.FinalTestNumEvaluationsToRun, params);
-		finalResult.generations = gen;
+		finalResult.generations = gen + 1;
 
 		return finalResult;
 	}

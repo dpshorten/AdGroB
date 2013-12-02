@@ -34,7 +34,7 @@ public class EvolutionParameters {
 	public static double ratioCapturesForEnd = 0.8;
 	public static int ratioHitsBeforeNextEpoch = 2;
 	public static double[] preySpeeds = { 0.1, 1};
-	public static Integer[] predatorPositions = { 1, 1, 1, 1, 1, 1};
+	public static Integer[] predatorPositions = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 	public static final int FinalTestNumEvaluationsToRun = 100;
 	
 	// Migration

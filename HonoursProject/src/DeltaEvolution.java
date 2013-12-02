@@ -5,7 +5,7 @@ import java.util.Vector;
 @SuppressWarnings("static-access")
 public class DeltaEvolution {
 
-	static EvolutionParameters params = new EvolutionParameters();
+	EvolutionParameters params = new EvolutionParameters();
 	
 	static final double[] preySpeeds = { 1 };
 	public static final int deltaSubPopulationSize = 100;
@@ -31,11 +31,7 @@ public class DeltaEvolution {
 	public static final int bigBurstMutationWaitBeforeRepeat = 4;
 	public static final double bigStdDev = 0.6;
 
-	public static void main(String[] args) {
-		run();
-	}
-
-	public static int run() {
+	public int run() {
 
 		int bigBurstMutationTicker = bigBurstMutationLookBackDistance;
 
@@ -172,7 +168,7 @@ public class DeltaEvolution {
 		return gen + 1;
 	}
 
-	public static Vector<PredatorGroup> selectFromPredatorGroups(
+	public Vector<PredatorGroup> selectFromPredatorGroups(
 			int rootOfNumTests, Vector<PredatorGroup> inputGroups,
 			Environment env, Behaviour preyBehaviour, int numToSelect) {
 		for (PredatorGroup group : inputGroups) {
