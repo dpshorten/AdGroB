@@ -1,5 +1,5 @@
 
-public class GeNEThread extends AlgorithThread{
+public class GeNEThread extends AlgorithmThread{
 	public GeNEThread() {
 		result = 0;
 	}

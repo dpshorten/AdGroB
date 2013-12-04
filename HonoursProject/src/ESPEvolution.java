@@ -197,10 +197,10 @@ public class ESPEvolution {
 			int testCaptureCount = testOnIncrementedPositions(
 					params.rootOfNumTests, env, testPredatorPieces, runAway, params);
 
-			System.out.println("Generation " + gen + " done: " + captureCount
+			/*System.out.println("Generation " + gen + " done: " + captureCount
 					+ " captures, " + testCaptureCount + "/"
 					+ params.rootOfNumTests * params.rootOfNumTests
-					+ " test score, " + env.numRuns + " evaluations.");
+					+ " test score, " + env.numRuns + " evaluations.");*/
 
 			// Check if we can move onto the next epoch (because the population
 			// capture rate is high enough).
@@ -211,8 +211,8 @@ public class ESPEvolution {
 					/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch
 					& epochNumber < (params.preySpeeds.length - 1)) {
 				epochNumber++;
-				System.out.println("Epoch Change to number "
-						+ (epochNumber + 1));
+				/*System.out.println("Epoch Change to number "
+						+ (epochNumber + 1));*/
 				burstMutationTicker = params.burstMutationWaitAfterEpochChange;
 			}
 			// If we the epoch cannot be changed, the delta things can be done.
@@ -276,8 +276,8 @@ public class ESPEvolution {
 								params.subPopulationSize,
 								mostSuccessfulGenotypes.get(i), params.stdDev));
 					}
-					System.out.println("Delta Done : "
-							+ numCapturesOfMostSuccessfulPieces);
+					/*System.out.println("Delta Done : "
+							+ numCapturesOfMostSuccessfulPieces);*/
 				}
 			}
 
@@ -306,8 +306,8 @@ public class ESPEvolution {
 											}
 										}
 
-										System.out.println(migrantCount
-												+ " migrations done");
+										/*System.out.println(migrantCount
+												+ " migrations done");*/
 									} else {
 										// NB: Note the change to the spraying
 										// method.
@@ -337,15 +337,15 @@ public class ESPEvolution {
 									}
 								}
 
-								System.out.println(migrantCount
-										+ " migrations done");
+								/*System.out.println(migrantCount
+										+ " migrations done");*/
 							}
 						}
 					} else {
 						for (int i = 0; i < params.numPredators; i++) {
 							for (int j = 0; j < params.numPredators; j++) {
-								System.out.println("Migrating " + i + " to "
-										+ j);
+								/*System.out.println("Migrating " + i + " to "
+										+ j);*/
 								agentPopulations.get(i).sendMigrants(
 										agentPopulations.get(j),
 										params.migrationNumMigrants);
@@ -365,7 +365,7 @@ public class ESPEvolution {
 						
 						for (int i = 0; i < params.numPredators; i++) {
 							for (int j = i + 1; j < params.numPredators; j++) {
-								System.out.println("Behaviour distance "+i+":"+j+"= "+similarities[i][j]);
+								//System.out.println("Behaviour distance "+i+":"+j+"= "+similarities[i][j]);
 								if (similarities[i][j] < params.crossoverBehaviourSimilarityThreshhold) {
 									for(ESPSubPopulation subPopI : agentPopulations.get(i).subPopulations){
 										for(ESPSubPopulation subPopJ : agentPopulations.get(j).subPopulations){
@@ -441,7 +441,7 @@ public class ESPEvolution {
 						}
 					}
 					
-					System.out.println("Crossover occured between "+crossovercount+" subpopulations.");
+					//System.out.println("Crossover occured between "+crossovercount+" subpopulations.");
 				}
 			}//Interpop crossover
 		
@@ -454,7 +454,7 @@ public class ESPEvolution {
 								.ceil(params.burstMutationTestRatioOfTrialsDifference
 										* params.trialsPerGeneration
 										* params.evaluationsPerTrial))))) {
-					System.out.println("Burst Mutation!!");
+					//System.out.println("Burst Mutation!!");
 					for (ESPPopulation pop : agentPopulations) {
 						if (captureCount
 								/ ((double) ((params.trialsPerGeneration * params.evaluationsPerTrial))) < params.burstMutationEarlyLateFitnessCutoff) {

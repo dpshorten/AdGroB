@@ -1,5 +1,5 @@
 
-public class ESPThread extends AlgorithThread {
+public class ESPThread extends AlgorithmThread {
 	private boolean doMigration, useBehaviourDistance, useGenotypeDistance, doDavidsDeltaThings;
 	
 	public ESPThread(boolean doMigration, boolean useBehaviourDistance,

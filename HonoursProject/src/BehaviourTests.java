@@ -10,21 +10,21 @@ public class BehaviourTests {
 		int[] OBM = new int[numRuns]; 
 		int[] GeNE = new int[numRuns];
 		
-		Vector<AlgorithThread> MAESPThreads = new Vector<AlgorithThread> ();
-		Vector<AlgorithThread> OBMThreads = new Vector<AlgorithThread> ();
-		Vector<AlgorithThread> GeNEThreads = new Vector<AlgorithThread> ();
+		Vector<AlgorithmThread> MAESPThreads = new Vector<AlgorithmThread> ();
+		Vector<AlgorithmThread> OBMThreads = new Vector<AlgorithmThread> ();
+		Vector<AlgorithmThread> GeNEThreads = new Vector<AlgorithmThread> ();
 		
 		for(int i = 0; i < numRuns; i++) {
 			
-			AlgorithThread MAESPThread = new ESPThread(false, false, false, false);
+			AlgorithmThread MAESPThread = new ESPThread(false, false, false, false);
 			MAESPThread.start();
 			MAESPThreads.add(MAESPThread);
 			
-			AlgorithThread OBMThread = new ESPThread(false, false, false, true);
+			AlgorithmThread OBMThread = new ESPThread(false, false, false, true);
 			OBMThread.start();
 			OBMThreads.add(OBMThread);
 			
-			AlgorithThread GeNEThread = new GeNEThread();
+			AlgorithmThread GeNEThread = new GeNEThread();
 			GeNEThread.start();
 			GeNEThreads.add(MAESPThread);
 		}
@@ -40,25 +40,20 @@ public class BehaviourTests {
 		}
 		for(int i = 0; i < numRuns; i++) {
 			MAESP[i] = MAESPThreads.elementAt(i).getResult();
-			OBM[i] = MAESPThreads.elementAt(i).getResult();
-			GeNE[i] = MAESPThreads.elementAt(i).getResult();			
+			OBM[i] = OBMThreads.elementAt(i).getResult();
+			GeNE[i] = GeNEThreads.elementAt(i).getResult();			
 		}
-		System.out.println("\n\nSummary\n");
-		System.out.println("MAESP");
 		for(int i = 0; i < numRuns; i++) {
-			System.out.print(MAESP[i] + " ");
+			System.out.print(MAESP[i] + ", ");
 		}
-		System.out.println("Average " + mean(MAESP));
-		System.out.println("MAESP with OBM");
+		System.out.println();
 		for(int i = 0; i < numRuns; i++) {
-			System.out.print(OBM[i] + " ");
+			System.out.print(OBM[i] + ", ");
 		}
-		System.out.println("Average " + mean(OBM));
-		System.out.println("GEANN");
+		System.out.println();
 		for(int i = 0; i < numRuns; i++) {
-			System.out.print(GeNE[i] + " ");
+			System.out.print(GeNE[i] + ", ");
 		}
-		System.out.println("Average " + mean(GeNE));
 	}
 	
 	private static double mean(int[] arr) {

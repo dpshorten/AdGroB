@@ -1,5 +1,5 @@
 
-public class AlgorithThread extends Thread {
+public class AlgorithmThread extends Thread {
 	protected int result;
 	
 	public int getResult() {

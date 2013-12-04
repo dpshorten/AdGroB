@@ -91,8 +91,8 @@ public class DeltaEvolution {
 					predatorGroups, env, runAway, 1);
 
 			double captureRatio = predatorGroups.get(0).getCaptureRatio();
-			System.out.println("Generation " + (gen + 1)
-					+ " done, best ratio: " + captureRatio + " " + env.numRuns);
+			/*System.out.println("Generation " + (gen + 1)
+					+ " done, best ratio: " + captureRatio + " " + env.numRuns);*/
 			
 			if(captureRatio > 0.6) {
 				evaluationStructureIndex = 1;
@@ -130,7 +130,7 @@ public class DeltaEvolution {
 								deltaSubPopulationSize));
 					}
 					bigBurstMutationTicker = bigBurstMutationWaitBeforeRepeat + 1;
-					System.out.println("restart!");
+					//System.out.println("restart!");
 					continue;
 				}
 			}
@@ -145,8 +145,8 @@ public class DeltaEvolution {
 				bigBurstMutationTicker = bigBurstMutationWaitBeforeRepeat + 1;
 				evaluationStructureIndex = 0;
 				epochNumber++;
-				System.out.println("Epoch Change to number "
-						+ (epochNumber + 1));
+				/*System.out.println("Epoch Change to number "
+						+ (epochNumber + 1));*/
 				if (epochNumber >= preySpeeds.length) {
 					if (predatorGroups.get(0).getMostRecentCaptureRatio() > params.ratioCapturesForEnd) {
 						bestPredatorGroup = predatorGroups.get(0);
