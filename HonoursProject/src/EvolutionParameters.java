@@ -20,11 +20,11 @@ public class EvolutionParameters {
 	public static double mutationProbability = 0.4;
 	public static double earlyMutationStdDev = 0.5;
 	public static double lateMutationStdDev = 0.2;
-	public static double earlyBurstMutationAmountStdDev = 0.3;
+	public static double earlyBurstMutationAmountStdDev = 0.5;
 	public static double lateBurstMutationAmountStdDev = 0.05;
 	public static double burstMutationEarlyLateFitnessCutoff = 0.9;
-	public static int burstMutationWaitBeforeRepeat = 20;
-	public static int burstMutationWaitBeforeFirst = 10;
+	public static int burstMutationWaitBeforeRepeat = 10;
+	public static int burstMutationWaitBeforeFirst = 8;
 	public static int burstMutationWaitAfterMigration = 6;
 	public static int burstMutationWaitAfterEpochChange = 6;
 	public static int burstMutationTestLookBackDistance = 5;
@@ -54,9 +54,9 @@ public class EvolutionParameters {
 	public double crossoverGenotypeDistanceThreshhold = 5;
 	
 	// Variables for David's delta coding.
-	public static int genotypesPerSubPopulation = 5;
-	public static int testedPieceGroups = 100;
+	public static int genotypesPerSubPopulation = 20;
+	public static int testedPieceGroups = 20;
 	public static int rootOfNumTestsDelta = 7;
-	public static double stdDev = 0.1;
+	public static double stdDev = 0.3;
 	public static double ratioDifference = 0.0;
 }

@@ -26,7 +26,7 @@ public class BehaviourTests {
 			
 			AlgorithmThread GeNEThread = new GeNEThread();
 			GeNEThread.start();
-			GeNEThreads.add(MAESPThread);
+			GeNEThreads.add(GeNEThread);
 		}
 		for(int i = 0; i < numRuns; i++) {
 			try {
@@ -44,15 +44,15 @@ public class BehaviourTests {
 			GeNE[i] = GeNEThreads.elementAt(i).getResult();			
 		}
 		for(int i = 0; i < numRuns; i++) {
-			System.out.print(MAESP[i] + ", ");
+			System.out.print(MAESP[i] + ",");
 		}
 		System.out.println();
 		for(int i = 0; i < numRuns; i++) {
-			System.out.print(OBM[i] + ", ");
+			System.out.print(OBM[i] + ",");
 		}
 		System.out.println();
 		for(int i = 0; i < numRuns; i++) {
-			System.out.print(GeNE[i] + ", ");
+			System.out.print(GeNE[i] + ",");
 		}
 	}
 	

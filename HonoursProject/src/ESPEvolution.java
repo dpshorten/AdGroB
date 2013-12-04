@@ -195,12 +195,15 @@ public class ESPEvolution {
 			}
 			// Run the n instance test.
 			int testCaptureCount = testOnIncrementedPositions(
-					params.rootOfNumTests, env, testPredatorPieces, runAway, params);
+					params.rootOfNumTests, env, testPredatorPieces, runAway,
+					params);
 
-			/*System.out.println("Generation " + gen + " done: " + captureCount
-					+ " captures, " + testCaptureCount + "/"
-					+ params.rootOfNumTests * params.rootOfNumTests
-					+ " test score, " + env.numRuns + " evaluations.");*/
+			/*
+			 * System.out.println("Generation " + gen + " done: " + captureCount
+			 * + " captures, " + testCaptureCount + "/" + params.rootOfNumTests
+			 * * params.rootOfNumTests + " test score, " + env.numRuns +
+			 * " evaluations.");
+			 */
 
 			// Check if we can move onto the next epoch (because the population
 			// capture rate is high enough).
@@ -211,8 +214,10 @@ public class ESPEvolution {
 					/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch
 					& epochNumber < (params.preySpeeds.length - 1)) {
 				epochNumber++;
-				/*System.out.println("Epoch Change to number "
-						+ (epochNumber + 1));*/
+				/*
+				 * System.out.println("Epoch Change to number " + (epochNumber +
+				 * 1));
+				 */
 				burstMutationTicker = params.burstMutationWaitAfterEpochChange;
 			}
 			// If we the epoch cannot be changed, the delta things can be done.
@@ -253,18 +258,18 @@ public class ESPEvolution {
 						mostSuccessfulGenotypes = thisPiecesGenotypes;
 					}
 				}
-				// If the fittest is fit enough, the epoch can be changed.
-				/*if (numCapturesOfMostSuccessfulPieces
-						/ Math.pow(params.rootOfNumTestsDelta, 2) > params.ratioCapturesForNextEpoch) {
-					forceBurstMutation = true;
-					epochNumber++;
-					System.out.println("Epoch Change to number "
-							+ (epochNumber + 1) + " with fittest " + numCapturesOfMostSuccessfulPieces);
-					burstMutationTicker = params.burstMutationWaitAfterEpochChange;
-					if (epochNumber >= params.preySpeeds.length) {
-						break;
-					}
-				}*/
+				//// If the fittest is fit enough, the epoch can be changed.
+				//if (numCapturesOfMostSuccessfulPieces
+				//		/ Math.pow(params.rootOfNumTestsDelta, 2) > params.ratioCapturesForNextEpoch) {
+					//forceBurstMutation = true;
+					//epochNumber++;
+					//System.out.println("Epoch Change to number "
+					//		+ (epochNumber + 1) + " with fittest " + numCapturesOfMostSuccessfulPieces);
+					//burstMutationTicker = params.burstMutationWaitAfterEpochChange;
+					//if (epochNumber >= params.preySpeeds.length) {
+					//	break;
+					//}
+				//}
 				// If the fittest is much fitter than the population, burst
 				// mutation can still be applied.
 				if ((numCapturesOfMostSuccessfulPieces / Math.pow(
