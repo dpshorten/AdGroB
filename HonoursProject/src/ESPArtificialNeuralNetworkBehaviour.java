@@ -18,7 +18,7 @@ public class ESPArtificialNeuralNetworkBehaviour extends Behaviour{
 		return getIndexOfMaximumActivation(offset.x, offset.y);
 	}
 	
-	public int getIndexOfMaximumActivation(int xOffset, int yOffset) {
+	public int getIndexOfMaximumActivation(double xOffset, double yOffset) {
 		double[] activations = ANN.run((double)xOffset, (double)yOffset);
 		int indexOfMaximumActivation = 0;
 		double currentMax = 0;

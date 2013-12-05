@@ -198,12 +198,12 @@ public class ESPEvolution {
 					params.rootOfNumTests, env, testPredatorPieces, runAway,
 					params);
 
-			/*
-			 * System.out.println("Generation " + gen + " done: " + captureCount
-			 * + " captures, " + testCaptureCount + "/" + params.rootOfNumTests
-			 * * params.rootOfNumTests + " test score, " + env.numRuns +
-			 * " evaluations.");
-			 */
+			
+			System.out.println("Generation " + gen + " done: " + captureCount
+			  + " captures, " + testCaptureCount + "/" + params.rootOfNumTests
+			  * params.rootOfNumTests + " test score, " + env.numRuns +
+			  " evaluations.");
+			 
 
 			// Check if we can move onto the next epoch (because the population
 			// capture rate is high enough).
@@ -220,7 +220,7 @@ public class ESPEvolution {
 				 */
 				burstMutationTicker = params.burstMutationWaitAfterEpochChange;
 			}
-			// If we the epoch cannot be changed, the delta things can be done.
+			// If the epoch cannot be changed, the delta things can be done.
 			else if (params.doDavidsDeltaThings) {
 				boolean forceBurstMutation = false;
 				numCapturesOfMostSuccessfulPieces = testOnIncrementedPositions(

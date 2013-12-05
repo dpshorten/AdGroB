@@ -21,11 +21,11 @@ public class BehaviourTests {
 			MAESPThreads.add(MAESPThread);
 			
 			AlgorithmThread OBMThread = new ESPThread(false, false, false, true);
-			OBMThread.start();
+			//OBMThread.start();
 			OBMThreads.add(OBMThread);
 			
 			AlgorithmThread GeNEThread = new GeNEThread();
-			GeNEThread.start();
+			//GeNEThread.start();
 			GeNEThreads.add(GeNEThread);
 		}
 		for(int i = 0; i < numRuns; i++) {
