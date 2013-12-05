@@ -20,6 +20,7 @@ public class BehaviourTests {
 			MAESPThread.start();
 			MAESPThreads.add(MAESPThread);
 			
+			//comment
 			AlgorithmThread OBMThread = new ESPThread(false, false, false, true);
 			//OBMThread.start();
 			OBMThreads.add(OBMThread);
