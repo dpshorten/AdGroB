@@ -6,6 +6,8 @@ public class BehaviourTests {
 	
 	public static void main(String[] args) {
 		
+		System.out.println("foo");
+		
 		int[] MAESP = new int[numRuns]; 
 		int[] OBM = new int[numRuns]; 
 		int[] GeNE = new int[numRuns];
