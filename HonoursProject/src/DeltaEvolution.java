@@ -148,7 +148,7 @@ public class DeltaEvolution {
 				/*System.out.println("Epoch Change to number "
 						+ (epochNumber + 1));*/
 				if (epochNumber >= preySpeeds.length) {
-					if (predatorGroups.get(0).getMostRecentCaptureRatio() > params.ratioCapturesForEnd) {
+					if (predatorGroups.get(0).getMostRecentCaptureRatio() >= params.ratioCapturesForEnd) {
 						bestPredatorGroup = predatorGroups.get(0);
 						break;
 					} else {

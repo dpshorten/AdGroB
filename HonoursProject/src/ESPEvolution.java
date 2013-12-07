@@ -208,7 +208,7 @@ public class ESPEvolution {
 			// Check if we can move onto the next epoch (because the population
 			// capture rate is high enough).
 			if (epochNumber >= (params.preySpeeds.length - 1)
-					& testCaptureCount / Math.pow(params.rootOfNumTests, 2) > params.ratioCapturesForEnd) {
+					& testCaptureCount / Math.pow(params.rootOfNumTests, 2) >= params.ratioCapturesForEnd) {
 				break;
 			} else if (captureCount
 					/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch

@@ -6,8 +6,6 @@ public class BehaviourTests {
 	
 	public static void main(String[] args) {
 		
-		System.out.println("foo");
-		
 		int[] MAESP = new int[numRuns]; 
 		int[] OBM = new int[numRuns]; 
 		int[] GeNE = new int[numRuns];
@@ -24,11 +22,11 @@ public class BehaviourTests {
 			
 			//comment
 			AlgorithmThread OBMThread = new ESPThread(false, false, false, true);
-			//OBMThread.start();
+			OBMThread.start();
 			OBMThreads.add(OBMThread);
 			
 			AlgorithmThread GeNEThread = new GeNEThread();
-			//GeNEThread.start();
+			GeNEThread.start();
 			GeNEThreads.add(GeNEThread);
 		}
 		for(int i = 0; i < numRuns; i++) {
