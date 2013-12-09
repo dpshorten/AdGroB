@@ -13,6 +13,8 @@ public class ESPEvolution {
 			boolean doDavidsDeltaThings){
 		EvolutionParameters params = new EvolutionParameters();
 		
+		System.out.println("foo");
+		
 		params.doMigration = doMigration;
 		params.useBehaviourDistance = useBehaviourDistance;
 		params.useGenotypeDistance = useGenotypeDistance;

@@ -9,7 +9,7 @@ public class EvolutionParameters {
 	boolean doInterpopulationCrossover = true;
 	
 	public static int numHiddenNodes = 10;
-	public static int numPredators = 6;
+	public static int numPredators = 3;
 	public static int subPopulationSize = 100;
 	// Each trial set runs a number of trials equal to the sub-population size.
 	public static int trialSetsPerGeneration = 10; // 10
@@ -18,9 +18,9 @@ public class EvolutionParameters {
 	public static int generations = 200;
 	public static int boardSize = 100;
 	public static double mutationProbability = 0.4;
-	public static double earlyMutationStdDev = 0.5;
+	public static double earlyMutationStdDev = 0.3;
 	public static double lateMutationStdDev = 0.2;
-	public static double earlyBurstMutationAmountStdDev = 0.5;
+	public static double earlyBurstMutationAmountStdDev = 0.7;
 	public static double lateBurstMutationAmountStdDev = 0.05;
 	public static double burstMutationEarlyLateFitnessCutoff = 0.9;
 	public static int burstMutationWaitBeforeRepeat = 10;
