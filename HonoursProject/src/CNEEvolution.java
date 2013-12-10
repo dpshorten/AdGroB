@@ -120,7 +120,7 @@ public class CNEEvolution {
 			
 			if((captureCount / ((double) EvolutionParameters.CNEPopSize * EvolutionParameters.CNEEvaluationsPerTrial) 
 					> EvolutionParameters.CNERatioCapturesForEpochChange) & 
-					(epochNumber < EvolutionParameters.epochPreySpeeds.length - 1)) {
+					(epochNumber < EvolutionParameters.epochPreySpeeds.length)) {
 				epochNumber++;
 			} else if ((epochNumber == EvolutionParameters.epochPreySpeeds.length - 1) & 
 					(bestCaptureCount/Math.pow(EvolutionParameters.rootOfNumGridTests, 2) 

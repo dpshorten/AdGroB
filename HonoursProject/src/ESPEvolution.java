@@ -199,10 +199,10 @@ public class ESPEvolution {
 					params);
 
 			
-			/*System.out.println("Generation " + gen + " done: " + captureCount
-			  + " captures, " + testCaptureCount + "/" + params.rootOfNumTests
-			  * params.rootOfNumTests + " test score, " + env.numRuns +
-			  " evaluations.");*/
+			System.out.println("Generation " + gen + " done: " + captureCount
+			  + " captures, " + testCaptureCount + "/" + params.rootOfNumGridTests
+			  * params.rootOfNumGridTests + " test score, " + env.numRuns +
+			  " evaluations.");
 			 
 
 			// Check if we can move onto the next epoch (because the population
