@@ -43,7 +43,7 @@ public class ESPEvolution {
 			}
 
 			env = new Environment(params.boardSize,
-					params.preySpeeds[epochNumber], params.numPredators);
+					params.epochPreySpeeds[epochNumber], params.numPredators);
 
 			Vector<Piece> preyPieces = new Vector<Piece>();
 			StochasticRunAwayBehaviour runAway = new StochasticRunAwayBehaviour(
@@ -97,7 +97,7 @@ public class ESPEvolution {
 					// the evaluations
 					for (int i = 0; i < params.numPredators; i++) {
 						for (Genotype genotype : usedGenotypes.elementAt(i))
-							genotype.updateFitness(result.avgEvalFitnesses[i]);
+							genotype.updateFitness(result.avgEvalFitness);
 					}
 				}// trial
 			}// trialSets
@@ -195,7 +195,7 @@ public class ESPEvolution {
 			}
 			// Run the n instance test.
 			int testCaptureCount = testOnIncrementedPositions(
-					params.rootOfNumTests, env, testPredatorPieces, runAway,
+					params.rootOfNumGridTests, env, testPredatorPieces, runAway,
 					params);
 
 			
@@ -207,12 +207,12 @@ public class ESPEvolution {
 
 			// Check if we can move onto the next epoch (because the population
 			// capture rate is high enough).
-			if (epochNumber >= (params.preySpeeds.length - 1)
-					& testCaptureCount / Math.pow(params.rootOfNumTests, 2) >= params.ratioCapturesForEnd) {
+			if (epochNumber >= (params.epochPreySpeeds.length - 1)
+					& testCaptureCount / Math.pow(params.rootOfNumGridTests, 2) >= params.ratioCapturesForEnd) {
 				break;
 			} else if (captureCount
 					/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch
-					& epochNumber < (params.preySpeeds.length - 1)) {
+					& epochNumber < (params.epochPreySpeeds.length - 1)) {
 				epochNumber++;
 				/*for(ESPPopulation pop : agentPopulations) {
 					pop.runBurstMutation(params.earlyBurstMutationAmountStdDev);
@@ -516,7 +516,7 @@ public class ESPEvolution {
 	private static TrialResult trial(Vector<Piece> predatorPieces,
 			Vector<Piece> preyPieces, Environment env, int evaluations
 			, EvolutionParameters params) {
-		double[] avgEvalFitnesses = new double[params.numPredators];
+		double avgEvalFitness = 0;
 		int captureCount = 0;
 		Random random = new Random();
 		for (int eval = 0; eval < evaluations; eval++) {
@@ -545,19 +545,18 @@ public class ESPEvolution {
 					 */
 					double fitness = params.boardSize
 							- result.finalDistancesFromPrey.elementAt(i);
-					avgEvalFitnesses[i] += fitness;
+					avgEvalFitness += fitness;
 				} else {
 					// avgEvalFitnesses[i] += 2 * boardSize;
-					avgEvalFitnesses[i] += 2 * params.boardSize
+					avgEvalFitness += 2 * params.boardSize
 							- result.finalDistancesFromPrey.elementAt(i);
 				}
 			}
 		}
-		for (int i = 0; i < params.numPredators; i++)
-			avgEvalFitnesses[i] = avgEvalFitnesses[i]
+		avgEvalFitness = avgEvalFitness
 					/ params.evaluationsPerTrial;
 
-		return new TrialResult(avgEvalFitnesses, captureCount, 0);
+		return new TrialResult(avgEvalFitness, captureCount, 0);
 	}
 
 	public static int testOnIncrementedPositions(int rootOfTotalNumTests,

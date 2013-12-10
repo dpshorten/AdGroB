@@ -10,7 +10,7 @@ public class EvolutionParameters {
 	
 	public static int numHiddenNodes = 10;
 	public static int numPredators = 3;
-	public static int subPopulationSize = 100;
+	public static int subPopulationSize = 50;
 	// Each trial set runs a number of trials equal to the sub-population size.
 	public static int trialSetsPerGeneration = 10; // 10
 	public static int trialsPerGeneration = trialSetsPerGeneration * subPopulationSize;
@@ -29,11 +29,11 @@ public class EvolutionParameters {
 	public static int burstMutationWaitAfterEpochChange = 6;
 	public static int burstMutationTestLookBackDistance = 5;
 	public static double burstMutationTestRatioOfTrialsDifference = 0.01;
-	public static int rootOfNumTests = 10;
+	public static int rootOfNumGridTests = 10;
 	public static double ratioCapturesForNextEpoch = 0.6;
 	public static double ratioCapturesForEnd = 0.8;
 	public static int ratioHitsBeforeNextEpoch = 2;
-	public static double[] preySpeeds = { 0.1, 1};
+	public static double[] epochPreySpeeds = { 0.1, 1};
 	public static Integer[] predatorPositions = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 	public static final int FinalTestNumEvaluationsToRun = 100;
 	
@@ -58,12 +58,14 @@ public class EvolutionParameters {
 	public static int testedPieceGroups = 20;
 	public static int rootOfNumTestsDelta = 7;
 	public static double stdDev = 0.3;
-	public static double ratioDifference = 0.0;
+	public static double ratioDifference = 0.2;
 	
 	// Variables for CNE
 	public static int CNEweightMutationsPerPredator = 10;
 	public static double CNEGamma = 0.5;
 	public static double CNEMutationProbability = 0.4;
-	public static int CNEPopSize = 300;
+	public static int CNEPopSize = 1500;
 	public static int CNEMaxGenerations = 200;
+	public static int CNEEvaluationsPerTrial = 6;
+	public static double CNERatioCapturesForEpochChange = 0.6;
 }

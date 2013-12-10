@@ -9,7 +9,7 @@ public class CNEEvolution {
 		(new CNEEvolution()).run();
 	}
 	
-	public void run() {
+	public int run() {
 		Random random = new Random();
 
 		Vector<CNEGenotype> population = new Vector<CNEGenotype>();
@@ -21,14 +21,15 @@ public class CNEEvolution {
 		int epochNumber = 0;
 		int captureCount = 0;
 		
-		for (int generation = 1; generation <= EvolutionParameters.CNEMaxGenerations; generation++) {
-			System.out.println(generation);
+		int generation = 1;
+		for (generation = 1; generation <= EvolutionParameters.CNEMaxGenerations; generation++) {
+
 			for (CNEGenotype genotype : population) {
 				genotype.resetFitness();
 			}
 
 			environment = new Environment(EvolutionParameters.boardSize,
-					EvolutionParameters.preySpeeds[epochNumber],
+					EvolutionParameters.epochPreySpeeds[epochNumber],
 					EvolutionParameters.numPredators);
 
 			Vector<Piece> preyPieces = new Vector<Piece>();
@@ -64,14 +65,12 @@ public class CNEEvolution {
 									false, environment, annBehaviour));
 				}
 				TrialResult result = trial(predatorPieces, preyPieces,
-						environment, EvolutionParameters.evaluationsPerTrial);
+						environment, EvolutionParameters.CNEEvaluationsPerTrial);
 				captureCount += result.captureCount;
-				genotype.setFitness(result.avgEvalFitnesses[0]);
+				genotype.setFitness(result.avgEvalFitness);
 
 			}// trial
-			System.out.println(captureCount);
 			
-
 			Collections.sort(population);
 			Collections.reverse(population);
 
@@ -90,15 +89,54 @@ public class CNEEvolution {
 				population.remove(replacementIndex);
 				population.add(replacementIndex, child);
 				replacementIndex--;
-			}			
+			}
+			
+			Vector<Piece> testPredatorPieces = new Vector<Piece>();
+			for (int pred = 0; pred < EvolutionParameters.numPredators; pred++) {
+				ESPArtificialNeuralNetwork ann = new ESPArtificialNeuralNetwork(
+						new Vector<Double>(
+								population.get(0).getWeights()
+										.subList(
+												pred
+														* 7
+														* EvolutionParameters.numHiddenNodes,
+												(pred + 1)
+														* 7
+														* EvolutionParameters.numHiddenNodes)),
+						0);
+				ESPArtificialNeuralNetworkBehaviour annBehaviour = new ESPArtificialNeuralNetworkBehaviour(
+						EvolutionParameters.boardSize, ann);
+				testPredatorPieces
+						.add(new Piece(
+								EvolutionParameters.predatorPositions[2 * pred],
+								EvolutionParameters.predatorPositions[2 * pred + 1],
+								false, environment, annBehaviour));
+			}
+			int bestCaptureCount = ESPEvolution.testOnIncrementedPositions(EvolutionParameters.rootOfNumGridTests,
+					environment, testPredatorPieces, runAway, new EvolutionParameters());
+			
+			System.out.println("Generation " + generation + " done, " + captureCount + 
+						" captures, " + bestCaptureCount + " test.");
+			
+			if((captureCount / ((double) EvolutionParameters.CNEPopSize * EvolutionParameters.CNEEvaluationsPerTrial) 
+					> EvolutionParameters.CNERatioCapturesForEpochChange) & 
+					(epochNumber < EvolutionParameters.epochPreySpeeds.length - 1)) {
+				epochNumber++;
+			} else if ((epochNumber == EvolutionParameters.epochPreySpeeds.length - 1) & 
+					(bestCaptureCount/Math.pow(EvolutionParameters.rootOfNumGridTests, 2) 
+					> EvolutionParameters.ratioCapturesForEnd)) {
+				break;
+			}
 		}// generation
+		
+		return generation;
 	}// run()
 
 	// Run a set of evaluations on the predators to get fitness values for the
 	// genotypes
 	private static TrialResult trial(Vector<Piece> predatorPieces,
 			Vector<Piece> preyPieces, Environment env, int evaluations) {
-		double[] avgEvalFitnesses = new double[EvolutionParameters.numPredators];
+		double avgEvalFitness = 0;
 		int captureCount = 0;
 		Random random = new Random();
 		for (int eval = 0; eval < evaluations; eval++) {
@@ -128,18 +166,17 @@ public class CNEEvolution {
 					 */
 					double fitness = EvolutionParameters.boardSize
 							- result.finalDistancesFromPrey.elementAt(i);
-					avgEvalFitnesses[i] += fitness;
+					avgEvalFitness += fitness;
 				} else {
 					// avgEvalFitnesses[i] += 2 * boardSize;
-					avgEvalFitnesses[i] += 2 * EvolutionParameters.boardSize
+					avgEvalFitness += 2 * EvolutionParameters.boardSize
 							- result.finalDistancesFromPrey.elementAt(i);
 				}
 			}
 		}
-		for (int i = 0; i < EvolutionParameters.numPredators; i++)
-			avgEvalFitnesses[i] = avgEvalFitnesses[i]
+		avgEvalFitness = avgEvalFitness
 					/ EvolutionParameters.evaluationsPerTrial;
 
-		return new TrialResult(avgEvalFitnesses, captureCount, 0);
+		return new TrialResult(avgEvalFitness, captureCount, 0);
 	}
 }

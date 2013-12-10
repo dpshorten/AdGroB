@@ -1,11 +1,11 @@
 
 public class TrialResult {
-		public double[] avgEvalFitnesses;
+		public double avgEvalFitness;
 		public int captureCount;
 		public int generations;
 
-		public TrialResult(double[] avgEvalFitnesses, int captureCount, int generations) {
-			this.avgEvalFitnesses = avgEvalFitnesses;
+		public TrialResult(double avgEvalFitness, int captureCount, int generations) {
+			this.avgEvalFitness = avgEvalFitness;
 			this.captureCount = captureCount;
 			this.generations = generations;
 		}

@@ -9,7 +9,7 @@ public class DeltaEvolution {
 	
 	static final double[] preySpeeds = { 1 };
 	public static final int deltaSubPopulationSize = 100;
-	public static final int[] numGroupsFirstRound = { 2000, 2000};
+	public static final int[] numGroupsFirstRound = { 3000, 3000};
 	public static final int[] rootNumEvalsFirstRound = { 1, 1 };
 	public static final int[] numGroupsSecondRound = { 500, 500 };
 	public static final int[] rootNumEvalsSecondRound = { 2, 2 };
