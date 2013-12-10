@@ -2,7 +2,7 @@ import java.util.Vector;
 
 
 public class BehaviourTests {
-	private static final int numRuns = 1;
+	private static final int numRuns = 2;
 	
 	public static void main(String[] args) {
 		

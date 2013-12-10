@@ -91,8 +91,8 @@ public class DeltaEvolution {
 					predatorGroups, env, runAway, 1);
 
 			double captureRatio = predatorGroups.get(0).getCaptureRatio();
-			System.out.println("Generation " + (gen + 1)
-					+ " done, best ratio: " + captureRatio + " " + env.numRuns);
+			/*System.out.println("Generation " + (gen + 1)
+					+ " done, best ratio: " + captureRatio + " " + env.numRuns);*/
 			
 			if(captureRatio > 0.6) {
 				evaluationStructureIndex = 1;

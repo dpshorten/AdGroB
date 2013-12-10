@@ -18,7 +18,7 @@ public class EvolutionParameters {
 	public static int generations = 200;
 	public static int boardSize = 100;
 	public static double mutationProbability = 0.4;
-	public static double earlyMutationStdDev = 0.3;
+	public static double earlyMutationStdDev = 0.1;
 	public static double lateMutationStdDev = 0.2;
 	public static double earlyBurstMutationAmountStdDev = 0.7;
 	public static double lateBurstMutationAmountStdDev = 0.05;
@@ -59,4 +59,11 @@ public class EvolutionParameters {
 	public static int rootOfNumTestsDelta = 7;
 	public static double stdDev = 0.3;
 	public static double ratioDifference = 0.0;
+	
+	// Variables for CNE
+	public static int CNEweightMutationsPerPredator = 10;
+	public static double CNEGamma = 0.5;
+	public static double CNEMutationProbability = 0.4;
+	public static int CNEPopSize = 300;
+	public static int CNEMaxGenerations = 200;
 }

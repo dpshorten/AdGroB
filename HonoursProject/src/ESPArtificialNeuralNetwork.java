@@ -19,6 +19,20 @@ public class ESPArtificialNeuralNetwork {
 		inputNodes = new Vector<InputNode>();
 		this.AddNodesFromGenotypes(hiddenNodeGenotypes);
 	}
+	
+	// The integer argument is just to give this method a different signature
+	public ESPArtificialNeuralNetwork(Vector<Double> weights, int flag) {
+		Vector<Genotype> hiddenNodeGenotypes = new Vector<Genotype>();
+		for(int i = 0; i < EvolutionParameters.numHiddenNodes; i++) {
+			hiddenNodeGenotypes.add(new Genotype(
+					new Vector<Double>(weights.subList(7 * i, 7 * i + 2)), 
+					new Vector<Double>(weights.subList(7 * i + 2, 7 * i + 7))));
+		}
+		outputNodes = new Vector<OutputNode>();
+		hiddenNodes = new Vector<HiddenNode>();
+		inputNodes = new Vector<InputNode>();
+		this.AddNodesFromGenotypes(hiddenNodeGenotypes);
+	}
 
 	public ESPArtificialNeuralNetwork(String fileName) {
 		outputNodes = new Vector<OutputNode>();

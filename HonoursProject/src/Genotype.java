@@ -89,7 +89,7 @@ public class Genotype implements Comparable<Genotype>
 		for(int i = 0; i < WEIGHT_MUTATIONS_PER_GENOTYPE_MUTATION; i++) {
 			Random random = new Random();
 			int indexToMutate = random.nextInt(inputWeights.size() + outputWeights.size());
-			double mutationAmount = random.nextGaussian() * mutationAmountStdDev; 
+			double mutationAmount = cauchy(mutationAmountStdDev, random.nextGaussian()); 
 			if(indexToMutate < outputWeights.size()) {
 				indexToMutate %= outputWeights.size();
 				outputWeights.set(indexToMutate, outputWeights.get(indexToMutate).doubleValue() + mutationAmount);

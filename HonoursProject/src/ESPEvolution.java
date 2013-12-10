@@ -13,8 +13,6 @@ public class ESPEvolution {
 			boolean doDavidsDeltaThings){
 		EvolutionParameters params = new EvolutionParameters();
 		
-		System.out.println("foo");
-		
 		params.doMigration = doMigration;
 		params.useBehaviourDistance = useBehaviourDistance;
 		params.useGenotypeDistance = useGenotypeDistance;
@@ -201,10 +199,10 @@ public class ESPEvolution {
 					params);
 
 			
-			System.out.println("Generation " + gen + " done: " + captureCount
+			/*System.out.println("Generation " + gen + " done: " + captureCount
 			  + " captures, " + testCaptureCount + "/" + params.rootOfNumTests
 			  * params.rootOfNumTests + " test score, " + env.numRuns +
-			  " evaluations.");
+			  " evaluations.");*/
 			 
 
 			// Check if we can move onto the next epoch (because the population
@@ -216,6 +214,9 @@ public class ESPEvolution {
 					/ ((double) params.trialsPerGeneration * params.evaluationsPerTrial) > params.ratioCapturesForNextEpoch
 					& epochNumber < (params.preySpeeds.length - 1)) {
 				epochNumber++;
+				/*for(ESPPopulation pop : agentPopulations) {
+					pop.runBurstMutation(params.earlyBurstMutationAmountStdDev);
+				}*/
 				/*
 				 * System.out.println("Epoch Change to number " + (epochNumber +
 				 * 1));
