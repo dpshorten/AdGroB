@@ -2,7 +2,7 @@ import java.util.Vector;
 
 
 public class BehaviourTests {
-	private static final int numRuns = 1;
+	private static final int numRuns = 2;
 	
 	public static void main(String[] args) {
 		
@@ -32,7 +32,7 @@ public class BehaviourTests {
 			GeNEThreads.add(GeNEThread);
 			
 			AlgorithmThread CNEThread = new CNEThread();
-			CNEThread.start();
+			//CNEThread.start();
 			CNEThreads.add(CNEThread);
 		}
 		
